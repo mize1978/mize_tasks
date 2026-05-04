@@ -40,10 +40,10 @@ https://github.com/mize1978/reward_task_app
 ![ユーザー画面](images/user.jpg)
 
 ### タスク一覧（一覧画面）
-![タスク一覧](images/screenshot.png)
+![タスク一覧](images/screenshot2.png)
 
 ### カレンダー表示
-![カレンダー表示](images/screenshot2.png)
+![カレンダー表示](images/screenshot.png)
 
 ￼
 ￼
