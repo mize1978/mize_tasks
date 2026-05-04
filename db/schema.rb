@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_05_04_034151) do
+ActiveRecord::Schema[7.0].define(version: 2026_05_04_124617) do
   create_table "tasks", charset: "utf8mb4", force: :cascade do |t|
     t.string "title"
     t.boolean "done"
@@ -30,6 +30,7 @@ ActiveRecord::Schema[7.0].define(version: 2026_05_04_034151) do
     t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
+    t.integer "completed_count"
   end
 
   add_foreign_key "tasks", "users"

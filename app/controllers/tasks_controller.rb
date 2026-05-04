@@ -80,17 +80,16 @@ end
 def update
   if @task.update(task_params)
 
-    # 完了にした時だけ completed_at を入れる
-    if @task.done? && @task.completed_at.blank?
+    if @task.saved_change_to_done? && @task.done?
+      current_user.increment!(:completed_count)
       @task.update(completed_at: Time.current)
     end
 
-    # 未完了に戻した時は completed_at を消す
-    unless @task.done?
+    if @task.saved_change_to_done? && !@task.done?
       @task.update(completed_at: nil)
     end
 
-    redirect_to tasks_path, notice: "更新したよ"
+    redirect_to tasks_path, notice: "🎉 えらい！がんばり達成！ #{current_user.badge}"
   else
     render :edit, status: :unprocessable_entity
   end
