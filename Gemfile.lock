@@ -140,6 +140,8 @@ GEM
     minitest (5.27.0)
     msgpack (1.8.0)
     mutex_m (0.3.0)
+    mysql2 (0.5.7)
+      bigdecimal
     net-imap (0.5.14)
       date
       net-protocol
@@ -270,6 +272,7 @@ DEPENDENCIES
   debug
   importmap-rails
   jbuilder
+  mysql2
   pg
   puma (>= 5.0)
   rails (~> 7.0.10)

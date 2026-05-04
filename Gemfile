@@ -11,7 +11,7 @@ gem 'sassc-rails'
 gem "sprockets-rails"
 
 # Use mysql as the database for Active Record
-# gem "mysql2"
+gem "mysql2"
 
 gem "pg"
 
