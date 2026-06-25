@@ -1,0 +1,106 @@
+<div class="page-sidebar-layout">
+
+  <div class="col-left sticky-col">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <div class="col-main">
+
+    <div class="page-panel-header">
+      <div>
+        <h2 class="page-panel-title">⚙️ 設定</h2>
+        <p class="page-panel-sub">アカウント情報やアプリの設定</p>
+      </div>
+    </div>
+
+    <%# プロフィール %>
+    <div class="settings-section">
+      <p class="settings-section-title">👤 プロフィール</p>
+
+      <div class="settings-profile-card">
+        <div class="settings-avatar">
+          <%= image_tag current_user.ribbon_stage_image, class: "settings-avatar-img",
+                style: ribbon_color_style, alt: "アバター" %>
+        </div>
+        <div class="settings-profile-info">
+          <p class="settings-nickname"><%= current_user.nickname %></p>
+          <p class="settings-email"><%= current_user.email %></p>
+          <div class="settings-profile-badges">
+            <span class="settings-badge-chip">★ Lv.<%= current_user.ribbon_level %></span>
+            <span class="settings-badge-chip"><%= current_user.ribbon_stage_name %></span>
+            <span class="settings-badge-chip">🏅 <%= current_user.badge %></span>
+          </div>
+        </div>
+      </div>
+
+      <%= form_with url: settings_path, method: :patch, local: true do |f| %>
+        <div class="tf-group">
+          <%= f.label :nickname, "ニックネーム", class: "tf-label" %>
+          <%= f.text_field :nickname, value: current_user.nickname, class: "form-input", placeholder: "ニックネームを変更" %>
+        </div>
+        <%= f.submit "✦ 変更を保存する ✦", class: "login-btn-new" %>
+      <% end %>
+    </div>
+
+    <%# パートナーカラー %>
+    <div class="settings-section">
+      <p class="settings-section-title">🥚 パートナーカラー</p>
+      <p class="settings-section-sub">いつでも変えられるよ。選ぶと部屋もお気に入りに切り替わるよ♪</p>
+
+      <div class="egg-color-setting">
+        <% [
+          { color: "pink",   emoji: "🩷", label: "リボンのたまご",   desc: "やさしさと愛情",  room: "はじめのお部屋" },
+          { color: "blue",   emoji: "💙", label: "星のたまご",       desc: "夢と輝き",        room: "星のちいさなお部屋" },
+          { color: "yellow", emoji: "💛", label: "ひだまりのたまご", desc: "あたたかさと笑顔", room: "ひだまりの部屋" },
+        ].each do |opt| %>
+          <%= form_with url: choose_egg_path, method: :post, data: { turbo: false } do |f| %>
+            <%= f.hidden_field :color, value: opt[:color] %>
+            <button type="submit" class="egg-color-opt <%= 'egg-color-opt--active' if current_user.egg_color == opt[:color] %>">
+              <div class="egg-color-opt-img-wrap">
+                <%= image_tag "stage_egg.png", class: "egg-color-opt-img",
+                      style: egg_color_style(opt[:color]), alt: opt[:label] %>
+                <% if current_user.egg_color == opt[:color] %>
+                  <span class="egg-color-opt-check">✓</span>
+                <% end %>
+              </div>
+              <span class="egg-color-opt-label"><%= opt[:emoji] %> <%= opt[:label] %></span>
+              <span class="egg-color-opt-desc"><%= opt[:desc] %></span>
+              <span class="egg-color-opt-room">🏠 <%= opt[:room] %></span>
+            </button>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <%# ゲームデータ %>
+    <div class="settings-section">
+      <p class="settings-section-title">🎮 ゲームデータ</p>
+      <div class="settings-data-grid">
+        <div class="settings-data-item">
+          <span class="settings-data-lbl">総完了タスク</span>
+          <span class="settings-data-val"><%= current_user.completed_count %> 個</span>
+        </div>
+        <div class="settings-data-item">
+          <span class="settings-data-lbl">所持コイン</span>
+          <span class="settings-data-val"><%= number_with_delimiter(current_user.coins) %> コイン</span>
+        </div>
+        <div class="settings-data-item">
+          <span class="settings-data-lbl">リボンステージ</span>
+          <span class="settings-data-val">Stage <%= current_user.ribbon_stage %></span>
+        </div>
+        <div class="settings-data-item">
+          <span class="settings-data-lbl">ライフ</span>
+          <span class="settings-data-val">❤️ <%= current_user.lives %> / 5</span>
+        </div>
+      </div>
+    </div>
+
+    <%# ログアウト %>
+    <div class="settings-section">
+      <p class="settings-section-title">🚪 アカウント</p>
+      <%= link_to "ログアウトする", logout_path, class: "settings-logout-btn",
+            data: { turbo_method: :delete } %>
+    </div>
+
+  </div>
+</div>

@@ -1,24 +1,116 @@
-<h1>ユーザー登録</h1>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
 
-<div class="login-card">
-  <%= form_with model: @user, url: signup_path do |f| %>
+<div class="login-page">
 
-    <div class="form-group">
-      <%= f.label :nickname, "ニックネーム" %>
-      <%= f.text_field :nickname, class: "form-input" %>
+  <%# Aurora orbs (LP と同世界観) %>
+  <div class="login-orbs" aria-hidden="true">
+    <div class="login-orb login-orb--1"></div>
+    <div class="login-orb login-orb--2"></div>
+    <div class="login-orb login-orb--3"></div>
+  </div>
+
+  <%# パーティクル %>
+  <div class="login-particles" aria-hidden="true">
+    <span class="particle" style="--x:8%;  --delay:0s;  --size:4px"></span>
+    <span class="particle" style="--x:17%; --delay:1.5s;--size:3px"></span>
+    <span class="particle" style="--x:26%; --delay:3s;  --size:5px"></span>
+    <span class="particle" style="--x:34%; --delay:0.8s;--size:3px"></span>
+    <span class="particle" style="--x:45%; --delay:2.2s;--size:6px"></span>
+    <span class="particle" style="--x:53%; --delay:4s;  --size:4px"></span>
+    <span class="particle" style="--x:61%; --delay:1s;  --size:3px"></span>
+    <span class="particle" style="--x:70%; --delay:3.5s;--size:5px"></span>
+    <span class="particle" style="--x:78%; --delay:0.3s;--size:4px"></span>
+    <span class="particle" style="--x:87%; --delay:2.8s;--size:3px"></span>
+  </div>
+
+  <%# ===== ロゴ（上部中央） ===== %>
+  <div class="login-header">
+    <%= image_tag "rewardme_logo.png", class: "login-logo-img", alt: "RewardMe" %>
+    <p class="login-left-copy">がんばりが、かわいさになる</p>
+  </div>
+
+  <%# ===== フォームカード（中央） ===== %>
+  <div class="login-center">
+    <div class="login-card">
+      <h1 class="signup-heading">新規登録</h1>
+
+      <% if @user&.errors&.any? %>
+        <div class="login-errors">
+          <% @user.errors.full_messages.each do |msg| %>
+            <p><%= msg %></p>
+          <% end %>
+        </div>
+      <% end %>
+
+      <%= form_with model: @user, url: signup_path do |f| %>
+        <div class="form-group">
+          <%= f.label :nickname, "ニックネーム" %>
+          <%= f.text_field :nickname, class: "form-input", placeholder: "あなたのニックネーム" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :email, "メールアドレス" %>
+          <%= f.email_field :email, class: "form-input", placeholder: "your@email.com" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password, "パスワード" %>
+          <%= f.password_field :password, class: "form-input", placeholder: "••••••••" %>
+        </div>
+
+        <%= f.submit "✦ 登録する ✦", class: "login-btn-new" %>
+      <% end %>
+
+      <p class="login-signup-link">
+        すでにアカウントをお持ちの方は
+        <%= link_to "ログイン", login_path, class: "login-link" %>
+      </p>
     </div>
+  </div>
 
-    <div class="form-group">
-      <%= f.label :email, "Email" %>
-      <%= f.email_field :email, class: "form-input" %>
+  <%# ===== キャラクター（左下） ===== %>
+  <div class="login-chara-corner">
+    <div class="login-chara-wrap">
+      <%= image_tag "stage_egg.png", class: "login-chara-img", alt: "ふしぎなたまご" %>
+      <span class="egg-sparkle egg-sparkle--1" aria-hidden="true">✦</span>
+      <span class="egg-sparkle egg-sparkle--2" aria-hidden="true">✧</span>
+      <span class="egg-sparkle egg-sparkle--3" aria-hidden="true">✦</span>
+      <span class="egg-sparkle egg-sparkle--4" aria-hidden="true">✧</span>
+      <span class="egg-sparkle egg-sparkle--5" aria-hidden="true">✦</span>
+      <span class="egg-sparkle egg-sparkle--6" aria-hidden="true">✧</span>
     </div>
+  </div>
 
-    <div class="form-group">
-      <%= f.label :password, "Password" %>
-      <%= f.password_field :password, class: "form-input" %>
-    </div>
-
-    <%= f.submit "登録", class: "login-button" %>
-
-  <% end %>
 </div>
+
+<script>
+(function() {
+  function initEggPyon() {
+    var egg = document.querySelector('.login-chara-img');
+    var btns = document.querySelectorAll('.login-btn-new');
+    if (!egg || !btns.length) return;
+
+    btns.forEach(function(btn) {
+      btn.addEventListener('mouseenter', function() {
+        egg.classList.remove('egg-pyon');
+        void egg.offsetWidth;
+        egg.classList.add('egg-pyon');
+      });
+    });
+
+    egg.addEventListener('animationend', function(e) {
+      if (e.animationName === 'eggPyon') {
+        egg.classList.remove('egg-pyon');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initEggPyon);
+  } else {
+    initEggPyon();
+  }
+})();
+</script>

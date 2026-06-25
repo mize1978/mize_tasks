@@ -1,0 +1,43 @@
+<div class="page-sidebar-layout">
+
+  <div class="col-left sticky-col">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <div class="col-main">
+
+    <%= link_to "← お手紙一覧に戻る", letters_path, class: "letter-back-link" %>
+
+    <div class="letter-detail">
+
+      <div class="letter-detail-header">
+        <div class="letter-detail-sender">
+          <span class="letter-detail-icon"><%= @letter[:icon] %></span>
+          <div>
+            <p class="letter-detail-from">From: <%= @letter[:from] %></p>
+            <% if @letter[:received_at] %>
+              <p class="letter-detail-date"><%= @letter[:received_at] %></p>
+            <% end %>
+          </div>
+        </div>
+        <h2 class="letter-detail-subject"><%= @letter[:subject] %></h2>
+      </div>
+
+      <div class="letter-detail-body">
+        <%= simple_format(@letter[:body], {}, wrapper_tag: "div") %>
+      </div>
+
+      <div class="letter-detail-footer">
+        <div class="letter-detail-chara">
+          <%= image_tag current_user.ribbon_stage_image,
+                class: "letter-detail-chara-img",
+                style: ribbon_color_style,
+                alt: "リボンちゃん" %>
+        </div>
+        <p class="letter-detail-sig">— <%= @letter[:from] %> より 💕</p>
+      </div>
+
+    </div>
+
+  </div>
+</div>

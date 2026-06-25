@@ -1,0 +1,106 @@
+<% home_active  = controller_name == 'tasks'  && action_name == 'index' %>
+<% tasks_active = controller_name == 'tasks'  && action_name == 'list' %>
+<% habit_active = controller_name == 'pages'  && action_name == 'habits' %>
+<% ach_active   = controller_name == 'pages'  && action_name == 'achievements' %>
+<% shop_active  = controller_name == 'furnitures' %>
+<% set_active   = controller_name == 'pages'  && action_name == 'settings' %>
+
+<%# ===== デイリーBOX + 今日の獲得アイテム ===== %>
+<div data-controller="daily-box">
+
+  <div class="daily-box-panel">
+    <p class="daily-box-title">🎁 今日のリボンBOX</p>
+    <% if current_user.box_available? %>
+      <div class="daily-box-egg-wrap" data-daily-box-target="wrap">
+        <%= image_tag "ribbon_box.png", class: "daily-box-egg",
+              data: { "daily-box-target": "egg" }, alt: "リボンBOX" %>
+        <button class="daily-box-btn" data-action="click->daily-box#open">✨ タップして開ける！</button>
+      </div>
+    <% else %>
+      <div class="daily-box-done" data-daily-box-target="done">
+        <span class="daily-box-done-ico">🎁</span>
+        <span class="daily-box-done-open">✓ OPEN</span>
+        <p class="daily-box-done-sub">Today's Box</p>
+        <p class="daily-box-timer" data-daily-box-target="timer"></p>
+      </div>
+    <% end %>
+    <div class="daily-box-result" data-daily-box-target="result" hidden>
+      <div class="daily-box-prize-card" data-daily-box-target="prizeCard">
+        <span class="daily-box-prize-ico"  data-daily-box-target="prizeIco"></span>
+        <span class="daily-box-prize-label" data-daily-box-target="prizeLabel"></span>
+        <span class="daily-box-rarity"      data-daily-box-target="prizeRarity"></span>
+      </div>
+    </div>
+  </div>
+
+  <%# 今日の獲得アイテム %>
+  <div class="today-prize-panel" data-daily-box-target="todayPrizePanel">
+    <p class="today-prize-title">🎀 今日の獲得アイテム</p>
+    <% prize = current_user.today_prize %>
+    <% if prize %>
+      <div class="today-prize-content">
+        <span class="today-prize-new">NEW</span>
+        <span class="today-prize-ico"><%= prize["type"] == "coins" ? "🪙" : "⭐" %></span>
+        <div class="today-prize-info">
+          <span class="today-prize-label"><%= prize["label"] %></span>
+          <span class="today-prize-rarity" data-rarity="<%= prize["rarity"] %>"><%= prize["rarity"]&.upcase %></span>
+          <span class="today-prize-got">今日GET！</span>
+        </div>
+      </div>
+    <% else %>
+      <div class="today-prize-mystery" data-daily-box-target="todayPrizeEmpty">
+        <span class="today-prize-mystery-mark">？？？</span>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+<%# ===== マイルームサムネイル ===== %>
+<div class="sidebar-deco-panel">
+  <div class="sidebar-deco-header">
+    <p class="sidebar-deco-title">🏠 マイルーム</p>
+    <%= link_to "背景を変える", shop_path, class: "sidebar-deco-shop-btn" %>
+  </div>
+
+  <%= link_to shop_path, class: "sidebar-deco-room" do %>
+    <%= image_tag current_user.room_bg_image, class: "sidebar-deco-room-bg", alt: "マイルーム" %>
+    <%= image_tag current_user.ribbon_stage_image, class: "sidebar-deco-room-chara", alt: "リボンちゃん", style: ribbon_color_style %>
+    <div class="sidebar-deco-room-hover">
+      <span>背景を変える ›</span>
+    </div>
+  <% end %>
+</div>
+
+<%# ===== ナビゲーション ===== %>
+<div class="side-menu">
+  <%= link_to dashboard_path, class: "side-menu-item #{home_active ? 'active' : ''}" do %>
+    <%= image_tag "home.png", class: "menu-icon" %>
+    <span>ホーム</span>
+  <% end %>
+
+  <%= link_to my_tasks_path, class: "side-menu-item #{tasks_active ? 'active' : ''}" do %>
+    <span class="menu-icon-emoji">📋</span>
+    <span>タスク</span>
+  <% end %>
+
+  <%= link_to habits_path, class: "side-menu-item #{habit_active ? 'active' : ''}" do %>
+    <span class="menu-icon-emoji">⏰</span>
+    <span>習慣</span>
+  <% end %>
+
+  <%= link_to achievements_path, class: "side-menu-item #{ach_active ? 'active' : ''}" do %>
+    <span class="menu-icon-emoji">🏆</span>
+    <span>アチーブメント</span>
+  <% end %>
+
+  <%= link_to shop_path, class: "side-menu-item #{shop_active ? 'active' : ''}" do %>
+    <span class="menu-icon-emoji">🛒</span>
+    <span>ショップ</span>
+  <% end %>
+
+  <%= link_to settings_path, class: "side-menu-item #{set_active ? 'active' : ''}" do %>
+    <span class="menu-icon-emoji">⚙️</span>
+    <span>設定</span>
+  <% end %>
+</div>

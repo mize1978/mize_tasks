@@ -9,7 +9,7 @@ def create
 
   if user&.authenticate(params[:password])
     session[:user_id] = user.id
-    redirect_to root_path, notice: "ログインしました"
+    redirect_to dashboard_path, notice: "ログインしました"
   else
     flash.now[:alert] = "ログイン失敗"
     render :new, status: :unprocessable_entity

@@ -5,65 +5,219 @@
   <% end %>
 </div>
 
-<%# ページタイトル %>
-<h1>RewardMe 🍰</h1>
+<div class="dashboard-layout">
 
-<%# カレンダー %>
-<%= month_calendar events: @done_tasks do |date, tasks| %>
-  <%= date.day %>
+  <%# ===== 左カラム: サイドバー ===== %>
+  <div class="col-left">
+    <%= render 'shared/sidebar' %>
+  </div>
 
-  <% tasks.each do |task| %>
-    <div class="calendar-task">🍰</div>
-  <% end %>
-<% end %>
+  <%# ===== 中央カラム: マイルーム + カレンダー + タスク ===== %>
+  <div class="col-center">
 
-<%# 説明文 %>
-<p class="app-description">
-  がんばった自分をほめるためだけの🩵
-</p>
+    <%# ===== マイルーム ===== %>
+    <div class="my-room">
+      <%= image_tag current_user.room_bg_image, class: "room-bg", alt: "マイルーム" %>
+      <div class="room-egg-tint"></div>
+      <span class="room-title">マイルーム</span>
+      <span class="room-neon">Good job today!</span>
+      <div class="room-character">
+        <div class="room-chara-shake <%= 'near-evo' if current_user.ribbon_stage < 5 && current_user.next_stage_tasks <= 3 %>"
+             style="<%= ribbon_color_style %>">
+          <%= image_tag current_user.ribbon_stage_image, class: "room-chara-img #{current_user.ribbon_stage_gold_bg? ? 'chara-gold-bg' : ''}" %>
+        </div>
+      </div>
+      <div class="room-speech">
+        <p class="room-speech-text"
+           data-controller="ribbon"
+           data-room-bg="<%= current_user.current_room_bg || 'default' %>"
+           data-egg-color="<%= current_user.egg_color || 'pink' %>">読み込み中...</p>
+      </div>
 
-<div class="badge-box">
-  🏅 今日の称号：<%= current_user.badge %>
-</div>
-
-<%# 今日のがんばり数（←ここ重要） %>
-<div class="achievement-box">
-  🎉 今日のがんばり数：<%= @today_done_count %> 個
-</div>
-<div class="achievement-box">
-  🔥 連続がんばり日数：<%= @streak_days %> 日
-</div>
-
-<%# 未完了タスク %>
-<h2>🔥 がんばること</h2>
-
-<div id="not-done-tasks">
-  <% @not_done_tasks.each do |task| %>
-    <div class="task-card <%= "priority-#{task.priority}" %>">
-      <%= task.title %>
-      <p>優先度：<%= task.priority %></p>
-
-      <%= button_to "完了", task_path(task, task: { done: true }), method: :patch %>
-      <%= button_to "削除", task_path(task), method: :delete %>
     </div>
-  <% end %>
-</div>
 
-<%# 完了タスク %>
-<h2>🍰 ごほうびタイム</h2>
+    <div class="center-bottom">
 
-<div id="done-tasks">
-  <% @done_tasks.each do |task| %>
-    <div class="task-card done <%= "priority-#{task.priority}" %>">
-      <%= task.title %>
+      <div class="calendar-panel">
+        <div class="calendar-wrapper">
+          <%= month_calendar events: @done_tasks do |date, tasks| %>
+            <span class="cal-day"><%= date.day %></span>
+            <% if tasks.any? %>
+              <span class="cal-dot done"></span>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="calendar-legend">
+          <span><i class="lg-dot done"></i>完了</span>
+          <span><i class="lg-dot partial"></i>一部完了</span>
+          <span><i class="lg-dot none"></i>未完了</span>
+          <span><i class="lg-star">★</i>イベント</span>
+        </div>
+      </div>
 
-      <p>🩵 えらいね〜 🩵ごほうびタイム🧁🍰</p>
+      <div class="tasks-panel">
+        <div class="tasks-panel-header">
+          <p class="panel-title">今日のタスク</p>
+          <%= link_to "+ 追加", new_task_path, class: "tasks-add-btn" %>
+        </div>
+        <div id="not-done-tasks">
+          <% if @not_done_tasks.empty? %>
+            <p class="tasks-empty">タスクはありません ✨</p>
+          <% else %>
+            <% @not_done_tasks.each do |task| %>
+              <div class="task-card <%= "priority-#{task.priority}" %>">
+                <div class="task-card-inner">
+                  <%= button_to "", task_path(task, task: { done: true }), method: :patch, class: "task-circle-btn" %>
+                  <span class="task-title-text"><%= task.title %></span>
+                  <div class="task-right">
+                    <span class="category-chip category-<%= task.category %>"><%= task.category %></span>
+                    <span class="task-star">★</span>
+                    <span class="task-exp"><%= task.coin_reward %> EXP</span>
+                  </div>
+                  <%= button_to "×", task_path(task), method: :delete, class: "task-delete-btn" %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="tasks-panel-footer">
+          <span class="tasks-footer-count">完了タスク <%= @done_tasks.count %> / <%= @not_done_tasks.count + @done_tasks.count %></span>
+        </div>
+        <div class="mission-cta">今日のミッションをすべて完了しよう！ 🎁</div>
+      </div>
 
-      <%= button_to "戻す", task_path(task, task: { done: false }), method: :patch %>
-      <%= button_to "削除", task_path(task), method: :delete %>
     </div>
-  <% end %>
-</div>
 
-<%# 新規作成ボタン %>
-<%= link_to "＋ チャレンジ 🍰", new_task_path, class: "new-task-button" %>
+    <%# ===== お部屋の成長ストリップ（ダミー表示） ===== %>
+    <div class="room-growth-panel">
+      <div class="room-growth-head">
+        <p class="panel-title">🏠 お部屋の成長</p>
+        <span class="room-growth-sub">タスクをこなすほどお部屋がにぎやかに！</span>
+      </div>
+      <div class="room-growth-strip">
+        <% ["0〜10", "11〜30", "31〜50", "51〜100", "101〜150", "151〜200"].each_with_index do |label, i| %>
+          <div class="room-growth-item <%= 'current' if i.zero? %>">
+            <%= image_tag "room_stage_1.png", class: "room-growth-img" %>
+            <span class="room-growth-label"><%= label %>タスク</span>
+          </div>
+          <% if i < 5 %><span class="room-growth-arrow">›</span><% end %>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+
+  <%# ===== 右カラム: 進化 + バッジ + 統計 + デコ ===== %>
+  <div class="col-right">
+
+    <%# リボンちゃんの成長（横並び進化チェーン） %>
+    <%
+      evo_stages = [
+        { stage: 1, name: "ふしぎなたまご",   lv: 1,  image: "stage_egg.png"    },
+        { stage: 2, name: "ぷちリボン",       lv: 10, image: "stage_petit.png"  },
+        { stage: 3, name: "ベイビーリボン",   lv: 20, image: "stage_baby.png"   },
+        { stage: 4, name: "夜桜リボン",       lv: 40, image: "stage_ribbon.png" },
+        { stage: 5, name: "プリンセスリボン", lv: 70, image: "stage_royal.png"  },
+      ]
+      cur_stage = current_user.ribbon_stage
+    %>
+    <div class="evo-chain-panel">
+      <p class="panel-title">🎀 リボンちゃんの成長</p>
+
+      <%# 現在ステージ：光るカード %>
+      <% cur_s = evo_stages.find { |s| s[:stage] == cur_stage } %>
+      <div class="evo-current-card">
+        <span class="evo-current-badge">✨ 今ここ！</span>
+        <%= image_tag cur_s[:image], class: "evo-current-img", alt: cur_s[:name], style: ribbon_color_style %>
+        <p class="evo-current-name"><%= cur_s[:name] %></p>
+        <p class="evo-current-lv">Lv.<%= cur_s[:lv] %></p>
+        <% if cur_stage < 5 %>
+          <div class="evo-progress-bar">
+            <div class="evo-progress-fill" style="width: <%= current_user.ribbon_exp_percent %>%;"></div>
+          </div>
+          <p class="evo-progress-text">あと <strong><%= current_user.next_stage_tasks %></strong> タスクで進化！</p>
+        <% else %>
+          <p class="evo-max-text">👑 最終進化達成！</p>
+        <% end %>
+      </div>
+
+      <%# その他ステージ：小さく横並び %>
+      <% other_stages = evo_stages.reject { |s| s[:stage] == cur_stage } %>
+      <div class="evo-chain-row">
+        <% other_stages.each_with_index do |s, i| %>
+          <% state = s[:stage] < cur_stage ? :unlocked : :locked %>
+          <div class="evo-chain-item evo-chain-item--<%= state %>">
+            <div class="evo-chain-img-wrap">
+              <%= image_tag s[:image], class: "evo-chain-img", alt: s[:name], style: ribbon_color_style %>
+              <% if state == :unlocked %><span class="evo-chain-check">✓</span><% end %>
+            </div>
+            <span class="evo-chain-name"><%= s[:name] %></span>
+            <span class="evo-chain-lv">Lv.<%= s[:lv] %></span>
+          </div>
+          <% if i < other_stages.length - 1 %>
+            <span class="evo-chain-arrow">›</span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <%# バッジコレクション（ダミー） %>
+    <div class="badge-panel">
+      <p class="panel-title">🏅 バッジコレクション</p>
+      <div class="badge-grid">
+        <% [
+          { ico: "🌱", name: "はじめの一歩",       earned: true  },
+          { ico: "🏆", name: "継続は力なり",       earned: true  },
+          { ico: "⏰", name: "時間マスター",       earned: false },
+          { ico: "👑", name: "タスクマスター",     earned: false },
+          { ico: "🎂", name: "パーフェクトウィーク", earned: false }
+        ].each do |b| %>
+          <div class="badge-item <%= 'earned' if b[:earned] %>">
+            <span class="badge-ico"><%= b[:ico] %></span>
+            <span class="badge-name"><%= b[:name] %></span>
+          </div>
+        <% end %>
+      </div>
+      <p class="badge-note">獲得したバッジはお部屋に飾られるよ！</p>
+      <div class="badge-current-row">いま獲得中：<%= current_user.badge %></div>
+    </div>
+
+    <%# 今週のステータス + RPリング %>
+    <div class="stats-panel">
+      <p class="panel-title">📊 今週のステータス</p>
+
+      <% rp      = current_user.coins %>
+      <% rp_goal = 3000 %>
+      <% rp_pct  = rp_goal.zero? ? 0 : ((rp.to_f / rp_goal) * 100).round.clamp(0, 100) %>
+      <div class="rp-row">
+        <div class="rp-info">
+          <span class="rp-label">リワードポイント (RP)</span>
+          <span class="rp-value"><%= number_with_delimiter(rp) %><small> RP</small></span>
+          <div class="rp-bar"><div class="rp-fill" style="width: <%= rp_pct %>%;"></div></div>
+          <span class="rp-goal">今週の目標 <%= number_with_delimiter(rp_goal) %> RP</span>
+        </div>
+        <div class="rp-ring" style="--pct: <%= rp_pct %>;">
+          <span class="rp-ring-text"><%= rp_pct %>%</span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">🎉 今日の完了</span>
+          <span class="stat-value"><%= @today_done_count %> 個</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">🔥 連続記録</span>
+          <span class="stat-value"><%= @streak_days %> 日</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">✅ 総完了数</span>
+          <span class="stat-value"><%= @total_count %> 個</span>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+</div>

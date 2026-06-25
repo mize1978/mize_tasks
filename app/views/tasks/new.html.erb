@@ -1,19 +1,16 @@
-<%# =====================
-   新規タスク作成ページ
-===================== %>
+<div class="tf-page">
+  <div class="tf-card">
 
-<%# ページタイトル（新しいタスクを作る画面） %>
-<h1>🍰 新しいタスク</h1>
+    <div class="tf-card-header">
+      <p class="tf-chara-say">新しいことに挑戦するの、すごくえらい！✨</p>
+      <h1 class="tf-title">タスクを追加する</h1>
+    </div>
 
-<%# フォーム部分（_form.html.erbを読み込んでいる） %>
-<%= render "form", task: @task %>
+    <%= render "form", task: @task %>
 
-<%# 少し余白が欲しいから改行するやつ %>
-<br>
+    <div class="tf-footer-link">
+      <%= link_to "← ホームにもどる", tasks_path, class: "tf-back-link" %>
+    </div>
 
-<%# =====================
-   戻るリンク
-===================== %>
-<div class="back-link-wrapper">
-  <%= link_to "← もどる", tasks_path, class: "back-link" %>
+  </div>
 </div>

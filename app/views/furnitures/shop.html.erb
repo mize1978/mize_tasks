@@ -1,0 +1,89 @@
+<%# 通知メッセージ %>
+<div class="notice-wrapper">
+  <% if notice %>
+    <p class="notice"><%= notice %></p>
+  <% end %>
+  <% if alert %>
+    <p class="notice" style="background: rgba(255,80,100,0.2); border-color: rgba(255,100,120,0.4); color: #ff9999;"><%= alert %></p>
+  <% end %>
+</div>
+
+<div class="dashboard-layout">
+
+  <%# ===== 左カラム: サイドバー ===== %>
+  <div class="col-left">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <%# ===== 中央カラム: 背景ショップ ===== %>
+  <div class="col-center">
+
+    <div class="shop-header-panel">
+      <div class="shop-header-left">
+        <h2 class="shop-title">🏠 お部屋の背景テーマ</h2>
+        <p class="shop-subtitle">コインで新しい背景に変えよう！気分に合わせてカスタマイズ。</p>
+      </div>
+      <div class="shop-coin-badge">
+        <span class="shop-coin-label">所持コイン</span>
+        <span class="shop-coin-value"><i class="coin-ico shop-coin-ico"></i><%= number_with_delimiter(current_user.coins) %></span>
+      </div>
+    </div>
+
+    <div class="bg-shop-grid">
+      <% RoomBackground.all.each do |bg| %>
+        <% active      = current_user.current_room_bg == bg[:id] %>
+        <% available   = RoomBackground.available_now?(bg) %>
+        <% affordable  = current_user.coins >= bg[:price] || bg[:price] == 0 %>
+        <% is_event    = bg[:rarity] == "EVENT" %>
+
+        <div class="bg-card <%= 'bg-card--active' if active %> <%= 'bg-card--event' if is_event %> <%= 'bg-card--locked' if !active && (!affordable || !available) %>">
+          <div class="bg-card-preview">
+            <%= image_tag bg[:image], class: "bg-card-img #{'bg-card-img--dim' unless available}", alt: bg[:name] %>
+            <% if active %>
+              <span class="bg-card-badge">✓ 使用中</span>
+            <% end %>
+            <% if is_event %>
+              <span class="bg-card-event-badge"><%= bg[:event_label] %></span>
+            <% end %>
+            <span class="bg-card-rarity bg-rarity--<%= bg[:rarity].downcase %>"><%= bg[:rarity] %></span>
+          </div>
+
+          <div class="bg-card-body">
+            <p class="bg-card-name"><%= bg[:name] %></p>
+            <p class="bg-card-desc"><%= bg[:desc] %></p>
+
+            <% if active %>
+              <span class="bg-action-btn bg-btn--active">設定中</span>
+            <% elsif !available %>
+              <span class="bg-action-btn bg-btn--event-locked">🔒 <%= bg[:event_label] %>に解放</span>
+            <% elsif bg[:price] == 0 %>
+              <%= button_to "このお部屋にする", set_room_bg_path(bg[:id]),
+                  method: :post, class: "bg-action-btn bg-btn--set" %>
+            <% elsif affordable %>
+              <%= button_to "購入して設定 🪙#{bg[:price]}", set_room_bg_path(bg[:id]),
+                  method: :post, class: "bg-action-btn bg-btn--buy" %>
+            <% else %>
+              <span class="bg-action-btn bg-btn--locked">🪙 <%= bg[:price] %> 不足</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+
+  <%# ===== 右カラム: 現在のお部屋プレビュー ===== %>
+  <div class="col-right">
+    <div class="shop-room-preview">
+      <p class="panel-title">🏠 現在のお部屋</p>
+      <div class="shop-mini-room">
+        <%= image_tag current_user.room_bg_image, class: "shop-mini-room-bg", alt: "マイルーム" %>
+        <div class="shop-mini-chara">
+          <%= image_tag current_user.ribbon_stage_image, class: "shop-mini-chara-img", style: ribbon_color_style %>
+        </div>
+      </div>
+      <p class="shop-room-hint-text">タスクをこなしてコインを集めよう！</p>
+    </div>
+  </div>
+
+</div>

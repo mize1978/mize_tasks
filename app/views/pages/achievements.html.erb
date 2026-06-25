@@ -1,0 +1,56 @@
+<div class="page-sidebar-layout">
+
+  <div class="col-left sticky-col">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <div class="col-main">
+
+    <div class="page-panel-header">
+      <div>
+        <h2 class="page-panel-title">🏆 アチーブメント</h2>
+        <p class="page-panel-sub">タスクをこなしてバッジをコレクションしよう！</p>
+      </div>
+      <div class="ach-total-badge">
+        <span class="ach-total-val"><%= @earned_count %></span>
+        <span class="ach-total-sep">/</span>
+        <span class="ach-total-max"><%= @badges.count %></span>
+        <span class="ach-total-lbl">獲得</span>
+      </div>
+    </div>
+
+    <%# 進捗バー %>
+    <div class="ach-progress-wrap">
+      <div class="ach-progress-bar">
+        <div class="ach-progress-fill" style="width: <%= @badges.count > 0 ? (@earned_count.to_f / @badges.count * 100).round : 0 %>%;"></div>
+      </div>
+      <span class="ach-progress-text"><%= @earned_count %> / <%= @badges.count %> バッジ獲得</span>
+    </div>
+
+    <%# バッジグリッド %>
+    <div class="ach-grid">
+      <% @badges.each do |b| %>
+        <% earned = b[:threshold] && current_user.completed_count >= b[:threshold] %>
+        <div class="ach-card <%= 'ach-card--earned' if earned %>">
+          <div class="ach-ico-wrap <%= 'ach-ico-glow' if earned %>">
+            <span class="ach-ico"><%= b[:ico] %></span>
+          </div>
+          <p class="ach-name"><%= b[:name] %></p>
+          <p class="ach-desc"><%= b[:desc] %></p>
+          <% if earned %>
+            <span class="ach-status ach-status--earned">✅ 獲得済み</span>
+          <% elsif b[:threshold] %>
+            <% remaining = [b[:threshold] - current_user.completed_count, 0].max %>
+            <div class="ach-remaining-bar">
+              <div class="ach-remaining-fill" style="width: <%= [(current_user.completed_count.to_f / b[:threshold] * 100).round, 100].min %>%;"></div>
+            </div>
+            <span class="ach-status ach-status--locked">あと <%= remaining %> タスク</span>
+          <% else %>
+            <span class="ach-status ach-status--mystery">🔒 条件未公開</span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="page-sidebar-layout">
+
+  <div class="col-left sticky-col">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <div class="col-main">
+
+    <div class="page-panel-header">
+      <div>
+        <h2 class="page-panel-title">⏰ 習慣トラッカー</h2>
+        <p class="page-panel-sub">毎日続けることでリボン族とのきずなが深まる</p>
+      </div>
+    </div>
+
+    <%# プレビューカード（近日公開） %>
+    <div class="habit-preview-grid">
+      <% [
+        { ico: "🌅", name: "早起き",       time: "毎朝 7:00",   streak: 5,  color: "orange" },
+        { ico: "💧", name: "水を飲む",     time: "毎日 3回",    streak: 12, color: "blue"   },
+        { ico: "🏃", name: "運動する",     time: "毎日 20分",   streak: 3,  color: "green"  },
+        { ico: "📖", name: "読書",         time: "毎夜 30分",   streak: 0,  color: "purple" },
+      ].each do |h| %>
+        <div class="habit-card habit-card--preview">
+          <div class="habit-card-ico"><%= h[:ico] %></div>
+          <div class="habit-card-info">
+            <p class="habit-card-name"><%= h[:name] %></p>
+            <p class="habit-card-time"><%= h[:time] %></p>
+          </div>
+          <div class="habit-card-streak">
+            <span class="habit-streak-val"><%= h[:streak] %></span>
+            <span class="habit-streak-unit">日</span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Coming Soon バナー %>
+    <div class="coming-soon-banner">
+      <div class="coming-soon-glow"></div>
+      <span class="coming-soon-tag">Coming Soon ✨</span>
+      <h3 class="coming-soon-title">習慣トラッキング機能を開発中！</h3>
+      <p class="coming-soon-desc">
+        毎日の積み重ねをリボン族が見守ってくれる。<br>
+        連続達成でスペシャルボーナスをゲットしよう！
+      </p>
+      <div class="coming-soon-features">
+        <span>🔥 連続記録</span>
+        <span>🎁 ボーナスコイン</span>
+        <span>📊 達成グラフ</span>
+        <span>💌 リボンちゃんの応援</span>
+      </div>
+    </div>
+
+  </div>
+</div>

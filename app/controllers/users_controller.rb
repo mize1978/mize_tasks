@@ -10,7 +10,7 @@ def create
 
   if @user.save
     session[:user_id] = @user.id
-    redirect_to root_path, notice: "登録成功🎉"
+    redirect_to dashboard_path, notice: "登録成功🎉"
   else
     render :new, status: :unprocessable_entity
   end

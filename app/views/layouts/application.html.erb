@@ -17,12 +17,18 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= yield :head %>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <%= render 'shared/header' %>
+  <body data-room-theme="<%= current_user&.current_room_bg || 'default' %>"
+        data-egg-color="<%= current_user&.egg_color || 'pink' %>">
+
+    <% unless (controller_name == 'sessions' && action_name == 'new') || (controller_name == 'users' && action_name == 'new') %>
+      <%= render 'shared/header' %>
+    <% end %>
 
     <!-- you found this 😎 crafted by mize -->
 

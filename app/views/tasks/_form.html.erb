@@ -1,59 +1,39 @@
-<%# =====================
-   タスク作成・編集フォーム
-===================== %>
+<%= form_with(model: task, local: true) do |form| %>
 
-<<%= form_with(model: task, local: true, class: "task-form") do |form| %>
+  <% if task.errors.any? %>
+    <div class="tf-errors">
+      <% task.errors.full_messages.each do |message| %>
+        <p><%= message %></p>
+      <% end %>
+    </div>
+  <% end %>
 
-  <%# エラー表示（もしバリデーションエラーが出たときのため） %>
- <% if task.errors.any? %>
-  <div class="error-message">
-    <% task.errors.full_messages.each do |message| %>
-      <p><%= message %></p>
-    <% end %>
-  </div>
-<% end %>
-
-  <%# =====================
-     タイトル入力
-  ===================== %>
-  <div class="form-group">
-    <%# ラベル（やること） %>
-    <%= form.label :title, "やること" %>
-
-    <%# 入力欄 %>
-    <%= form.text_field :title, placeholder: "例 : RUNTEQの課題やる！" %>
+  <div class="tf-group">
+    <%= form.label :title, "やること", class: "tf-label" %>
+    <%= form.text_field :title, class: "form-input", placeholder: "例：RUNTEQの課題やる！" %>
   </div>
 
-  <%# =====================
-     優先度選択
-  ===================== %>
-  <div class="form-group">
-    <%# 優先度ラベル %>
-    <%= form.label :priority, "優先度" %>
-
-    <%# 選択フォーム（高・中・低） %>
-    <%= form.select :priority, [["🔥 高", "high"], ["🌼 中", "medium"], ["🌱 低", "low"]] %>
+  <div class="tf-row">
+    <div class="tf-group">
+      <%= form.label :priority, "優先度", class: "tf-label" %>
+      <%= form.select :priority, [["🔥 高", "high"], ["🌼 中", "medium"], ["🌱 低", "low"]], {}, class: "form-input tf-select" %>
+    </div>
+    <div class="tf-group">
+      <%= form.label :category, "カテゴリ", class: "tf-label" %>
+      <%= form.select :category, Task::CATEGORIES, {}, class: "form-input tf-select" %>
+    </div>
   </div>
 
-  <%# =====================
-     完了チェック
-  ===================== %>
-  <div class="form-check">
-    <%# チェックボックス（完了状態） %>
-    <%= form.check_box :done %>
-
-    <%# ラベル %>
-    <%= form.label :done, "もう終わった？" %>
+  <div class="tf-group">
+    <%= form.label :date, "日付", class: "tf-label" %>
+    <%= form.date_field :date, class: "form-input" %>
   </div>
 
-  <%# =====================
-     送信ボタン
-  ===================== %>
-<div class="form-group">
-  <%= form.label :date, "日付" %>
-  <%= form.date_field :date, class: "form-input" %>
-</div>
+  <div class="tf-check">
+    <%= form.check_box :done, class: "tf-checkbox" %>
+    <%= form.label :done, "もう終わった？", class: "tf-check-label" %>
+  </div>
 
-<%= form.submit task.new_record? ? "作成する" : "更新する", class: "submit-button" %>
+  <%= form.submit task.new_record? ? "✦ タスクを追加する ✦" : "✦ 更新する ✦", class: "login-btn-new" %>
 
 <% end %>

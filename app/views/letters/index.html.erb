@@ -1,0 +1,45 @@
+<div class="page-sidebar-layout">
+
+  <div class="col-left sticky-col">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <div class="col-main">
+
+    <div class="page-panel-header">
+      <div>
+        <h2 class="page-panel-title">✉️ お手紙</h2>
+        <p class="page-panel-sub">リボンちゃんや運営からのメッセージ</p>
+      </div>
+      <% unread = @letters.count { |l| !@read_ids.include?(l[:id]) } %>
+      <% if unread > 0 %>
+        <span class="letter-unread-chip">未読 <%= unread %>件</span>
+      <% end %>
+    </div>
+
+    <div class="letter-inbox">
+      <% if @letters.empty? %>
+        <p class="letter-empty">お手紙はまだないよ ✨</p>
+      <% else %>
+        <% @letters.each do |letter| %>
+          <% is_read = @read_ids.include?(letter[:id]) %>
+          <%= link_to letter_path(letter[:id]),
+                class: "letter-item #{is_read ? 'letter-item--read' : 'letter-item--unread'}" do %>
+            <span class="letter-item-icon"><%= letter[:icon] %></span>
+            <div class="letter-item-body">
+              <div class="letter-item-top">
+                <span class="letter-item-from"><%= letter[:from] %></span>
+                <% unless is_read %>
+                  <span class="letter-item-new">NEW</span>
+                <% end %>
+              </div>
+              <span class="letter-item-subject"><%= letter[:subject] %></span>
+            </div>
+            <span class="letter-item-arrow">›</span>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+  </div>
+</div>

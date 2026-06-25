@@ -1,10 +1,17 @@
-<h1>Editing task</h1>
+<div class="tf-page">
+  <div class="tf-card">
 
-<%= render "form", task: @task %>
+    <div class="tf-card-header">
+      <p class="tf-chara-say">ちゃんと見直すの、大事だよ！💙</p>
+      <h1 class="tf-title">タスクを編集する</h1>
+      <p class="tf-task-name-preview">"<%= @task.title %>"</p>
+    </div>
 
-<br>
+    <%= render "form", task: @task %>
 
-<div>
-  <%= link_to "Show this task", @task %> |
-  <%= link_to "Back to tasks", tasks_path %>
+    <div class="tf-footer-link">
+      <%= link_to "← ホームにもどる", tasks_path, class: "tf-back-link" %>
+    </div>
+
+  </div>
 </div>

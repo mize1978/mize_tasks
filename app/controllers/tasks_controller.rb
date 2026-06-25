@@ -19,6 +19,8 @@ def index
     .where(completed_at: Time.current.all_day)
     .count
 
+  @total_count = current_user.completed_count
+
   # 🔥 ここ追加
   @done_dates = current_user.tasks
     .where(done: true)
@@ -39,7 +41,16 @@ def index
 end
 
   # =====================
-  # 詳細ページ（今回は未使用かな）
+  # タスク一覧ページ（サイドメニュー「タスク」）
+  # =====================
+  def list
+    @not_done = current_user.tasks.where(done: false).order(created_at: :desc)
+    @done_tasks = current_user.tasks.where(done: true).order(completed_at: :desc)
+    @total = @not_done.count + @done_tasks.count
+  end
+
+  # =====================
+  # 詳細ページ
   # =====================
   def show
   end
@@ -82,10 +93,13 @@ def update
 
     if @task.saved_change_to_done? && @task.done?
       current_user.increment!(:completed_count)
+      current_user.increment!(:coins, @task.coin_reward)
       @task.update(completed_at: Time.current)
     end
 
     if @task.saved_change_to_done? && !@task.done?
+      current_user.decrement!(:completed_count) if current_user.completed_count > 0
+      current_user.decrement!(:coins, @task.coin_reward) if current_user.coins >= @task.coin_reward
       @task.update(completed_at: nil)
     end
 
@@ -119,6 +133,6 @@ end
   # 許可するパラメータ
   # =====================
   def task_params
-    params.require(:task).permit(:title, :done, :priority, :date)
+    params.require(:task).permit(:title, :done, :priority, :date, :category)
   end
 end

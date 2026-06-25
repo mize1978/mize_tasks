@@ -1,10 +1,39 @@
-<p style="color: green"><%= notice %></p>
+<div class="tf-page">
+  <div class="tf-card">
 
-<%= render @task %>
+    <div class="tf-card-header">
+      <h1 class="tf-title">タスク詳細</h1>
+    </div>
 
-<div>
-  <%= link_to "Edit this task", edit_task_path(@task) %> |
-  <%= link_to "Back to tasks", tasks_path %>
+    <div class="tf-detail-body">
+      <p class="tf-detail-title"><%= @task.title %></p>
 
-  <%= button_to "Destroy this task", @task, method: :delete %>
+      <div class="tf-chips">
+        <span class="priority-chip priority-chip--<%= @task.priority %>">
+          <%= { "high" => "🔥 高", "medium" => "🌼 中", "low" => "🌱 低" }[@task.priority] %>
+        </span>
+        <span class="category-chip category-<%= @task.category %>"><%= @task.category %></span>
+        <% if @task.done %>
+          <span class="tf-status-chip tf-done-chip">✅ 完了</span>
+        <% else %>
+          <span class="tf-status-chip tf-notdone-chip">⏳ 未完了</span>
+        <% end %>
+      </div>
+
+      <% if @task.date %>
+        <p class="tf-detail-date">📅 <%= @task.date.strftime("%Y年%-m月%-d日") %></p>
+      <% end %>
+    </div>
+
+    <div class="tf-detail-actions">
+      <%= link_to "✏️ 編集する", edit_task_path(@task), class: "tf-edit-btn" %>
+      <%= button_to "🗑️ 削除する", @task, method: :delete, class: "tf-delete-btn",
+            data: { turbo_confirm: "本当に削除する？" } %>
+    </div>
+
+    <div class="tf-footer-link">
+      <%= link_to "← ホームにもどる", tasks_path, class: "tf-back-link" %>
+    </div>
+
+  </div>
 </div>
