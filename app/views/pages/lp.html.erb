@@ -122,183 +122,158 @@
   <div class="lp-section-inner">
     <h2 class="lp-section-title lp-reveal">実際の画面をみてみよう</h2>
 
-    <%# 01 ダッシュボード %>
-    <div class="lp-screen-row">
-      <div class="lp-screen-info lp-reveal-left">
-        <p class="lp-screen-num">01</p>
-        <h3 class="lp-screen-info-title">マイルームダッシュボード</h3>
-        <p class="lp-screen-info-desc">
-          タスク一覧・ステータス・進化チェーン・デコレーションが一画面に。
-          ガラスUI × 桜色グラデーションで、見るだけで気分が上がるデザイン。
-        </p>
-        <div class="lp-screen-tags">
-          <span>グラスモーフィズム</span><span>レスポンシブ</span><span>Stimulus.js</span>
+    <div class="lp-screens-grid">
+
+      <%# 01 ダッシュボード %>
+      <div class="lp-screen-card lp-reveal">
+        <div class="lp-screen-card-hd">
+          <span class="lp-screen-num">01</span>
+          <h3 class="lp-screen-info-title">マイルームダッシュボード</h3>
         </div>
-      </div>
-      <div class="lp-browser-frame lp-browser-frame--lg lp-reveal-right" data-lightbox>
-        <div class="lp-browser-bar">
-          <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
-          <span class="lp-browser-url">…/dashboard</span>
-        </div>
-        <div class="lp-browser-screen lp-screen--dash2">
-          <%= image_tag "room_stage_1.png", class: "lp-screen-room-bg", alt: "" %>
-          <div class="lp-screen-overlay">
-            <div class="lp-screen-stat"><span>★ Lv.12</span><span>🪙 280</span><span>❤️ 5</span></div>
-            <div class="lp-screen-chara-wrap">
-              <%= image_tag "stage_ribbon.png", class: "lp-screen-chara", alt: "" %>
-            </div>
-            <div class="lp-screen-tasks">
-              <div class="lp-screen-task lp-screen-task--done">✓ 朝のストレッチ</div>
-              <div class="lp-screen-task lp-screen-task--done">✓ 英語30分</div>
-              <div class="lp-screen-task">〇 日記を書く</div>
+        <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
+          <div class="lp-browser-bar">
+            <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
+            <span class="lp-browser-url">…/dashboard</span>
+          </div>
+          <div class="lp-browser-screen lp-screen--dash2">
+            <%= image_tag "room_stage_1.png", class: "lp-screen-room-bg", alt: "" %>
+            <div class="lp-screen-overlay">
+              <div class="lp-screen-stat"><span>★ Lv.12</span><span>🪙 280</span><span>❤️ 5</span></div>
+              <div class="lp-screen-chara-wrap">
+                <%= image_tag "stage_ribbon.png", class: "lp-screen-chara", alt: "" %>
+              </div>
+              <div class="lp-screen-tasks">
+                <div class="lp-screen-task lp-screen-task--done">✓ 朝のストレッチ</div>
+                <div class="lp-screen-task lp-screen-task--done">✓ 英語30分</div>
+                <div class="lp-screen-task">〇 日記を書く</div>
+              </div>
             </div>
           </div>
+          <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
         </div>
-        <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
+        <div class="lp-screen-tags">
+          <span>グラスモーフィズム</span><span>Stimulus.js</span><span>12種類の部屋テーマ</span>
+        </div>
       </div>
-    </div>
 
-    <%# 02 デイリーBOX %>
-    <div class="lp-screen-row lp-screen-row--rev">
-      <div class="lp-screen-info lp-reveal-right">
-        <p class="lp-screen-num">02</p>
-        <h3 class="lp-screen-info-title">デイリーBOX ガチャ</h3>
-        <p class="lp-screen-info-desc">
-          1日1回、タップでBOXを開けてコインやEXPをゲット。
-          シェイク→グロー→バースト→パーティクルの全4フェーズアニメを
-          Stimulus.js × CSS @keyframes で完全実装。
-        </p>
+      <%# 02 デイリーBOX %>
+      <div class="lp-screen-card lp-reveal">
+        <div class="lp-screen-card-hd">
+          <span class="lp-screen-num">02</span>
+          <h3 class="lp-screen-info-title">デイリーBOX ガチャ</h3>
+        </div>
+        <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
+          <div class="lp-browser-bar">
+            <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
+            <span class="lp-browser-url">…/dashboard</span>
+          </div>
+          <div class="lp-browser-screen lp-screen--box">
+            <div class="lp-mockbox-panel">
+              <p class="lp-mockbox-title">🎁 今日のリボンBOX</p>
+              <div class="lp-mockbox-img-wrap">
+                <%= image_tag "ribbon_box.png", class: "lp-mockbox-img lp-mockbox-float", alt: "" %>
+              </div>
+              <div class="lp-mockbox-btn">✨ タップして開ける！</div>
+              <div class="lp-mockbox-result">
+                <span class="lp-mockbox-ico">🪙</span>
+                <span class="lp-mockbox-label">コイン 100</span>
+                <span class="lp-mockbox-rarity" data-rarity="good">GOOD</span>
+              </div>
+            </div>
+          </div>
+          <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
+        </div>
         <div class="lp-screen-tags">
           <span>CSSアニメーション</span><span>Fetch API</span><span>加重ガチャ</span>
         </div>
       </div>
-      <div class="lp-browser-frame lp-browser-frame--lg lp-reveal-left" data-lightbox>
-        <div class="lp-browser-bar">
-          <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
-          <span class="lp-browser-url">…/dashboard</span>
-        </div>
-        <div class="lp-browser-screen lp-screen--box">
-          <div class="lp-mockbox-panel">
-            <p class="lp-mockbox-title">🎁 今日のリボンBOX</p>
-            <div class="lp-mockbox-img-wrap">
-              <%= image_tag "ribbon_box.png", class: "lp-mockbox-img lp-mockbox-float", alt: "" %>
-            </div>
-            <div class="lp-mockbox-btn">✨ タップして開ける！</div>
-            <div class="lp-mockbox-result">
-              <span class="lp-mockbox-ico">🪙</span>
-              <span class="lp-mockbox-label">コイン 100</span>
-              <span class="lp-mockbox-rarity" data-rarity="good">GOOD</span>
-            </div>
-          </div>
-        </div>
-        <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
-      </div>
-    </div>
 
-    <%# 03 進化 %>
-    <div class="lp-screen-row">
-      <div class="lp-screen-info lp-reveal-left">
-        <p class="lp-screen-num">03</p>
-        <h3 class="lp-screen-info-title">キャラクター進化システム</h3>
-        <p class="lp-screen-info-desc">
-          タスクを続けるほどEXPが貯まり、リボンちゃんが全5段階で進化。
-          現在ステージをグロウカードで強調、未到達ステージは透過表示で
-          「もっと先がある」感を演出。
-        </p>
-        <div class="lp-screen-tags">
-          <span>育成システム</span><span>Rails Model</span><span>段階演出</span>
+      <%# 03 進化 %>
+      <div class="lp-screen-card lp-reveal">
+        <div class="lp-screen-card-hd">
+          <span class="lp-screen-num">03</span>
+          <h3 class="lp-screen-info-title">キャラクター進化システム</h3>
         </div>
-        <div class="lp-evo-timeline">
-          <% [
-            { img: "stage_egg.png",    name: "ふしぎなたまご",   lv: 1,  done: true    },
-            { img: "stage_petit.png",  name: "ぷちリボン",       lv: 10, done: true    },
-            { img: "stage_baby.png",   name: "ベイビーリボン",   lv: 20, current: true },
-            { img: "stage_ribbon.png", name: "夜桜リボン",       lv: 40                },
-            { img: "stage_royal.png",  name: "プリンセスリボン", lv: 70                },
-          ].each do |s| %>
-            <div class="lp-evo-tl-item <%= s[:current] ? 'lp-evo-tl-item--current' : (s[:done] ? 'lp-evo-tl-item--done' : 'lp-evo-tl-item--locked') %>">
-              <div class="lp-evo-tl-img-wrap">
-                <%= image_tag s[:img], class: "lp-evo-tl-img", alt: s[:name] %>
-              </div>
-              <div class="lp-evo-tl-info">
-                <span class="lp-evo-tl-name"><%= s[:name] %></span>
-                <span class="lp-evo-tl-lv">Lv.<%= s[:lv] %></span>
-                <% if s[:current] %><span class="lp-evo-tl-now">← 今ここ</span><% end %>
-              </div>
-            </div>
-          <% end %>
-        </div>
-      </div>
-      <div class="lp-browser-frame lp-browser-frame--lg lp-reveal-right" data-lightbox>
-        <div class="lp-browser-bar">
-          <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
-          <span class="lp-browser-url">…/dashboard</span>
-        </div>
-        <div class="lp-browser-screen lp-screen--evo">
-          <p class="lp-mockevo-title">🌸 リボンちゃんの成長</p>
-          <div class="lp-mockevo-chain">
-            <% [
-              { img: "stage_egg.png",    name: "たまご", done: true    },
-              { img: "stage_petit.png",  name: "ぷち",   done: true    },
-              { img: "stage_baby.png",   name: "ベビー", current: true },
-              { img: "stage_ribbon.png", name: "夜桜"                  },
-              { img: "stage_royal.png",  name: "王女"                  },
-            ].each_with_index do |s, i| %>
-              <% cls = s[:current] ? '--current' : (s[:done] ? '--done' : '--locked') %>
-              <div class="lp-mockevo-item lp-mockevo-item<%= cls %>">
-                <%= image_tag s[:img], class: "lp-mockevo-img", alt: s[:name] %>
-                <% if s[:current] %><span class="lp-mockevo-badge">✨ 今ここ！</span><% end %>
-                <span class="lp-mockevo-name"><%= s[:name] %></span>
-              </div>
-              <% if i < 4 %><span class="lp-mockevo-arrow">›</span><% end %>
-            <% end %>
+        <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
+          <div class="lp-browser-bar">
+            <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
+            <span class="lp-browser-url">…/dashboard</span>
           </div>
+          <div class="lp-browser-screen lp-screen--evo">
+            <p class="lp-mockevo-title">🌸 リボンちゃんの成長</p>
+            <div class="lp-mockevo-chain">
+              <% [
+                { img: "stage_egg.png",    name: "たまご", done: true    },
+                { img: "stage_petit.png",  name: "ぷち",   done: true    },
+                { img: "stage_baby.png",   name: "ベビー", current: true },
+                { img: "stage_ribbon.png", name: "夜桜"                  },
+                { img: "stage_royal.png",  name: "王女"                  },
+              ].each_with_index do |s, i| %>
+                <% cls = s[:current] ? '--current' : (s[:done] ? '--done' : '--locked') %>
+                <div class="lp-mockevo-item lp-mockevo-item<%= cls %>">
+                  <%= image_tag s[:img], class: "lp-mockevo-img", alt: s[:name] %>
+                  <% if s[:current] %><span class="lp-mockevo-badge">✨ 今ここ！</span><% end %>
+                  <span class="lp-mockevo-name"><%= s[:name] %></span>
+                </div>
+                <% if i < 4 %><span class="lp-mockevo-arrow">›</span><% end %>
+              <% end %>
+            </div>
+          </div>
+          <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
         </div>
-        <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
+        <div class="lp-screen-tags">
+          <span>育成システム</span><span>Rails Model</span><span>5段階進化</span>
+        </div>
       </div>
-    </div>
 
-    <%# 04 デコレーション %>
-    <div class="lp-screen-row lp-screen-row--rev">
-      <div class="lp-screen-info lp-reveal-right">
-        <p class="lp-screen-num">04</p>
-        <h3 class="lp-screen-info-title">マイルーム デコレーション</h3>
-        <p class="lp-screen-info-desc">
-          コインでショップから家具を購入し、マイルームをカスタマイズ。
-          ソファ・桜の木・リボン棚など個性豊かなアイテムで、
-          自分だけの世界観をつくれる。
-        </p>
-        <div class="lp-screen-tags">
-          <span>家具ショップ</span><span>コイン消費</span><span>世界観づくり</span>
+      <%# 04 部屋の背景テーマ %>
+      <div class="lp-screen-card lp-reveal">
+        <div class="lp-screen-card-hd">
+          <span class="lp-screen-num">04</span>
+          <h3 class="lp-screen-info-title">お部屋の背景テーマ</h3>
         </div>
-      </div>
-      <div class="lp-browser-frame lp-browser-frame--lg lp-reveal-left" data-lightbox>
-        <div class="lp-browser-bar">
-          <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
-          <span class="lp-browser-url">…/shop</span>
-        </div>
-        <div class="lp-browser-screen lp-screen--deco">
-          <%= image_tag "room_stage_1.png", class: "lp-screen-room-bg lp-screen-room-bg--deco", alt: "" %>
-          <div class="lp-mockdeco-overlay">
-            <div class="lp-mockdeco-floating-items">
-              <span class="lp-mockdeco-fi lp-mockdeco-fi--1">🛋️</span>
-              <span class="lp-mockdeco-fi lp-mockdeco-fi--2">🌸</span>
-              <span class="lp-mockdeco-fi lp-mockdeco-fi--3">🎀</span>
-              <span class="lp-mockdeco-fi lp-mockdeco-fi--4">🪴</span>
-            </div>
-            <div class="lp-mockdeco-shop-panel">
-              <p class="lp-mockdeco-shop-title">🛒 ショップ</p>
-              <div class="lp-mockdeco-grid">
-                <div class="lp-mockdeco-card lp-mockdeco-card--owned"><span>🛋️</span><span class="lp-mockdeco-card-name">ソファ</span><span class="lp-mockdeco-card-badge">所持</span></div>
-                <div class="lp-mockdeco-card"><span>🌸</span><span class="lp-mockdeco-card-name">桜の木</span><span class="lp-mockdeco-card-price">🪙 80</span></div>
-                <div class="lp-mockdeco-card"><span>🎀</span><span class="lp-mockdeco-card-name">リボン棚</span><span class="lp-mockdeco-card-price">🪙 120</span></div>
-                <div class="lp-mockdeco-card lp-mockdeco-card--owned"><span>🪴</span><span class="lp-mockdeco-card-name">観葉植物</span><span class="lp-mockdeco-card-badge">所持</span></div>
+        <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
+          <div class="lp-browser-bar">
+            <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
+            <span class="lp-browser-url">…/shop</span>
+          </div>
+          <div class="lp-browser-screen lp-screen--deco">
+            <%= image_tag "room_sweets.png", class: "lp-screen-room-bg lp-screen-room-bg--deco", alt: "" %>
+            <div class="lp-mockdeco-overlay">
+              <div class="lp-mockdeco-shop-panel">
+                <p class="lp-mockdeco-shop-title">🏠 お部屋の背景テーマ</p>
+                <div class="lp-mockdeco-grid">
+                  <div class="lp-mockdeco-card lp-mockdeco-card--owned">
+                    <%= image_tag "room_stage_1.png", class: "lp-mockdeco-room-thumb", alt: "" %>
+                    <span class="lp-mockdeco-card-name">はじめのお部屋</span>
+                    <span class="lp-mockdeco-card-badge">FREE</span>
+                  </div>
+                  <div class="lp-mockdeco-card">
+                    <%= image_tag "room_star.png", class: "lp-mockdeco-room-thumb", alt: "" %>
+                    <span class="lp-mockdeco-card-name">星空の部屋</span>
+                    <span class="lp-mockdeco-card-price">🪙 600</span>
+                  </div>
+                  <div class="lp-mockdeco-card">
+                    <%= image_tag "room_sweets.png", class: "lp-mockdeco-room-thumb", alt: "" %>
+                    <span class="lp-mockdeco-card-name">スイーツの部屋</span>
+                    <span class="lp-mockdeco-card-price">🪙 300</span>
+                  </div>
+                  <div class="lp-mockdeco-card">
+                    <%= image_tag "room_princess.png", class: "lp-mockdeco-room-thumb", alt: "" %>
+                    <span class="lp-mockdeco-card-name">プリンセスの部屋</span>
+                    <span class="lp-mockdeco-card-price">🪙 900</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+          <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
         </div>
-        <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
+        <div class="lp-screen-tags">
+          <span>12種類のテーマ</span><span>コイン解放</span><span>卵×部屋コンボ</span>
+        </div>
       </div>
+
     </div>
 
   </div>
@@ -329,12 +304,12 @@
         <span class="lp-stat-label">バックエンド</span>
       </div>
       <div class="lp-stat-card">
-        <span class="lp-stat-num">164</span>
-        <span class="lp-stat-label">Files</span>
+        <span class="lp-stat-num">12</span>
+        <span class="lp-stat-label">部屋テーマ</span>
       </div>
       <div class="lp-stat-card">
-        <span class="lp-stat-num">15+</span>
-        <span class="lp-stat-label">画面</span>
+        <span class="lp-stat-num">5段階</span>
+        <span class="lp-stat-label">進化ステージ</span>
       </div>
       <div class="lp-stat-card">
         <span class="lp-stat-num">100%</span>
@@ -349,12 +324,12 @@
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
           </svg>
           <div>
-            <p class="lp-github-repo">mize1978 / reward-task-app</p>
+            <p class="lp-github-repo">mize1978 / rewardme</p>
             <p class="lp-github-desc">Rails 7 製のゲーミフィケーション タスク管理アプリ</p>
             <div class="lp-github-roles">
               <span>📋 企画</span>
               <span>🎨 UIデザイン</span>
-              <span>⌨️ 実装</span>
+              <span>⌨️ フルスタック実装</span>
               <span>🚀 デプロイ</span>
             </div>
           </div>
@@ -368,11 +343,12 @@
         <span class="lp-github-tech-tag lp-github-tech-tag--char">🌸 キャラクター育成</span>
         <span class="lp-github-tech-tag lp-github-tech-tag--gacha">🎁 ガチャシステム</span>
         <span class="lp-github-tech-tag lp-github-tech-tag--room">🏠 マイルーム</span>
+        <span class="lp-github-tech-tag lp-github-tech-tag--css">🎨 CSS Variables</span>
         <span class="lp-github-tech-tag lp-github-tech-tag--auth">🔐 自作認証</span>
       </div>
       <a href="https://github.com/mize1978" target="_blank" rel="noopener" class="lp-github-link-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        GitHubを見る →
+        GitHubでソースコードを見る
       </a>
     </div>
   </div>
@@ -460,6 +436,7 @@
   <div class="lp-footer-inner">
     <div class="lp-footer-brand">
       <%= image_tag "rewardme_logo.png", class: "lp-footer-logo", alt: "RewardMe" %>
+      <p class="lp-footer-tagline">Game × Productivity</p>
       <p class="lp-footer-msg-main">
         「毎日のタスクを少しだけ楽しみに変える」<br>
         そんなアプリを目指して制作しました。
