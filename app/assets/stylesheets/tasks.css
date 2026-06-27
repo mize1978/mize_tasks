@@ -1037,9 +1037,9 @@ body[data-time-period="night"] .my-room::after {
 .room-character {
   position: absolute;
   bottom: 0;
-  left: 60%;
-  transform: translateX(-30%);
-  height: 76%;
+  left: calc(63% - 8px);
+  transform: translateX(-30%) translateY(-28px);
+  height: 32%;
   z-index: 3;
   display: flex;
   align-items: flex-end;
@@ -1047,6 +1047,8 @@ body[data-time-period="night"] .my-room::after {
   mask-image: radial-gradient(ellipse 82% 88% at 50% 58%, black 45%, transparent 100%);
   -webkit-mask-image: radial-gradient(ellipse 82% 88% at 50% 58%, black 45%, transparent 100%);
 }
+.room-character--stage3 { height: 36%; }
+.room-character--stage4 { height: 36%; }
 
 .room-chara-img {
   height: 100%;
@@ -5307,7 +5309,7 @@ body.flash-super::after {
 
 /* ── features ── */
 .lp-features {
-  padding: 80px 0;
+  padding: 48px 0;
   background: transparent;
 }
 
@@ -5339,6 +5341,62 @@ body.flash-super::after {
   margin-bottom: 16px;
 }
 
+.lp-feature-img-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.lp-feature-mini-browser {
+  width: 100%;
+  max-width: 225px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.lp-feature-mini-shot {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.lp-feature-evo-mini {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  justify-content: center;
+}
+
+.lp-feature-evo-arrow {
+  color: rgba(255, 143, 172, 0.6);
+  font-size: 18px;
+  line-height: 1;
+  padding-bottom: 6px;
+}
+
+.lp-feature-evo-img {
+  width: 52px;
+  height: 66px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(255, 143, 172, 0.35));
+}
+
+.lp-feature-evo-img--final {
+  width: 72px;
+  height: 92px;
+}
+
+.lp-feature-gacha-img {
+  width: 108px;
+  height: 108px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(201, 111, 255, 0.45));
+}
+
 .lp-feature-title {
   font-size: 17px;
   font-weight: 800;
@@ -5355,7 +5413,7 @@ body.flash-super::after {
 
 /* ── how it works ── */
 .lp-how {
-  padding: 80px 0;
+  padding: 48px 0;
   background: transparent;
 }
 
@@ -5463,7 +5521,7 @@ body.flash-super::after {
 
 /* ── CTA ── */
 .lp-cta {
-  padding: 80px 0;
+  padding: 48px 0;
   background: transparent;
 }
 
@@ -5513,6 +5571,21 @@ body.flash-super::after {
   color: rgba(255, 255, 255, 0.8);
   margin: 12px 0 24px;
   letter-spacing: 0.02em;
+}
+
+.lp-cta-trust {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: -4px 0 0;
+}
+
+.lp-cta-trust span {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .lp-cta-micro {
@@ -5794,7 +5867,7 @@ body.flash-super::after {
   margin: 0 auto;
   padding: 0 24px;
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: 9fr 11fr;
   gap: 40px;
   align-items: center;
 }
@@ -6001,7 +6074,7 @@ body.flash-super::after {
    screens 背景透明化
 ───────────────────────────────────── */
 .lp-screens {
-  padding: 80px 0;
+  padding: 48px 0;
   background: transparent;
 }
 
@@ -6070,8 +6143,8 @@ body.flash-super::after {
 }
 
 .lp-hero2-chara {
-  width: 270px;
-  height: 270px;
+  width: 240px;
+  height: 240px;
   object-fit: contain;
   object-position: bottom;
   animation: lp-float 3.2s ease-in-out infinite;
@@ -6160,7 +6233,7 @@ body.flash-super::after {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 20px 0 36px;
+  padding: 12px 0 0;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.3);
   animation: lp-fadein 1s ease 1.2s both;
@@ -6325,7 +6398,7 @@ body.flash-super::after {
    スクリーンショットセクション（App Storeスタイル）
 ───────────────────────────────────── */
 .lp-screens {
-  padding: 80px 0;
+  padding: 48px 0;
   background: rgba(255, 255, 255, 0.015);
 }
 
@@ -6365,7 +6438,7 @@ body.flash-super::after {
 .lp-browser-frame--grid .lp-browser-screen,
 .lp-browser-frame--grid .lp-screen--box,
 .lp-browser-frame--grid .lp-screen--evo,
-.lp-browser-frame--grid .lp-screen--deco { height: 190px; }
+.lp-browser-frame--grid .lp-screen--deco { height: 210px; }
 
 .lp-screen-num {
   font-size: 36px;
@@ -6425,7 +6498,7 @@ body.flash-super::after {
   display: block;
 }
 
-.lp-browser-frame--grid .lp-screen--shot { height: 190px; }
+.lp-browser-frame--grid .lp-screen--shot { height: 210px; }
 
 /* ─────────────────────────────────────
    05 ガチャモック
@@ -6958,6 +7031,106 @@ body.flash-super::after {
 }
 
 /* ─────────────────────────────────────
+   実際に触ってみる CTA（GitHub カード下）
+───────────────────────────────────── */
+.lp-try-cta {
+  margin-top: 24px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 143, 172, 0.1), rgba(201, 111, 255, 0.1));
+  border: 1px solid rgba(201, 111, 255, 0.25);
+  padding: 20px 28px;
+}
+
+.lp-try-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.lp-try-cta-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.lp-try-cta-chara {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(255, 143, 172, 0.4));
+}
+
+.lp-try-cta-label {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.lp-try-cta-sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.lp-try-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ff8fac, #c96fff);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(201, 111, 255, 0.35);
+}
+
+.lp-try-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 111, 255, 0.5);
+}
+
+/* ─────────────────────────────────────
+   締めCTA（最終セクション）
+───────────────────────────────────── */
+.lp-final-cta {
+  padding: 80px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, transparent 0%, rgba(201, 111, 255, 0.06) 50%, transparent 100%);
+  border-top: 1px solid rgba(255, 160, 200, 0.1);
+  border-bottom: 1px solid rgba(255, 160, 200, 0.1);
+}
+
+.lp-final-cta-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.lp-final-cta-copy {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.5;
+  color: #fff;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.lp-final-cta-note {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: -12px 0 0;
+  letter-spacing: 0.03em;
+}
+
+/* ─────────────────────────────────────
    フッター（リニューアル）
 ───────────────────────────────────── */
 .lp-footer {
@@ -7304,7 +7477,7 @@ body.flash-super::after {
    ② キャラクターショーケース（3列カード）
 ───────────────────────────────────── */
 .lp-chara-showcase {
-  padding: 80px 24px 60px;
+  padding: 48px 24px 32px;
   background: linear-gradient(180deg, #0e0526 0%, #110a2a 50%, #0e0526 100%);
   overflow: hidden;
   position: relative;
@@ -7322,7 +7495,8 @@ body.flash-super::after {
 
 .lp-chara-showcase-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin: 0 auto 48px;
+  max-width: 960px;
 }
 
 .lp-chara-showcase-eyebrow {
@@ -7387,12 +7561,20 @@ body.flash-super::after {
 
 .lp-chara-card-badge {
   display: inline-block;
-  padding: 4px 14px;
+  padding: 6px 18px;
   border-radius: 999px;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
   margin-bottom: 16px;
+}
+
+.lp-chara-badge-en {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+  margin-left: 4px;
 }
 
 .lp-chara-card--pink   .lp-chara-card-badge { background: rgba(255, 143, 171, 0.2); color: #ffaec6; }
@@ -7554,10 +7736,10 @@ body.flash-super::after {
 }
 
 .lp-screen--shot-lg {
-  height: 320px;
+  height: 355px;
 }
 
-.lp-browser-frame--grid .lp-screen--shot-lg { height: 320px; }
+.lp-browser-frame--grid .lp-screen--shot-lg { height: 355px; }
 
 .lp-screen-featured-side {
   flex: 2;
@@ -7623,6 +7805,351 @@ body.flash-super::after {
 }
 
 /* ─────────────────────────────────────
+   07 モバイル 3列レイアウト
+   左：ホーム大1枚 ／ 中：テキスト ／ 右：2枚縦
+───────────────────────────────────── */
+.lp-mobile3-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 28px;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.lp-mobile3-main {
+  display: flex;
+  justify-content: center;
+}
+
+.lp-mobile3-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 4カラムレイアウト（home大 ＋ テキスト ＋ task ＋ shop） */
+.lp-mobile4-wrap {
+  display: grid;
+  grid-template-columns: 1.4fr 0.85fr 1fr 1fr;
+  gap: 20px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+
+.lp-mobile4-home-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-mobile4-home-card .lp-phone-mockup {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+}
+
+.lp-mobile4-home-card .lp-phone-mockup-screen {
+  height: 400px;
+}
+
+.lp-mobile4-desc {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.lp-mobile4-phone-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: flex-start;
+}
+
+.lp-mobile4-phone-card .lp-phone-mockup {
+  display: flex;
+  flex-direction: column;
+}
+
+.lp-mobile4-phone-card .lp-phone-mockup-screen {
+  height: 355px;
+}
+
+.lp-mobile4-phone-hd {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lp-mobile4-phone-ico {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.lp-mobile4-phone-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.lp-mobile4-phone-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 3px 0 0;
+  line-height: 1.4;
+}
+
+/* 2カラムレイアウト（ホーム大＋右コンテンツ） */
+.lp-mobile2-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: flex-start;
+  margin-top: 16px;
+}
+
+.lp-mobile2-main {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.lp-mobile2-content {
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  gap: 0;
+}
+
+/* 説明リストとタグラインをまとめるグループ */
+.lp-mobile2-desc-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* phonesは説明のすぐ下 */
+.lp-mobile2-phones {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.lp-mobile2-phone-item {
+  flex: 1;
+  max-width: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.lp-mobile2-phone-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+  text-align: center;
+}
+
+.lp-mobile3-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lp-mobile3-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.lp-mobile3-ico {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.lp-mobile3-text {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.lp-mobile3-text strong {
+  display: block;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 1px;
+}
+
+/* 右：2枚縦並び */
+.lp-mobile3-sub {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.lp-mobile3-sub-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.lp-mobile3-sub-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.lp-mobile3-sub-label small {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 実機スクショフレーム */
+/* CSS スマホ型フレーム */
+.lp-phone-mockup {
+  position: relative;
+  background: #14103a;
+  border-radius: 42px;
+  padding: 14px 10px 12px;
+  border: 2px solid rgba(255, 143, 200, 0.25);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(255, 143, 200, 0.25);
+  width: 100%;
+}
+
+/* ダイナミックアイランド */
+.lp-phone-mockup::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32%;
+  height: 8px;
+  background: #080516;
+  border-radius: 4px;
+  z-index: 2;
+}
+
+/* ホームインジケーター */
+.lp-phone-mockup::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 2px;
+}
+
+.lp-phone-mockup--lg {
+  max-width: 280px;
+}
+
+.lp-phone-mockup-screen {
+  border-radius: 30px;
+  overflow: hidden;
+  background: #0d0718;
+  /* flex: 1 は親の .lp-phone-mockup が flex column のときに有効 */
+}
+
+.lp-phone-mockup-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.lp-phone-real {
+  border-radius: 22px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(201, 111, 255, 0.18);
+  background: #0d0718;
+}
+
+.lp-phone-real--xl {
+  width: 100%;
+  max-width: 280px;
+}
+
+.lp-phone-real--lg {
+  width: 100%;
+  max-width: 240px;
+}
+
+.lp-phone-real--md {
+  width: 100%;
+  max-width: 200px;
+}
+
+.lp-phone-real--sm {
+  width: 100%;
+}
+
+.lp-mobile3-single {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.lp-phone-real-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.lp-mobile-tagline {
+  font-size: 13px;
+  line-height: 1.9;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+  font-style: italic;
+}
+
+@media (max-width: 700px) {
+  .lp-mobile3-wrap {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .lp-mobile3-sub {
+    flex-direction: row;
+    justify-content: center;
+  }
+  .lp-mobile3-sub-item {
+    flex: 1;
+    max-width: 160px;
+  }
+}
+
+/* ─────────────────────────────────────
    ⑤ フッターブランド強化
 ───────────────────────────────────── */
 .lp-footer-brand-catch {
@@ -7635,11 +8162,11 @@ body.flash-super::after {
 }
 
 /* ─────────────────────────────────────
-   ⑤ モバイルカード スマホフレーム拡大
+   ⑤ モバイルカード スマホフレーム
 ───────────────────────────────────── */
 .lp-phone-frame {
-  width: 230px;
-  height: 400px;
+  width: 200px;
+  height: 360px;
 }
 
 /* ─────────────────────────────────────
@@ -9199,4 +9726,385 @@ body.flash-super::after {
   .gacha-title { font-size: 28px; }
   .gacha-card { width: 72px; height: 100px; }
   .gacha-cards-area:has(.gacha-card:only-child) .gacha-card { width: 140px; height: 196px; }
+}
+
+/* ==============================
+   進化演出 EVOLUTION OVERLAY
+   ============================== */
+
+.evo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.evo-overlay.evo--phase-1 { opacity: 1; }
+.evo-overlay.evo--closing { opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+/* シンプルトースト時はクリックをブロックしない */
+.evo-overlay:not(:has(.evo-bg)) { pointer-events: none; }
+
+/* ── Background ── */
+.evo-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 5, 30, 0.88);
+  transition: background 1s ease;
+}
+.evo-overlay--princess .evo-bg { background: rgba(0, 0, 0, 0.95); }
+
+/* ── Rays ── */
+.evo-rays {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  background: radial-gradient(ellipse 50% 70% at 50% 55%, rgba(220,180,255,0.18) 0%, transparent 65%);
+}
+.evo-overlay.evo--phase-2 .evo-rays { opacity: 1; }
+
+.evo-overlay--ribbon.evo--phase-2 .evo-rays {
+  animation: raysRotate 5s linear infinite;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,    rgba(220,180,255,0.13) 12deg,
+    transparent 24deg,   rgba(220,180,255,0.10) 42deg,
+    transparent 60deg,   rgba(220,180,255,0.13) 85deg,
+    transparent 110deg,  rgba(220,180,255,0.09) 140deg,
+    transparent 170deg,  rgba(220,180,255,0.13) 200deg,
+    transparent 230deg,  rgba(220,180,255,0.10) 265deg,
+    transparent 300deg,  rgba(220,180,255,0.13) 335deg,
+    transparent 360deg
+  );
+}
+.evo-overlay--princess.evo--phase-2 .evo-rays {
+  animation: raysRotate 3.5s linear infinite;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,   rgba(255,215,0,0.18) 12deg,
+    transparent 24deg,  rgba(255,215,0,0.13) 50deg,
+    transparent 80deg,  rgba(255,215,0,0.18) 110deg,
+    transparent 145deg, rgba(255,215,0,0.11) 185deg,
+    transparent 225deg, rgba(255,215,0,0.18) 260deg,
+    transparent 295deg, rgba(255,215,0,0.13) 330deg,
+    transparent 360deg
+  );
+}
+@keyframes raysRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Flash burst ── */
+.evo-flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+}
+.evo-overlay.evo--phase-4 .evo-flash {
+  animation: flashBurst 0.6s ease-out forwards;
+}
+@keyframes flashBurst {
+  0%   { opacity: 0; }
+  20%  { opacity: 0.85; }
+  100% { opacity: 0; }
+}
+
+/* ── Particles ── */
+.evo-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.evo-particle {
+  position: absolute;
+  font-size: 18px;
+  opacity: 0;
+  left: calc(8% + var(--i, 0) * 6.5%);
+  top: 55%;
+}
+.evo-overlay.evo--phase-2 .evo-particle {
+  animation: particleFly 2.2s ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 0.11s);
+}
+.evo-overlay.evo--phase-3 .evo-particle {
+  animation: particleFly 2.2s ease-out forwards;
+  animation-delay: calc(var(--i, 0) * 0.08s + 0.2s);
+}
+@keyframes particleFly {
+  0%   { opacity: 0; transform: translateY(0) scale(0.4) rotate(0deg); }
+  25%  { opacity: 1; }
+  80%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-180px) scale(1.3) rotate(calc(var(--i, 0) * 35deg)); }
+}
+
+/* ── Card ── */
+.evo-card {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 36px 28px 28px;
+  max-width: 360px;
+  width: 92%;
+  text-align: center;
+}
+
+/* ── Prev character ── */
+/* ステージ別に新キャラと同じ高さを確保してラベルが被らないようにする */
+.evo-prev-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 175px;
+  height: 175px;  /* Stage2 new-wrap と同じ */
+  flex-shrink: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.evo-overlay--ribbon   .evo-prev-wrap { width: 210px; height: 210px; }
+.evo-overlay--princess .evo-prev-wrap { width: 245px; height: 245px; }
+
+.evo-prev-img {
+  width: 110px;   /* 卵・前ステージは小さく表示 */
+  height: 110px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(200,150,255,0.4));
+}
+.evo-overlay.evo--phase-2 .evo-prev-wrap {
+  animation: eggFloat 1s ease-in-out infinite alternate;
+}
+.evo-overlay.evo--phase-4 .evo-prev-wrap {
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+@keyframes eggFloat {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-14px); }
+}
+
+/* ── Mystery label (stage 3) ── */
+.evo-mystery-label {
+  position: absolute;
+  bottom: -26px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(200,160,255,0.75);
+  letter-spacing: 0.18em;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  white-space: nowrap;
+}
+.evo-overlay.evo--phase-3 .evo-mystery-label { opacity: 1; }
+
+/* ── New character ── */
+.evo-new-wrap {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  width: 175px;   /* Stage2 ベビー */
+  height: 175px;
+  opacity: 0;
+  pointer-events: none;
+  /* transition なし → animation で制御 */
+}
+.evo-overlay--ribbon  .evo-new-wrap { width: 210px; height: 210px; } /* Stage3 リボンちゃん */
+.evo-overlay--princess .evo-new-wrap { width: 245px; height: 245px; } /* Stage4 プリンセス */
+
+.evo-new-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(220,160,255,0.6));
+}
+.evo-overlay--princess .evo-new-img {
+  filter: drop-shadow(0 0 18px rgba(255,215,0,0.55));
+}
+
+/* ポンッ！登場アニメ */
+@keyframes charaPop {
+  0%   { transform: translateX(-50%) scale(0);    opacity: 0; }
+  55%  { transform: translateX(-50%) scale(1.18); opacity: 1; }
+  100% { transform: translateX(-50%) scale(1);    opacity: 1; }
+}
+.evo-overlay.evo--phase-4 .evo-new-wrap {
+  animation: charaPop 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  pointer-events: auto;
+}
+
+.evo-new-glow {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(220,160,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.7s ease 0.35s;
+}
+.evo-overlay--princess .evo-new-glow {
+  background: radial-gradient(circle, rgba(255,215,0,0.35) 0%, transparent 70%);
+}
+.evo-overlay.evo--phase-4 .evo-new-glow { opacity: 1; }
+
+/* ── Labels & text ── */
+.evo-evolution-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  color: rgba(220,180,255,0.9);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  margin: 0;
+}
+.evo-overlay--princess .evo-evolution-label {
+  font-size: 15px;
+  color: #ffe066;
+  text-shadow: 0 0 12px rgba(255,215,0,0.6);
+}
+.evo-overlay.evo--phase-5 .evo-evolution-label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.evo-new-name {
+  font-size: 21px;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease 0.18s, transform 0.5s ease 0.18s;
+}
+.evo-overlay--princess .evo-new-name {
+  font-size: 23px;
+  background: linear-gradient(135deg, #ffe066, #ffd0f0, #ffe066);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.evo-overlay.evo--phase-5 .evo-new-name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.evo-message {
+  font-size: 14px;
+  color: rgba(255,225,255,0.88);
+  line-height: 1.7;
+  white-space: pre-line;
+  margin: 0;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease 0.35s, transform 0.5s ease 0.35s;
+}
+.evo-overlay.evo--phase-5 .evo-message {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── OK button ── */
+.evo-ok-btn {
+  margin-top: 6px;
+  padding: 11px 36px;
+  border: none;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #d946ef, #a855f7);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(168,85,247,0.45);
+}
+.evo-overlay--princess .evo-ok-btn {
+  background: linear-gradient(135deg, #f59e0b, #ec4899);
+  box-shadow: 0 4px 20px rgba(245,158,11,0.45);
+}
+.evo-ok-btn:hover {
+  box-shadow: 0 6px 30px rgba(168,85,247,0.65);
+  transform: translateY(-2px) !important;
+}
+.evo-overlay--princess .evo-ok-btn:hover {
+  box-shadow: 0 6px 30px rgba(245,158,11,0.65);
+}
+/* Show on phase-5 for stage 2, phase-6 for stage 3/4 */
+.evo-overlay.evo--phase-5 .evo-ok-btn,
+.evo-overlay.evo--phase-6 .evo-ok-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Simple repeat toast ── */
+.evo-simple {
+  position: fixed;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%) translateY(16px);
+  background: rgba(25, 12, 48, 0.92);
+  border: 1px solid rgba(200,150,255,0.35);
+  border-radius: 28px;
+  padding: 13px 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #f0e0ff;
+  opacity: 0;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+.evo-overlay.evo--phase-1 .evo-simple {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Evolution tree glow ── */
+.evo-v-item--just-evolved {
+  animation: justEvolvedPulse 1.2s ease-in-out 4;
+  animation-delay: 0.5s;
+}
+@keyframes justEvolvedPulse {
+  0%, 100% { box-shadow: none; }
+  50%       { box-shadow: 0 0 0 3px rgba(255,210,80,0.85), 0 0 22px rgba(255,210,80,0.5); }
+}
+
+/* ── スマホ対応 ── */
+@media (max-width: 480px) {
+  .evo-card {
+    padding: 28px 16px 20px;
+    gap: 8px;
+    width: 96%;
+  }
+  .evo-prev-wrap  { width: 140px; height: 140px; }
+  .evo-overlay--ribbon   .evo-prev-wrap { width: 168px; height: 168px; }
+  .evo-overlay--princess .evo-prev-wrap { width: 196px; height: 196px; }
+  .evo-prev-img   { width: 88px; height: 88px; }
+  .evo-new-wrap   { width: 140px; height: 140px; top: 28px; }
+  .evo-overlay--ribbon   .evo-new-wrap { width: 168px; height: 168px; }
+  .evo-overlay--princess .evo-new-wrap { width: 196px; height: 196px; }
+  .evo-evolution-label { font-size: 10px; letter-spacing: 0.18em; }
+  .evo-new-name  { font-size: 18px; }
+  .evo-overlay--princess .evo-new-name { font-size: 20px; }
+  .evo-message   { font-size: 13px; }
+  .evo-ok-btn    { padding: 10px 28px; font-size: 14px; }
+  .evo-simple    { font-size: 14px; padding: 11px 20px; bottom: 24px; }
 }

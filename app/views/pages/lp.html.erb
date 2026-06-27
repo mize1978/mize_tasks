@@ -61,31 +61,6 @@
         <% end %>
       </div>
       <p class="lp-hero2-note">登録無料・クレジットカード不要</p>
-
-      <%# ③ ミニゲームHUD %>
-      <div class="lp-hero-hud">
-        <div class="lp-hud-item">
-          <span class="lp-hud-label">Lv</span>
-          <span class="lp-hud-val">1</span>
-        </div>
-        <div class="lp-hud-exp">
-          <span class="lp-hud-exp-label">EXP</span>
-          <div class="lp-hud-bar"><div class="lp-hud-fill" style="width:30%"></div></div>
-          <span class="lp-hud-exp-num">3/10</span>
-        </div>
-        <div class="lp-hud-item">
-          <span class="lp-hud-label">🪙</span>
-          <span class="lp-hud-val">50</span>
-        </div>
-      </div>
-
-      <%# ① 3色チップ %>
-      <div class="lp-hero-colors">
-        <span class="lp-hero-color-label">選べる3色：</span>
-        <span class="lp-hero-chip lp-hero-chip--pink">🩷 ピンク</span>
-        <span class="lp-hero-chip lp-hero-chip--purple">💜 パープル</span>
-        <span class="lp-hero-chip lp-hero-chip--blue">💙 ブルー</span>
-      </div>
     </div>
 
     <%# 右カラム：ダッシュボードスクリーンショット %>
@@ -155,34 +130,34 @@
   </div>
   <div class="lp-chara-cards">
     <div class="lp-chara-card lp-chara-card--pink lp-reveal" style="--reveal-delay:0ms">
-      <div class="lp-chara-card-badge">❤ Love</div>
+      <div class="lp-chara-card-badge">🎀 ピンク <span class="lp-chara-badge-en">Love</span></div>
       <div class="lp-chara-card-img-wrap">
         <%= image_tag "stage4_pink.png", class: "lp-chara-card-img", alt: "ピンクリボンちゃん" %>
       </div>
       <h3 class="lp-chara-card-name">ピンク</h3>
-      <p class="lp-chara-card-desc">優しく応援してくれる。<br>いつも一緒にいてくれる存在。</p>
+      <p class="lp-chara-card-desc">優しく応援してくれる。<br>「えらい！」って<br>毎日褒めてくれる。</p>
       <div class="lp-chara-card-tags">
         <span>やさしい</span><span>応援</span><span>癒し</span>
       </div>
     </div>
     <div class="lp-chara-card lp-chara-card--purple lp-reveal" style="--reveal-delay:100ms">
-      <div class="lp-chara-card-badge">💜 Mystic</div>
+      <div class="lp-chara-card-badge">💜 パープル <span class="lp-chara-badge-en">Mystic</span></div>
       <div class="lp-chara-card-img-wrap">
         <%= image_tag "stage4_purple.png", class: "lp-chara-card-img", alt: "パープルリボンちゃん" %>
       </div>
       <h3 class="lp-chara-card-name">パープル</h3>
-      <p class="lp-chara-card-desc">大人っぽく、クールに見守る。<br>本気になったとき一番頼れる。</p>
+      <p class="lp-chara-card-desc">クールに見守る存在。<br>本気になったとき、<br>一番頼りになる。</p>
       <div class="lp-chara-card-tags">
         <span>クール</span><span>ミステリアス</span><span>強さ</span>
       </div>
     </div>
     <div class="lp-chara-card lp-chara-card--blue lp-reveal" style="--reveal-delay:200ms">
-      <div class="lp-chara-card-badge">💙 Active</div>
+      <div class="lp-chara-card-badge">💙 ブルー <span class="lp-chara-badge-en">Active</span></div>
       <div class="lp-chara-card-img-wrap">
         <%= image_tag "stage4_blue.png", class: "lp-chara-card-img", alt: "ブルーリボンちゃん" %>
       </div>
       <h3 class="lp-chara-card-name">ブルー</h3>
-      <p class="lp-chara-card-desc">元気いっぱい、いつも前向き。<br>一緒にいるとやる気が出てくる。</p>
+      <p class="lp-chara-card-desc">元気いっぱい、いつも前向き。<br>「今日もやった！」を<br>一緒に喜んでくれる。</p>
       <div class="lp-chara-card-tags">
         <span>元気</span><span>アクティブ</span><span>前向き</span>
       </div>
@@ -196,7 +171,11 @@
     <h2 class="lp-section-title lp-reveal">なぜ RewardMe？</h2>
     <div class="lp-features-grid">
       <div class="lp-feature-card lp-reveal" style="--reveal-delay: 0ms">
-        <span class="lp-feature-ico">🎮</span>
+        <div class="lp-feature-img-wrap">
+          <div class="lp-feature-mini-browser">
+            <%= image_tag "lp_screen_dash_crop.jpg", class: "lp-feature-mini-shot", alt: "" %>
+          </div>
+        </div>
         <h3 class="lp-feature-title">ゲーム感覚で続く</h3>
         <p class="lp-feature-desc">タスクを完了するたびにEXPとコインを獲得。達成感が習慣を作る。</p>
         <ul class="lp-feature-list">
@@ -207,7 +186,15 @@
         </ul>
       </div>
       <div class="lp-feature-card lp-reveal" style="--reveal-delay: 90ms">
-        <span class="lp-feature-ico">🌱</span>
+        <div class="lp-feature-img-wrap">
+          <div class="lp-feature-evo-mini">
+            <%= image_tag "stage1_pink.png", class: "lp-feature-evo-img", alt: "" %>
+            <span class="lp-feature-evo-arrow">›</span>
+            <%= image_tag "stage2_pink.png", class: "lp-feature-evo-img", alt: "" %>
+            <span class="lp-feature-evo-arrow">›</span>
+            <%= image_tag "stage4_pink.png", class: "lp-feature-evo-img lp-feature-evo-img--final", alt: "" %>
+          </div>
+        </div>
         <h3 class="lp-feature-title">キャラクターを育てる</h3>
         <p class="lp-feature-desc">ピンク・パープル・ブルーの3色から選べるリボンちゃん。タスクをこなすごとに4段階で進化する。</p>
         <ul class="lp-feature-list">
@@ -218,7 +205,9 @@
         </ul>
       </div>
       <div class="lp-feature-card lp-reveal" style="--reveal-delay: 180ms">
-        <span class="lp-feature-ico">🎁</span>
+        <div class="lp-feature-img-wrap">
+          <%= image_tag "gacha_machine.png", class: "lp-feature-gacha-img", alt: "" %>
+        </div>
         <h3 class="lp-feature-title">毎日のリボンBOX</h3>
         <p class="lp-feature-desc">1日1回のガチャでコインや特典をゲット。毎朝アプリを開く理由ができる。</p>
         <ul class="lp-feature-list">
@@ -275,35 +264,47 @@
       </div>
 
       <%# 02 デイリーBOX %>
-      <div class="lp-screen-card lp-reveal">
+      <div class="lp-screen-card lp-screen-card--featured lp-reveal">
         <div class="lp-screen-card-hd">
           <span class="lp-screen-num">02</span>
           <h3 class="lp-screen-info-title">デイリーBOX ガチャ</h3>
         </div>
         <p class="lp-screen-card-desc">1日1回だけ開けられる特別なBOX。コインやレアアイテムが手に入る毎日のお楽しみ。</p>
-        <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
-          <div class="lp-browser-bar">
-            <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
-            <span class="lp-browser-url">…/dashboard</span>
-          </div>
-          <div class="lp-browser-screen lp-screen--box">
-            <div class="lp-mockbox-panel">
-              <p class="lp-mockbox-title">🎁 今日のリボンBOX</p>
-              <div class="lp-mockbox-img-wrap">
-                <%= image_tag "ribbon_box.png", class: "lp-mockbox-img lp-mockbox-float", alt: "" %>
-              </div>
-              <div class="lp-mockbox-btn">✨ タップして開ける！</div>
-              <div class="lp-mockbox-result">
-                <span class="lp-mockbox-ico">🪙</span>
-                <span class="lp-mockbox-label">コイン 100</span>
-                <span class="lp-mockbox-rarity" data-rarity="good">GOOD</span>
+        <div class="lp-screen-featured-body">
+          <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
+            <div class="lp-browser-bar">
+              <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
+              <span class="lp-browser-url">…/dashboard</span>
+            </div>
+            <div class="lp-browser-screen lp-screen--box">
+              <div class="lp-mockbox-panel">
+                <p class="lp-mockbox-title">🎁 今日のリボンBOX</p>
+                <div class="lp-mockbox-img-wrap">
+                  <%= image_tag "ribbon_box.png", class: "lp-mockbox-img lp-mockbox-float", alt: "" %>
+                </div>
+                <div class="lp-mockbox-btn">✨ タップして開ける！</div>
+                <div class="lp-mockbox-result">
+                  <span class="lp-mockbox-ico">🪙</span>
+                  <span class="lp-mockbox-label">コイン 100</span>
+                  <span class="lp-mockbox-rarity" data-rarity="good">GOOD</span>
+                </div>
               </div>
             </div>
+            <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
           </div>
-          <div class="lp-frame-zoom-hint">🔍 クリックで拡大</div>
-        </div>
-        <div class="lp-screen-tags">
-          <span>CSSアニメーション</span><span>Fetch API</span><span>加重ガチャ</span>
+          <div class="lp-screen-featured-side">
+            <p class="lp-screen-featured-label">主な機能</p>
+            <ul class="lp-screen-featured-list">
+              <li>🎁 1日1回の開封チャンス</li>
+              <li>🪙 コイン・アイテム獲得</li>
+              <li>✨ レアリティ判定付き</li>
+              <li>📅 毎日のログインボーナス</li>
+              <li>🎰 加重ガチャで公平設計</li>
+            </ul>
+            <div class="lp-screen-tags">
+              <span>CSSアニメーション</span><span>Fetch API</span><span>加重ガチャ</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -313,7 +314,7 @@
           <span class="lp-screen-num">03</span>
           <h3 class="lp-screen-info-title">キャラクター進化システム</h3>
         </div>
-        <p class="lp-screen-card-desc">タスクをこなすたびにリボンちゃんが成長。たまごから始まりプリンセスへ4段階で進化！</p>
+        <p class="lp-screen-card-desc">タスクをこなすほど、リボンちゃんが育っていく。たまご・ベビー・リボンちゃん・プリンセスの4段階で進化。毎日続けるほどキャラクターが変わるので、習慣が楽しみになる。</p>
         <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
           <div class="lp-browser-bar">
             <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
@@ -351,7 +352,7 @@
           <span class="lp-screen-num">04</span>
           <h3 class="lp-screen-info-title">お部屋の背景テーマ</h3>
         </div>
-        <p class="lp-screen-card-desc">コインを使って18種類のテーマを解放。自分だけのマイルームを作り上げよう。</p>
+        <p class="lp-screen-card-desc">タスクで貯めたコインを使って、18種類の部屋テーマを解放できる。星空・スイーツ・プリンセスなど、好みのインテリアでリボンちゃんのお部屋をカスタマイズしよう。</p>
         <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
           <div class="lp-browser-bar">
             <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
@@ -400,7 +401,7 @@
           <span class="lp-screen-num">05</span>
           <h3 class="lp-screen-info-title">ガチャシステム</h3>
         </div>
-        <p class="lp-screen-card-desc">貯めたコインで1回・10連ガチャに挑戦。レアリティ付きアイテムを集めよう！</p>
+        <p class="lp-screen-card-desc">タスクで貯めたコインで、1回または10連ガチャに挑戦できる。NORMAL・GOOD・GREAT・EXCELLENTの4段階レアリティで、毎回ドキドキの開封体験が待っている。</p>
         <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
           <div class="lp-browser-bar">
             <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
@@ -429,7 +430,7 @@
           <span class="lp-screen-num">06</span>
           <h3 class="lp-screen-info-title">リボンキャッチゲーム</h3>
         </div>
-        <p class="lp-screen-card-desc">30秒間で落ちてくるリボンをタップしてキャッチ。ハイスコアを更新しよう！</p>
+        <p class="lp-screen-card-desc">30秒間で画面から落ちてくるリボンをタップしてキャッチするミニゲーム。スキマ時間に気軽に遊べて、ハイスコアを更新するたびに達成感がある。</p>
         <div class="lp-browser-frame lp-browser-frame--grid" data-lightbox>
           <div class="lp-browser-bar">
             <span class="lp-browser-dot"></span><span class="lp-browser-dot"></span><span class="lp-browser-dot"></span>
@@ -458,38 +459,85 @@
       </div>
 
       <%# 07 モバイル対応 %>
-      <div class="lp-screen-card lp-reveal">
+      <div class="lp-screen-card lp-screen-card--featured lp-reveal">
         <div class="lp-screen-card-hd">
           <span class="lp-screen-num">07</span>
           <h3 class="lp-screen-info-title">📱 モバイル対応</h3>
         </div>
-        <p class="lp-screen-card-desc">スマホでもフル機能が使える完全レスポンシブ対応。外出先でもリボンちゃんと一緒。</p>
-        <div class="lp-screen-mobile-wrap">
-          <div class="lp-phone-frame">
-            <div class="lp-phone-notch"></div>
-            <div class="lp-phone-content">
-              <div class="lp-phone-room">
-                <%= image_tag "stage4_pink.png", class: "lp-phone-chara", alt: "" %>
-                <span class="lp-phone-room-label">マイルーム</span>
+        <p class="lp-screen-card-desc">タスク管理・ガチャ・マイルームなど全機能がスマートフォンでも快適に動作。</p>
+
+        <div class="lp-mobile4-wrap">
+          <%# Col1: ホーム（大） %>
+          <div class="lp-mobile4-home-card">
+            <div class="lp-phone-mockup lp-phone-mockup--lg">
+              <div class="lp-phone-mockup-screen">
+                <%= image_tag "lp_mobile_home.jpg", class: "lp-phone-real-img", alt: "ホーム画面" %>
               </div>
-              <div class="lp-phone-tasks">
-                <div class="lp-phone-task lp-phone-task--done">✓ 英語30分</div>
-                <div class="lp-phone-task">🎀 日記を書く</div>
-                <div class="lp-phone-task">〇 ストレッチ</div>
-              </div>
-              <div class="lp-phone-gacha-banner">✨ ガチャをひく →</div>
             </div>
           </div>
-          <ul class="lp-screen-mobile-list">
-            <li>✅ タスク管理</li>
-            <li>🎀 リボンキャッチ</li>
-            <li>✨ ガチャ</li>
-            <li>🏠 マイルーム</li>
-            <li>🎁 デイリーBOX</li>
-          </ul>
-        </div>
-        <div class="lp-screen-tags">
-          <span>レスポンシブ対応</span><span>タッチUI</span><span>スマホ最適化</span>
+
+          <%# Col2: 機能テキスト %>
+          <div class="lp-mobile4-desc">
+            <p class="lp-screen-featured-label">いつでもリボンちゃんと一緒</p>
+            <ul class="lp-mobile3-list">
+              <li>
+                <span class="lp-mobile3-ico">🎀</span>
+                <span class="lp-mobile3-text"><strong>タスク管理</strong></span>
+              </li>
+              <li>
+                <span class="lp-mobile3-ico">🎮</span>
+                <span class="lp-mobile3-text"><strong>リボンキャッチ</strong></span>
+              </li>
+              <li>
+                <span class="lp-mobile3-ico">🏠</span>
+                <span class="lp-mobile3-text"><strong>マイルーム</strong></span>
+              </li>
+              <li>
+                <span class="lp-mobile3-ico">✨</span>
+                <span class="lp-mobile3-text"><strong>ガチャ</strong></span>
+              </li>
+              <li>
+                <span class="lp-mobile3-ico">🎁</span>
+                <span class="lp-mobile3-text"><strong>デイリーBOX</strong></span>
+              </li>
+            </ul>
+            <p class="lp-mobile-tagline">通勤中でも、ベッドの上でも、<br>どこでもリボンちゃんと一緒。</p>
+            <div class="lp-screen-tags">
+              <span>レスポンシブ対応</span><span>タッチUI</span><span>スマホ最適化</span>
+            </div>
+          </div>
+
+          <%# Col3: タスク管理 %>
+          <div class="lp-mobile4-phone-card">
+            <div class="lp-mobile4-phone-hd">
+              <span class="lp-mobile4-phone-ico">📋</span>
+              <div>
+                <p class="lp-mobile4-phone-title">タスク管理</p>
+                <p class="lp-mobile4-phone-sub">タスクの進捗を確認・管理</p>
+              </div>
+            </div>
+            <div class="lp-phone-mockup">
+              <div class="lp-phone-mockup-screen">
+                <%= image_tag "lp_mobile_tasks.jpg", class: "lp-phone-real-img", alt: "タスク管理" %>
+              </div>
+            </div>
+          </div>
+
+          <%# Col4: ショップ %>
+          <div class="lp-mobile4-phone-card">
+            <div class="lp-mobile4-phone-hd">
+              <span class="lp-mobile4-phone-ico">🛍</span>
+              <div>
+                <p class="lp-mobile4-phone-title">ショップ</p>
+                <p class="lp-mobile4-phone-sub">お部屋のテーマをカスタマイズ</p>
+              </div>
+            </div>
+            <div class="lp-phone-mockup">
+              <div class="lp-phone-mockup-screen">
+                <%= image_tag "lp_mobile_shop.jpg", class: "lp-phone-real-img", alt: "ショップ" %>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -515,7 +563,14 @@
     <%= link_to signup_path, class: "lp-btn-primary lp-btn-large" do %>
       🎀 無料ではじめる
     <% end %>
-    <p class="lp-cta-micro">登録は30秒。今日からリボンちゃんとの生活が始まります。</p>
+    <div class="lp-cta-trust">
+      <span>⏱ 登録30秒</span>
+      <span>·</span>
+      <span>📧 メールアドレスだけ</span>
+      <span>·</span>
+      <span>🎁 完全無料</span>
+    </div>
+    <p class="lp-cta-micro">今日からリボンちゃんとの生活が始まります。</p>
   </div>
 </section>
 
@@ -589,6 +644,34 @@
         <span class="lp-github-arrow">→</span>
       </a>
     </div>
+
+    <%# ===== 実際に触ってみる CTA ===== %>
+    <div class="lp-try-cta lp-reveal">
+      <div class="lp-try-cta-inner">
+        <div class="lp-try-cta-left">
+          <%= image_tag "stage4_pink.png", class: "lp-try-cta-chara", alt: "" %>
+          <div>
+            <p class="lp-try-cta-label">実際に触ってみる</p>
+            <p class="lp-try-cta-sub">コードを見るより、使ってみるのが一番早い。</p>
+          </div>
+        </div>
+        <%= link_to login_path, class: "lp-try-cta-btn" do %>
+          🎀 ログイン画面へ <span>→</span>
+        <% end %>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<%# ===== 締めCTA ===== %>
+<section class="lp-final-cta">
+  <div class="lp-final-cta-inner lp-reveal">
+    <p class="lp-final-cta-copy">毎日のタスクを、<br>少しだけ楽しみに変える。</p>
+    <%= link_to signup_path, class: "lp-btn-primary lp-btn-large" do %>
+      🎀 無料ではじめる
+    <% end %>
+    <p class="lp-final-cta-note">登録30秒 · メールアドレスだけ · 完全無料</p>
   </div>
 </section>
 

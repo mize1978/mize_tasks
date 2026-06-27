@@ -35,8 +35,6 @@
   <br><br>
   <img src="docs/screenshots/choose_egg.jpg" alt="パートナー選択" width="100%">
   <br><br>
-  <img src="docs/screenshots/lp.jpg" alt="ランディングページ" width="100%">
-  <br><br>
   <img src="docs/screenshots/shop.jpg" alt="部屋ショップ" width="100%">
 </div>
 

@@ -5,6 +5,61 @@
   <% end %>
 </div>
 
+<%# ===== 進化演出オーバーレイ ===== %>
+<% if flash[:evolution_stage] %>
+  <%
+    evo_stage  = flash[:evolution_stage].to_i
+    evo_first  = flash[:evolution_first_time] == "true"
+    _c = (current_user.egg_color.presence || "pink").to_s
+    _c = "purple" if _c == "yellow"
+    prev_img   = "stage#{evo_stage - 1}_#{_c}.png"
+    new_img    = "stage#{evo_stage}_#{_c}.png"
+    stage_names = %w[たまごのリボンちゃん ベビーリボン リボンちゃん プリンセスリボン]
+    new_name   = stage_names[evo_stage - 1]
+    messages   = { 2 => "はじめまして♪\nこれからよろしくね♡",
+                   3 => "もっと一緒にがんばろうね♪\nリボンちゃんになったよ！",
+                   4 => "ありがとう…\n最高の姿になれたよ♡\nずっと一緒にいてね。" }
+    evo_msg    = messages[evo_stage]
+    evo_cls    = evo_stage == 4 ? "evo-overlay--princess" : (evo_stage == 3 ? "evo-overlay--ribbon" : "")
+  %>
+  <div class="evo-overlay <%= evo_cls %>"
+       data-controller="evolution"
+       data-evolution-stage-value="<%= evo_stage %>"
+       data-evolution-first-time-value="<%= evo_first %>">
+    <% if evo_first %>
+      <div class="evo-bg"></div>
+      <div class="evo-rays"></div>
+      <div class="evo-flash"></div>
+      <div class="evo-particles">
+        <% 14.times do |i| %>
+          <span class="evo-particle" style="--i:<%= i %>"><%= %w[✨ 🎀 ⭐ 💫 🌟].sample %></span>
+        <% end %>
+      </div>
+      <div class="evo-card">
+        <div class="evo-prev-wrap">
+          <%= image_tag prev_img, class: "evo-prev-img" %>
+          <% if evo_stage == 3 %>
+            <p class="evo-mystery-label">？？？？？</p>
+          <% end %>
+        </div>
+        <div class="evo-new-wrap">
+          <%= image_tag new_img, class: "evo-new-img" %>
+          <div class="evo-new-glow"></div>
+        </div>
+        <p class="evo-evolution-label"><%= evo_stage == 4 ? "✨ Congratulations ✨" : "✨ EVOLUTION ✨" %></p>
+        <h3 class="evo-new-name"><%= new_name %></h3>
+        <p class="evo-message"><%= evo_msg %></p>
+        <button class="evo-ok-btn" data-action="click->evolution#close">OK ✨</button>
+      </div>
+    <% else %>
+      <div class="evo-simple">
+        <span>✨</span>
+        <span><%= new_name %>に進化しました！</span>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <div class="dashboard-layout">
 
   <%# ===== 左カラム: サイドバー ===== %>
@@ -21,7 +76,7 @@
       <div class="room-egg-tint"></div>
       <span class="room-title">マイルーム</span>
       <span class="room-neon">Good job today!</span>
-      <div class="room-character">
+      <div class="room-character room-character--stage<%= current_user.ribbon_stage %>">
         <div class="room-chara-shake <%= 'near-evo' if current_user.ribbon_stage < 4 && current_user.next_stage_tasks <= 3 %>">
           <%= image_tag current_user.ribbon_stage_image, class: "room-chara-img" %>
         </div>
@@ -170,8 +225,8 @@
       evo_stages = [
         { stage: 1, name: "たまごのリボンちゃん", lv: 1,  image: "stage1_#{_color}.png" },
         { stage: 2, name: "ベビーリボン",         lv: 10, image: "stage2_#{_color}.png" },
-        { stage: 3, name: "リボンちゃん",         lv: 30, image: "stage3_#{_color}.png" },
-        { stage: 4, name: "プリンセスリボン",     lv: 60, image: "stage4_#{_color}.png" },
+        { stage: 3, name: "リボンちゃん",         lv: 20, image: "stage3_#{_color}.png" },
+        { stage: 4, name: "プリンセスリボン",     lv: 40, image: "stage4_#{_color}.png" },
       ]
       cur_stage = current_user.ribbon_stage
     %>
@@ -180,9 +235,10 @@
 
       <div class="evo-vertical-chain">
         <% evo_stages.each_with_index do |s, i| %>
-          <% is_current  = (s[:stage] == cur_stage) %>
-          <% is_unlocked = (s[:stage] < cur_stage) %>
-          <div class="evo-v-item <%= is_current ? 'evo-v-item--current' : (is_unlocked ? 'evo-v-item--unlocked' : '') %>">
+          <% is_current      = (s[:stage] == cur_stage) %>
+          <% is_unlocked    = (s[:stage] < cur_stage) %>
+          <% just_evolved   = flash[:evolution_stage].to_i == s[:stage] %>
+          <div class="evo-v-item <%= is_current ? 'evo-v-item--current' : (is_unlocked ? 'evo-v-item--unlocked' : '') %> <%= 'evo-v-item--just-evolved' if just_evolved %>">
             <div class="evo-v-img-wrap">
               <%= image_tag s[:image], class: "evo-v-img", alt: s[:name] %>
               <% if is_current %>

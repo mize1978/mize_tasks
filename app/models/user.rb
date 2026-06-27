@@ -33,8 +33,8 @@ end
 
 def ribbon_stage
   count = completed_count || 0
-  if    count >= 60 then 4
-  elsif count >= 30 then 3
+  if    count >= 40 then 4
+  elsif count >= 20 then 3
   elsif count >= 10 then 2
   else                   1
   end
@@ -49,21 +49,21 @@ def ribbon_exp
   case ribbon_stage
   when 1 then count
   when 2 then count - 10
-  when 3 then count - 30
-  when 4 then count - 60
+  when 3 then count - 20
+  when 4 then count - 40
   end
 end
 
 def ribbon_exp_max
-  [10, 20, 30, nil][ribbon_stage - 1]
+  [10, 10, 20, nil][ribbon_stage - 1]
 end
 
 def ribbon_exp_percent
   count = completed_count || 0
   case ribbon_stage
   when 1 then (count * 10).clamp(0, 100)
-  when 2 then ((count - 10) * 5).clamp(0, 100)
-  when 3 then ((count - 30) * 100 / 30).clamp(0, 100)
+  when 2 then ((count - 10) * 10).clamp(0, 100)
+  when 3 then ((count - 20) * 5).clamp(0, 100)
   when 4 then 100
   end
 end
@@ -72,8 +72,8 @@ def next_stage_tasks
   count = completed_count || 0
   case ribbon_stage
   when 1 then 10 - count
-  when 2 then 30 - count
-  when 3 then 60 - count
+  when 2 then 20 - count
+  when 3 then 40 - count
   when 4 then 0
   end
 end
