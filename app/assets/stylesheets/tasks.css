@@ -3,6 +3,9 @@
  *= require_self
  */
 
+/* hidden属性を確実に適用する */
+[hidden] { display: none !important; }
+
 /* =====================================================================
    ルームテーマ：CSS カスタムプロパティ
    body[data-room-theme="X"] で全体のアクセントカラーが切り替わる
@@ -466,6 +469,10 @@ body {
 
 body:has(.lp-nav) {
   padding-top: 0;
+}
+
+body:has(.mg-wrap) {
+  padding-top: 68px;
 }
 
 main,
@@ -10713,3 +10720,996 @@ body.flash-super::after {
 .pz-diff-btn--easy.pz-diff-btn--active   { border-color: rgba(168, 230, 207, 0.7) !important; }
 .pz-diff-btn--normal.pz-diff-btn--active { border-color: rgba(255, 143, 200, 0.7) !important; }
 .pz-diff-btn--hard.pz-diff-btn--active   { border-color: rgba(201, 124, 255, 0.7) !important; }
+
+/* =====================================================================
+   リボンマッチ（マッチ3ゲーム）
+===================================================================== */
+
+/* ─── 背景：星 + ボケ + スパークル ─── */
+.mg-wrap::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  /* 星フィールド */
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,200,240,0.8) 1px, transparent 1px),
+    radial-gradient(circle, rgba(220,180,255,0.7) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,220,100,0.7) 1px, transparent 1px);
+  background-size: 160px 160px, 220px 220px, 130px 130px, 280px 280px;
+  background-position: 0 0, 70px 40px, 110px 90px, 200px 140px;
+  animation: mgStarfield 20s linear infinite;
+}
+
+@keyframes mgStarfield {
+  0%   { background-position: 0 0,      70px  40px,  110px  90px,  200px 140px; }
+  100% { background-position: 160px 160px, 290px 260px, 240px 220px, 480px 420px; }
+}
+
+.mg-wrap {
+  min-height: calc(100vh - 68px);
+  margin-top: 0;
+  /* 奥行きのある背景：ボケ + 基本グラデ */
+  background:
+    radial-gradient(ellipse at 20% 25%, rgba(255,80,180,0.22) 0%, transparent 40%),
+    radial-gradient(ellipse at 80% 15%, rgba(160,60,255,0.18) 0%, transparent 35%),
+    radial-gradient(ellipse at 55% 75%, rgba(255,100,200,0.15) 0%, transparent 45%),
+    radial-gradient(ellipse at 10% 80%, rgba(120,40,255,0.14) 0%, transparent 35%),
+    radial-gradient(ellipse at 90% 65%, rgba(255,60,140,0.12) 0%, transparent 40%),
+    linear-gradient(160deg, #140328 0%, #2e0050 30%, #60006a 60%, #aa2288 100%);
+  display: grid;
+  grid-template-columns: 280px 1fr 210px;
+  gap: 12px;
+  padding: 10px 16px 24px;
+  box-sizing: border-box;
+  align-items: start;
+  position: relative;
+}
+
+/* ─── 各パネル ─── */
+.mg-panel { color: #fff; position: relative; z-index: 1; }
+
+.mg-panel--info {
+  background: linear-gradient(160deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.07) 100%);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 20px;
+  padding: 18px 14px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 4px 24px rgba(0,0,0,0.18);
+}
+
+.mg-panel--board {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.mg-panel--result {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 20px;
+  padding: 20px 14px;
+  backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+/* モバイルは縦積み */
+@media (max-width: 900px) {
+  .mg-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── ボード上部の金の飾り ─── */
+.mg-board-ornament {
+  font-size: 16px;
+  color: #ffd700;
+  letter-spacing: 4px;
+  text-shadow:
+    0 0 8px rgba(255,215,0,0.8),
+    0 0 20px rgba(255,180,0,0.4);
+  text-align: center;
+  margin-bottom: 4px;
+  animation: mgOrnamentGlow 3s ease-in-out infinite;
+}
+
+@keyframes mgOrnamentGlow {
+  0%, 100% { opacity: 0.85; text-shadow: 0 0 8px rgba(255,215,0,0.8),  0 0 20px rgba(255,180,0,0.4); }
+  50%       { opacity: 1.00; text-shadow: 0 0 14px rgba(255,215,0,1.0), 0 0 32px rgba(255,200,0,0.7); }
+}
+
+/* スタートヒントテキスト */
+.mg-start-hint {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,220,255,0.75);
+  letter-spacing: 2px;
+  margin: 0;
+  text-shadow: 0 0 10px rgba(255,150,220,0.5);
+  animation: mgHintPulse 2s ease-in-out infinite;
+}
+
+@keyframes mgHintPulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1.0; }
+}
+
+/* ─── ボードオーバーレイ ─── */
+.mg-board-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  z-index: 5;
+  pointer-events: auto;
+  background: rgba(20, 0, 50, 0.18);
+}
+
+.mg-countdown {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  z-index: 5;
+  color: #fff;
+  font-weight: 900;
+}
+
+.mg-overlay-hidden {
+  display: none !important;
+}
+
+.mg-overlay-text {
+  font-size: 24px;
+  text-align: center;
+  line-height: 1.4;
+  text-shadow: 0 2px 10px rgba(255,100,200,0.8);
+  margin: 0;
+}
+
+/* カウントダウン数字 */
+.mg-countdown {
+  font-size: 80px;
+  text-shadow: 0 4px 20px rgba(255,100,200,0.8);
+}
+
+.mg-countdown--go {
+  font-size: 56px;
+  color: #ffe066;
+}
+
+.mg-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  margin: 0;
+}
+
+.mg-title {
+  font-size: 38px;
+  font-weight: 900;
+  margin: 0;
+  text-shadow:
+    0 2px 12px rgba(255,100,200,0.7),
+    0 0 30px rgba(255,80,200,0.3);
+  line-height: 1.1;
+}
+
+.mg-desc {
+  font-size: 12px;
+  line-height: 1.6;
+  opacity: 0.85;
+  margin: 0;
+}
+
+.mg-score-board {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.mg-score-item {
+  background: linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+.mg-score-label {
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.mg-score-value {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.mg-score-value--used  { color: #aaa; }
+.mg-score-value--ready { color: #ffe066; }
+
+.mg-reward-table {
+  background: linear-gradient(160deg, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.14) 100%);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 10px 14px;
+  text-align: left;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.mg-reward-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.mg-reward-row:last-child { border-bottom: none; }
+.mg-reward-coin { color: #ffe066; font-weight: 700; }
+
+.mg-how-to {
+  background: linear-gradient(160deg, rgba(255,255,255,0.14) 0%, rgba(255,255,255,0.06) 100%);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: left;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.mg-how-title {
+  font-weight: 700;
+  margin: 0 0 8px;
+  font-size: 13px;
+}
+
+.mg-how-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mg-how-step {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.mg-how-num {
+  font-size: 14px;
+  font-weight: 900;
+  color: #ff80c8;
+  flex-shrink: 0;
+  width: 20px;
+}
+
+.mg-how-text {
+  flex: 1;
+  font-size: 12px;
+}
+
+.mg-how-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.mg-played-msg {
+  font-size: 15px;
+  opacity: 0.8;
+  margin-bottom: 16px;
+}
+
+/* ─── ボタン ─── */
+.mg-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.mg-btn--start {
+  background: linear-gradient(135deg, #ff4db8, #e040ff);
+  color: #fff;
+  box-shadow:
+    0 4px 20px rgba(255,60,180,0.55),
+    0 0 40px rgba(220,60,255,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.mg-btn--start::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent 0deg, rgba(255,255,255,0.12) 60deg, transparent 120deg);
+  animation: mgBtnShine 2.5s linear infinite;
+}
+
+@keyframes mgBtnShine {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.mg-btn--start:hover { transform: scale(1.06); box-shadow: 0 8px 32px rgba(255,60,180,0.75), 0 0 60px rgba(220,60,255,0.45); }
+
+.mg-btn--home {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.4);
+  font-size: 15px;
+  padding: 12px 32px;
+}
+
+.mg-btn--home:hover { background: rgba(255,255,255,0.3); }
+
+/* ─── ボード下スタートエリア ─── */
+.mg-start-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+  width: 100%;
+}
+
+.mg-start-deco {
+  font-size: 13px;
+  color: rgba(255,200,240,0.5);
+  letter-spacing: 4px;
+}
+
+.mg-start-area .mg-btn--start {
+  font-size: 22px;
+  padding: 16px 0;
+  letter-spacing: 3px;
+  width: 80%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* ─── ゲーム画面 ─── */
+.mg-screen--game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.mg-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  color: #fff;
+}
+
+.mg-hud-score-pill {
+  background: linear-gradient(135deg, #ff3d9a, #cc44ff);
+  border-radius: 999px;
+  padding: 8px 22px;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  box-shadow:
+    0 0 14px rgba(255,60,160,0.7),
+    0 0 30px rgba(200,60,255,0.4),
+    inset 0 1px 0 rgba(255,255,255,0.35);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.mg-hud-center-ornament {
+  font-size: 13px;
+  color: #ffd700;
+  letter-spacing: 3px;
+  text-shadow:
+    0 0 8px rgba(255,215,0,0.9),
+    0 0 18px rgba(255,180,0,0.5);
+  animation: mgOrnamentGlow 3s ease-in-out infinite;
+  flex: 1;
+  text-align: center;
+  padding: 0 8px;
+}
+
+.mg-hud-score {
+  font-size: 22px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(255,100,200,0.6);
+}
+
+.mg-hud-score-num {
+  font-size: 28px;
+}
+
+.mg-hud-timer {
+  font-size: 34px;
+  font-weight: 900;
+  color: #ffe066;
+  min-width: 52px;
+  text-align: center;
+  transition: color 0.3s;
+  text-shadow: 0 0 14px rgba(255,220,0,0.5);
+}
+
+.mg-timer--danger {
+  color: #ff3333 !important;
+  animation: timerPulse 0.45s ease infinite alternate;
+}
+
+@keyframes timerPulse {
+  from {
+    transform: scale(1);
+    text-shadow: 0 0 8px rgba(255,50,50,0.5);
+  }
+  to {
+    transform: scale(1.22);
+    text-shadow: 0 0 20px rgba(255,50,50,1.0), 0 0 40px rgba(255,80,80,0.6);
+  }
+}
+
+/* ── キラキラパーティクル ── */
+.mg-sparkle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  animation: mgSparkleOut 0.6s ease-out forwards;
+}
+
+@keyframes mgSparkleOut {
+  0%   { transform: translate(-50%, -50%) scale(1.3) rotate(0deg);   opacity: 1; }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(0) rotate(120deg); opacity: 0; }
+}
+
+/* ── コンボテキスト ── */
+.mg-combo-text {
+  position: fixed;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 26px;
+  font-weight: 900;
+  color: #ffe066;
+  text-shadow:
+    0 0 16px rgba(255,200,0,0.9),
+    0 0 40px rgba(255,160,0,0.5),
+    0 2px 8px rgba(0,0,0,0.6);
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+  animation: mgComboAnim 1.4s ease forwards;
+  letter-spacing: 1px;
+}
+
+.mg-combo-text--big {
+  font-size: 34px;
+  color: #ff80d8;
+  text-shadow:
+    0 0 20px rgba(255,100,200,1.0),
+    0 0 50px rgba(200,60,255,0.6),
+    0 2px 10px rgba(0,0,0,0.7);
+}
+
+@keyframes mgComboAnim {
+  0%   { opacity: 0; transform: translate(-50%, -40%) scale(0.4); }
+  18%  { opacity: 1; transform: translate(-50%, -50%) scale(1.25); }
+  35%  { transform: translate(-50%, -52%) scale(1.0); }
+  75%  { opacity: 1; transform: translate(-50%, -58%) scale(1.0); }
+  100% { opacity: 0; transform: translate(-50%, -68%) scale(0.9); }
+}
+
+/* ── スコアバウンス ── */
+.mg-score-bounce {
+  animation: mgScoreBounce 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  display: inline-block;
+}
+
+@keyframes mgScoreBounce {
+  0%   { transform: scale(1); }
+  28%  { transform: scale(1.40); }
+  55%  { transform: scale(0.92); }
+  78%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+.mg-board-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 24px;
+  box-shadow:
+    0 0 0 3px rgba(255,80,200,0.85),
+    0 0 25px rgba(255,80,200,0.75),
+    0 0 55px rgba(200,60,255,0.55),
+    0 0 100px rgba(255,60,160,0.30),
+    0 0 160px rgba(180,40,255,0.15);
+}
+
+/* ボード四隅の✦キラキラ */
+.mg-board-wrap::before,
+.mg-board-wrap::after {
+  content: '✦';
+  position: absolute;
+  color: #ffd700;
+  font-size: 22px;
+  text-shadow:
+    0 0 8px rgba(255,215,0,1.0),
+    0 0 20px rgba(255,180,0,0.7);
+  pointer-events: none;
+  z-index: 6;
+  animation: mgCornerSpark 2.5s ease-in-out infinite;
+}
+
+.mg-board-wrap::before {
+  top: -16px;
+  left: -16px;
+  animation-delay: 0s;
+}
+
+.mg-board-wrap::after {
+  top: -16px;
+  right: -16px;
+  animation-delay: 1.25s;
+}
+
+@keyframes mgCornerSpark {
+  0%, 100% { opacity: 0.25; transform: scale(0.75) rotate(-10deg); }
+  50%       { opacity: 1.00; transform: scale(1.30) rotate(10deg); }
+}
+
+/* カウントダウン・オーバーレイは新CSS（mg-board-overlay）で管理 */
+
+/* ─── ボード ─── */
+.mg-board {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(70,15,95,0.75), rgba(110,15,130,0.65));
+  border-radius: 22px;
+  padding: 10px;
+  border: none;
+  touch-action: manipulation;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow:
+    inset 0 0 40px rgba(255,80,200,0.10),
+    inset 0 2px 0 rgba(255,255,255,0.06);
+}
+
+.mg-tile {
+  aspect-ratio: 1;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  /* ガラスの縁：明るいホワイト */
+  border: 2px solid rgba(255,255,255,0.92);
+  box-shadow:
+    /* ガラス縁の外側微光 */
+    0 0 0 1px  rgba(255,255,255,0.30),
+    /* 浮き影 */
+    0 9px 22px rgba(0,0,0,0.42),
+    0 4px 8px  rgba(0,0,0,0.26),
+    /* ── ぷにぷに ──────────────── */
+    /* 上ドームハイライト：丸みの頂点 */
+    inset 0  5px 14px rgba(255,255,255,0.95),
+    /* 左上に広がる球面光 */
+    inset 3px 3px 10px rgba(255,255,255,0.40),
+    /* 下の落ち込み：奥行き */
+    inset 0 -5px 10px rgba(0,0,0,0.22),
+    /* 全体の内側ソフトグロー */
+    inset 0  0   20px rgba(255,255,255,0.18);
+}
+
+/* ── 二重枠：内側ガラスリング ── */
+.mg-tile::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 11px;
+  border: 2px solid rgba(255,255,255,0.62);
+  pointer-events: none;
+  z-index: 3;
+  box-shadow:
+    /* 内枠の上ハイライト */
+    inset 0  2px 0 rgba(255,255,255,0.95),
+    /* 内枠の下シャドウ */
+    inset 0 -2px 0 rgba(0,0,0,0.14);
+}
+
+/* ── ガラスシーン：上半球の光沢 ── */
+.mg-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    175deg,
+    rgba(255,255,255,0.75)  0%,
+    rgba(255,255,255,0.42)  22%,
+    rgba(255,255,255,0.14)  45%,
+    rgba(255,255,255,0.00)  62%
+  );
+  pointer-events: none;
+  z-index: 4;
+}
+
+.mg-tile:active {
+  transform: translateY(3px) scale(0.92);
+  box-shadow:
+    0 2px 6px  rgba(0,0,0,0.32),
+    inset 0  3px  8px rgba(0,0,0,0.20),
+    inset 0 -2px  4px rgba(255,255,255,0.25);
+}
+
+@media (hover: hover) {
+  .mg-tile:hover {
+    transform: translateY(-4px) scale(1.07);
+    border-color: rgba(255,255,255,1.0);
+    box-shadow:
+      0 0 0 1px  rgba(255,255,255,0.40),
+      0 12px 28px rgba(0,0,0,0.40),
+      0 4px 10px  rgba(0,0,0,0.22),
+      0 0  18px   rgba(255,220,240,0.45),
+      inset 0  6px 16px rgba(255,255,255,1.00),
+      inset 3px 3px 12px rgba(255,255,255,0.50),
+      inset 0 -5px 10px rgba(0,0,0,0.20),
+      inset 0  0   22px rgba(255,255,255,0.22);
+  }
+}
+
+.mg-tile-img {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 画像タイル（全タイル共通ベース） */
+.mg-tile--full .mg-tile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 13px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)) saturate(1.08) brightness(1.03);
+}
+
+/* ① タイルごとの濃さ・彩度を個別調整 */
+/* 0:リボン — 少し薄いので彩度+明度アップ */
+.mg-tile[data-tile-type="0"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28)) saturate(1.30) brightness(1.10) contrast(1.06);
+}
+/* 1:王冠 — もともとはっきり。微調整のみ */
+.mg-tile[data-tile-type="1"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28)) saturate(1.10) brightness(1.05);
+}
+/* 2:スティック — 青系、少し鮮明に */
+.mg-tile[data-tile-type="2"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28)) saturate(1.18) brightness(1.07);
+}
+/* 3:虹 — ② 淡いので大きく + 明るく */
+.mg-tile[data-tile-type="3"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.22)) saturate(1.35) brightness(1.18) contrast(1.08);
+  transform: scale(1.10);
+  transform-origin: center center;
+}
+/* 4:ティアラ — 少し薄いのでアップ */
+.mg-tile[data-tile-type="4"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28)) saturate(1.28) brightness(1.10) contrast(1.05);
+}
+/* 5:ハート — もともと濃い。ほぼそのまま */
+.mg-tile[data-tile-type="5"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28)) saturate(1.05) brightness(1.03);
+}
+/* 6:羽 — 薄い白系。明度と彩度アップ */
+.mg-tile[data-tile-type="6"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.25)) saturate(1.20) brightness(1.10);
+}
+/* 7:ガラスの靴 — ほぼ適切。少しシャープに */
+.mg-tile[data-tile-type="7"] .mg-tile-img {
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.28)) saturate(1.15) brightness(1.06);
+}
+
+/* キャラタイル（フォールバック） */
+.mg-tile--char .mg-tile-img {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
+}
+
+.mg-tile--selected {
+  transform: translateY(-4px) scale(1.12);
+  border-color: #fff;
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 5px rgba(255,120,210,0.6),
+    0 10px 28px rgba(255,120,210,0.55),
+    0 0 30px rgba(255,80,200,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+  z-index: 2;
+  animation: mgTileSelect 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes mgTileSelect {
+  from { transform: scale(1) translateY(0); }
+  to   { transform: translateY(-4px) scale(1.12); }
+}
+
+.mg-tile--match {
+  animation: mgMatchFlash 0.4s ease forwards;
+}
+
+@keyframes mgMatchFlash {
+  0%   { transform: scale(1);    opacity: 1; filter: brightness(1); }
+  40%  { transform: scale(1.25); opacity: 1; filter: brightness(2.2); }
+  100% { transform: scale(0);    opacity: 0; filter: brightness(3); }
+}
+
+.mg-tile--shake {
+  animation: mgShake 0.35s ease;
+}
+
+@keyframes mgShake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-6px); }
+  75%       { transform: translateX(6px); }
+}
+
+/* 新タイルが上から落ちてくるアニメーション */
+.mg-tile--new {
+  animation: mgFallIn 0.28s ease forwards;
+}
+
+@keyframes mgFallIn {
+  from { transform: translateY(-30px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* ─── 浮かぶスコア ─── */
+.mg-float-score {
+  position: fixed;
+  pointer-events: none;
+  font-size: 22px;
+  font-weight: 900;
+  color: #ffe066;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  animation: mgFloatUp 0.7s ease forwards;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+@keyframes mgFloatUp {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-50px); }
+}
+
+/* ─── 結果画面 ─── */
+.mg-screen--result {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mg-result-inner {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 24px;
+  padding: 32px 28px;
+  text-align: center;
+  color: #fff;
+  backdrop-filter: blur(8px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mg-result-chara {
+  width: 162px;
+  height: 162px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 4px 16px rgba(255,100,200,0.5))
+    drop-shadow(0 0 30px rgba(200,80,255,0.25));
+}
+
+.mg-result-chara-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: #ffe8f8;
+  text-shadow: 0 0 10px rgba(255,120,200,0.6);
+  margin: 0;
+}
+
+.mg-result-stars {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.mg-result-star {
+  font-size: 16px;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255,215,0,0.7);
+}
+
+.mg-result-level {
+  background: linear-gradient(135deg, #ff3d9a, #cc44ff);
+  border-radius: 999px;
+  padding: 3px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.mg-result-msg {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.85;
+  text-shadow: 0 2px 8px rgba(255,100,200,0.5);
+}
+
+.mg-live-score {
+  width: 100%;
+  background: rgba(0,0,0,0.2);
+  border-radius: 14px;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.mg-live-score-label {
+  font-size: 11px;
+  opacity: 0.7;
+  display: block;
+}
+
+.mg-live-score-num {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.mg-live-score-num span:first-child {
+  font-size: 56px;
+  font-weight: 900;
+  color: #ffe066;
+  line-height: 1;
+  text-shadow:
+    0 0 16px rgba(255,220,0,0.6),
+    0 0 32px rgba(255,200,0,0.3);
+}
+
+.mg-live-score-unit {
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.mg-combo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255,120,0,0.12);
+  border: 1px solid rgba(255,140,0,0.3);
+  border-radius: 10px;
+  padding: 5px 14px;
+  width: 100%;
+}
+
+.mg-combo-label {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.mg-combo-num {
+  font-size: 20px;
+  font-weight: 900;
+  color: #ff9020;
+  text-shadow: 0 0 10px rgba(255,140,0,0.5);
+}
+
+.mg-result-score-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.mg-result-score-label {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.mg-result-score-num {
+  font-size: 52px;
+  font-weight: 900;
+  color: #ffe066;
+  line-height: 1;
+}
+
+.mg-result-score-unit {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.mg-result-coins {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffe066;
+}
+
+.mg-result-hs {
+  font-size: 12px;
+  opacity: 0.65;
+}
+
+.mg-result-hs--new {
+  color: #ffe066;
+  opacity: 1;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* ─── ホームボタン（右パネル用） ─── */
+.mg-panel--result .mg-btn--home {
+  background: linear-gradient(135deg, #ff4da6, #cc33ff);
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 24px;
+  box-shadow: 0 4px 16px rgba(255,60,180,0.4);
+  width: 100%;
+  text-align: center;
+}
+
+.mg-panel--result .mg-btn--home:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}

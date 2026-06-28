@@ -1,0 +1,137 @@
+<div class="mg-wrap"
+     data-controller="match-game"
+     data-match-game-result-url="<%= match_game_result_path %>"
+     data-match-game-tile-urls="<%= [image_path('tile_ribbon.png'), image_path('tile_crown.png'), image_path('tile_wand.png'), image_path('tile_rainbow.png'), image_path('tile_tiara.png'), image_path('tile_heart.png'), image_path('tile_wings.png'), image_path('tile_slipper.png')].to_json %>">
+
+  <%# ━━━ 左パネル ━━━ %>
+  <div class="mg-panel mg-panel--info">
+    <p class="mg-label">🎀 ミニゲーム</p>
+    <h1 class="mg-title">リボン<br>マッチ！</h1>
+    <p class="mg-desc">同じ絵柄を縦か横に3つ以上並べよう！<br>60秒で何枚消せるかな？</p>
+
+    <div class="mg-score-board">
+      <div class="mg-score-item">
+        <span class="mg-score-label">ハイスコア</span>
+        <span class="mg-score-value" data-match-game-target="highScoreDisplay"><%= @high_score %> 枚</span>
+      </div>
+      <div class="mg-score-item">
+        <span class="mg-score-label">今日のチャンス</span>
+        <% if @already_played %>
+          <span class="mg-score-value mg-score-value--used">✓ 使用済み</span>
+        <% else %>
+          <span class="mg-score-value mg-score-value--ready">残り 1回</span>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mg-reward-table">
+      <div class="mg-reward-row"><span>60枚以上</span><span class="mg-reward-coin">🪙 100コイン</span></div>
+      <div class="mg-reward-row"><span>30枚以上</span><span class="mg-reward-coin">🪙 60コイン</span></div>
+      <div class="mg-reward-row"><span>10枚以上</span><span class="mg-reward-coin">🪙 30コイン</span></div>
+      <div class="mg-reward-row"><span>〜9枚</span>  <span class="mg-reward-coin">🪙 10コイン</span></div>
+    </div>
+
+    <div class="mg-how-to">
+      <p class="mg-how-title">あそびかた</p>
+      <div class="mg-how-steps">
+        <div class="mg-how-step">
+          <span class="mg-how-num">①</span>
+          <span class="mg-how-text">タイルを選ぶ</span>
+          <span class="mg-how-icon">👆</span>
+        </div>
+        <div class="mg-how-step">
+          <span class="mg-how-num">②</span>
+          <span class="mg-how-text">入れ替える</span>
+          <span class="mg-how-icon">🔄</span>
+        </div>
+        <div class="mg-how-step">
+          <span class="mg-how-num">③</span>
+          <span class="mg-how-text">3つ以上そろえて消す！</span>
+          <span class="mg-how-icon">⭐⭐⭐</span>
+        </div>
+      </div>
+    </div>
+
+    <% if @already_played %>
+      <p class="mg-played-msg">また明日来てね♡</p>
+      <%= link_to "🏠 ホームに戻る", dashboard_path, class: "mg-btn mg-btn--home" %>
+    <% end %>
+  </div>
+
+  <%# ━━━ 中央パネル：ボード ━━━ %>
+  <div class="mg-panel mg-panel--board">
+    <div class="mg-hud">
+      <div class="mg-hud-score-pill">🎀 <span data-match-game-target="scoreDisplay">0</span> 枚</div>
+      <div class="mg-hud-center-ornament">✦ ── ❖ ── ✦</div>
+      <div class="mg-hud-timer" data-match-game-target="timer">60</div>
+    </div>
+
+    <div class="mg-board-ornament">✦ ─── ❖ ─── ✦</div>
+
+    <div class="mg-board-wrap">
+      <div class="mg-board-overlay" data-match-game-target="boardOverlay"></div>
+      <div class="mg-countdown" data-match-game-target="countdown"></div>
+      <div class="mg-board" data-match-game-target="board"></div>
+    </div>
+
+    <% unless @already_played %>
+      <p class="mg-start-hint" data-match-game-target="startHint">✦ スタートを押してね ✦</p>
+    <% end %>
+
+    <% unless @already_played %>
+      <div class="mg-start-area">
+        <div class="mg-start-deco">── ── ── ── ──</div>
+        <button class="mg-btn mg-btn--start" data-action="match-game#start" data-match-game-target="startBtn">
+          🎀 スタート
+        </button>
+        <div class="mg-start-deco">── ── ── ── ──</div>
+      </div>
+    <% end %>
+  </div>
+
+  <%# ━━━ 右パネル：結果 ━━━ %>
+  <div class="mg-panel mg-panel--result">
+    <%= image_tag current_user.ribbon_stage_image,
+          class: "mg-result-chara",
+          style: ribbon_color_style,
+          alt: current_user.ribbon_stage_name %>
+
+    <p class="mg-result-chara-name"><%= current_user.ribbon_stage_name %></p>
+
+    <div class="mg-result-stars">
+      <% [1, 2, 3, 5][current_user.ribbon_stage - 1].times do %>
+        <span class="mg-result-star">★</span>
+      <% end %>
+    </div>
+
+    <div class="mg-result-level">Lv.<%= current_user.ribbon_level %></div>
+
+    <p class="mg-result-msg" data-match-game-target="resultMessage">がんばってね♡</p>
+
+    <div class="mg-live-score">
+      <span class="mg-live-score-label">スコア</span>
+      <div class="mg-live-score-num">
+        <span data-match-game-target="resultScore">-</span>
+        <span class="mg-live-score-unit">枚</span>
+      </div>
+    </div>
+
+    <div class="mg-combo-wrap">
+      <span class="mg-combo-label">コンボ</span>
+      <span class="mg-combo-num" data-match-game-target="comboDisplay">×0</span>
+    </div>
+
+    <div class="mg-result-hs"
+         data-match-game-target="resultHighScore"
+         data-prev="<%= @high_score %>">
+      ハイスコア: <%= @high_score %> 枚
+    </div>
+
+    <div class="mg-result-coins" data-match-game-target="resultCoins"></div>
+
+    <%= link_to dashboard_path, class: "mg-btn mg-btn--home" do %>
+      🏠 ホームに戻る
+    <% end %>
+  </div>
+
+</div>

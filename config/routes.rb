@@ -37,5 +37,8 @@ Rails.application.routes.draw do
   post  'games/puzzle/result',  to: 'games#puzzle_result',   as: :puzzle_game_result
   patch 'games/puzzle/select',  to: 'games#puzzle_select',   as: :puzzle_game_select
 
+  get  'games/match',        to: 'games#match_game',        as: :match_game
+  post 'games/match/result', to: 'games#match_game_result', as: :match_game_result
+
   get 'l', to: redirect('/')
 end

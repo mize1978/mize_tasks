@@ -134,6 +134,16 @@
           <p class="week-game-sub">クリアで 🪙 100コイン</p>
           <span class="week-game-play">▶ プレイ</span>
         <% end %>
+
+        <%= link_to match_game_path, class: "week-game-btn" do %>
+          <% unless current_user.match_game_played_today? %>
+            <span class="room-game-badge">NEW</span>
+          <% end %>
+          <p class="week-game-title">✨ リボンマッチ</p>
+          <p class="week-game-sub">ハイスコア <strong><%= current_user.match_game_high_score %></strong></p>
+          <p class="week-game-sub">60秒マッチ3</p>
+          <span class="week-game-play">▶ プレイ</span>
+        <% end %>
       </div>
 
       <div class="tasks-panel">
@@ -222,6 +232,19 @@
           <div>
             <p class="room-game-title">🧩 リボンパズル</p>
             <p class="room-game-sub">🪙 100コイン</p>
+          </div>
+          <span class="room-game-btn mobile-game-btn">プレイ</span>
+        </div>
+      <% end %>
+
+      <%= link_to match_game_path, class: "mobile-game-card mobile-game-card--half" do %>
+        <% unless current_user.match_game_played_today? %>
+          <span class="room-game-badge">NEW</span>
+        <% end %>
+        <div class="mobile-game-card-inner">
+          <div>
+            <p class="room-game-title">✨ リボンマッチ</p>
+            <p class="room-game-sub">🪙 最大100コイン</p>
           </div>
           <span class="room-game-btn mobile-game-btn">プレイ</span>
         </div>

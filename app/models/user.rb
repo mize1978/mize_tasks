@@ -171,6 +171,10 @@ end
     tap_game_last_played_at&.to_date == Date.current
   end
 
+  def match_game_played_today?
+    match_game_last_played_at&.to_date == Date.current
+  end
+
   PUZZLE_MAX_PLAYS = 3
 
   def puzzle_plays_remaining

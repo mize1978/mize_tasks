@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
 const TIME_LIMIT      = 30
-const SPAWN_MS        = 380
-const RIBBON_LIFE_MS  = 2400
+const SPAWN_MS        = 600
+const RIBBON_LIFE_MS  = 3500
 
 const RESULT_MESSAGES = {
   low:    ["次は絶対もっとできるよ！♪", "練習あるのみ！一緒に頑張ろうね♡", "ゆっくりでも大丈夫だよ♪"],
@@ -100,8 +100,8 @@ export default class extends Controller {
       top:  ${sy}px;
       --tx: ${tx}px;
       --ty: ${ty}px;
-      animation-duration: ${1.2 + Math.random() * 1.2}s;
-      font-size: ${32 + Math.random() * 24}px;
+      animation-duration: ${2.0 + Math.random() * 1.5}s;
+      font-size: ${52 + Math.random() * 20}px;
     `
 
     el.addEventListener("pointerdown", (e) => {

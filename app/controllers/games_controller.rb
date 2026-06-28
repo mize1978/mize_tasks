@@ -143,7 +143,39 @@ class GamesController < ApplicationController
     end
   end
 
+  # ===================== リボンマッチ =====================
+
+  def match_game
+    @already_played  = current_user.match_game_played_today?
+    @high_score      = current_user.match_game_high_score
+  end
+
+  def match_game_result
+    if current_user.match_game_played_today?
+      render json: { error: "already_played" }, status: :unprocessable_entity
+      return
+    end
+
+    score = params[:score].to_i.clamp(0, 9999)
+    coins = match_coins_for(score)
+
+    current_user.update!(
+      coins:                    current_user.coins + coins,
+      match_game_last_played_at: Time.current,
+      match_game_high_score:    [current_user.match_game_high_score, score].max
+    )
+
+    render json: { coins: coins, total_coins: current_user.coins }
+  end
+
   private
+
+  def match_coins_for(score)
+    return 100 if score >= 60
+    return 60  if score >= 30
+    return 30  if score >= 10
+    10
+  end
 
   def coins_for(score)
     return 100 if score >= 100
