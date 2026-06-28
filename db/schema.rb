@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2026_06_26_000002) do
+ActiveRecord::Schema[7.0].define(version: 2026_06_28_000002) do
   create_table "tasks", charset: "utf8mb4", force: :cascade do |t|
     t.string "title"
     t.boolean "done"
@@ -46,6 +46,10 @@ ActiveRecord::Schema[7.0].define(version: 2026_06_26_000002) do
     t.datetime "tap_game_last_played_at"
     t.integer "tap_game_high_score", default: 0, null: false
     t.string "gacha_title"
+    t.datetime "puzzle_last_played_at"
+    t.integer "puzzle_plays_today", default: 0, null: false
+    t.integer "puzzle_clears_count", default: 0, null: false
+    t.integer "selected_puzzle_id", default: 1, null: false
   end
 
   add_foreign_key "tasks", "users"

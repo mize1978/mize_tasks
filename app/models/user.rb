@@ -171,6 +171,63 @@ end
     tap_game_last_played_at&.to_date == Date.current
   end
 
+  PUZZLE_MAX_PLAYS = 3
+
+  def puzzle_plays_remaining
+    if puzzle_last_played_at&.to_date == Date.current
+      [PUZZLE_MAX_PLAYS - (puzzle_plays_today || 0), 0].max
+    else
+      PUZZLE_MAX_PLAYS
+    end
+  end
+
+  def puzzle_played_out?
+    puzzle_plays_remaining <= 0
+  end
+
+  def record_puzzle_play!
+    if puzzle_last_played_at&.to_date == Date.current
+      update!(
+        puzzle_last_played_at: Time.current,
+        puzzle_plays_today:    (puzzle_plays_today || 0) + 1
+      )
+    else
+      update!(
+        puzzle_last_played_at: Time.current,
+        puzzle_plays_today:    1
+      )
+    end
+  end
+
+  PUZZLE_IMAGES = [
+    { id: 9, name: "お花見",           file: "puzzle_9.png", unlock_at: 0  },
+    { id: 2, name: "サマービーチ",     file: "puzzle_2.png", unlock_at: 5  },
+    { id: 6, name: "バーベキュー",     file: "puzzle_6.png", unlock_at: 10 },
+    { id: 7, name: "花火大会",         file: "puzzle_7.png", unlock_at: 20 },
+    { id: 3, name: "ハロウィンナイト", file: "puzzle_3.png", unlock_at: 30 },
+    { id: 4, name: "クリスマスナイト", file: "puzzle_4.png", unlock_at: 40 },
+    { id: 8, name: "パジャマパーティー", file: "puzzle_8.png", unlock_at: 50 },
+    { id: 5, name: "3プリンセス",     file: "puzzle_5.png", unlock_at: 60 },
+  ].freeze
+
+  def owned_puzzle_images
+    PUZZLE_IMAGES.select { |p| puzzle_clears_count >= p[:unlock_at] }
+  end
+
+  def owned_puzzle_ids
+    owned_puzzle_images.map { |p| p[:id] }
+  end
+
+  def selected_puzzle_image_file
+    puzzle = PUZZLE_IMAGES.find { |p| p[:id] == selected_puzzle_id } ||
+             PUZZLE_IMAGES.first
+    puzzle[:file]
+  end
+
+  def newly_unlocked_puzzles(prev_clears)
+    PUZZLE_IMAGES.select { |p| p[:unlock_at] > prev_clears && p[:unlock_at] <= puzzle_clears_count }
+  end
+
   validates :email, presence: true, uniqueness: true
   validates :nickname, presence: true
 end

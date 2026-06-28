@@ -94,6 +94,54 @@ class GamesController < ApplicationController
     }
   end
 
+  # ===================== リボンパズル =====================
+
+  PUZZLE_COINS = 100
+
+  def puzzle
+    @plays_remaining  = current_user.puzzle_plays_remaining
+    @played_out       = current_user.puzzle_played_out?
+    @puzzle_images    = User::PUZZLE_IMAGES
+    @clears_count     = current_user.puzzle_clears_count
+    @selected_id      = current_user.selected_puzzle_id
+    @selected_file    = current_user.selected_puzzle_image_file
+  end
+
+  def puzzle_result
+    if current_user.puzzle_played_out?
+      render json: { error: "played_out" }, status: :unprocessable_entity
+      return
+    end
+
+    prev_clears = current_user.puzzle_clears_count
+    current_user.record_puzzle_play!
+    current_user.update!(
+      coins:               current_user.coins + PUZZLE_COINS,
+      puzzle_clears_count: current_user.puzzle_clears_count + 1
+    )
+
+    newly_unlocked = current_user.newly_unlocked_puzzles(prev_clears)
+
+    render json: {
+      coins:          PUZZLE_COINS,
+      total_coins:    current_user.coins,
+      plays_left:     current_user.puzzle_plays_remaining,
+      clears:         current_user.puzzle_clears_count,
+      newly_unlocked: newly_unlocked.map { |p| p.except(:file) }
+    }
+  end
+
+  def puzzle_select
+    puzzle_id = params[:puzzle_id].to_i
+    if current_user.owned_puzzle_ids.include?(puzzle_id)
+      current_user.update!(selected_puzzle_id: puzzle_id)
+      puzzle = User::PUZZLE_IMAGES.find { |p| p[:id] == puzzle_id }
+      render json: { ok: true, file: puzzle[:file], image_url: helpers.asset_path(puzzle[:file]) }
+    else
+      render json: { error: "not_owned" }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def coins_for(score)

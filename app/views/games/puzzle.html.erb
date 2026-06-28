@@ -1,0 +1,126 @@
+<div class="pz-wrap"
+     data-controller="puzzle"
+     data-puzzle-result-url="<%= puzzle_game_result_path %>"
+     data-puzzle-select-url="<%= puzzle_game_select_path %>"
+     data-puzzle-image="<%= asset_path(@selected_file) %>"
+     data-puzzle-color-style="">
+
+  <%# ━━━ スタート画面 ━━━ %>
+  <div class="pz-screen pz-screen--start" data-puzzle-target="startScreen">
+    <div class="pz-start-inner">
+      <p class="pz-label">🧩 ミニゲーム</p>
+      <h1 class="pz-title">リボンパズル</h1>
+
+      <%# ギャラリー %>
+      <div class="pz-gallery">
+        <% @puzzle_images.each do |puzzle| %>
+          <% owned = @clears_count >= puzzle[:unlock_at] %>
+          <% selected = puzzle[:id] == @selected_id %>
+          <div class="pz-gallery-item <%= 'pz-gallery-item--owned' if owned %> <%= 'pz-gallery-item--selected' if selected %>"
+               data-puzzle-id="<%= puzzle[:id] %>"
+               data-puzzle-file="<%= owned ? asset_path(puzzle[:file]) : '' %>"
+               data-action="<%= 'click->puzzle#selectPuzzle' if owned %>">
+            <% if owned %>
+              <%= image_tag puzzle[:file], class: "pz-gallery-thumb", alt: puzzle[:name] %>
+              <% if selected %>
+                <span class="pz-gallery-check">✓</span>
+              <% end %>
+            <% else %>
+              <div class="pz-gallery-locked">
+                <span class="pz-gallery-lock-ico">🔒</span>
+                <p class="pz-gallery-lock-count">あと<%= puzzle[:unlock_at] - @clears_count %>回</p>
+              </div>
+            <% end %>
+            <p class="pz-gallery-name"><%= puzzle[:name] %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <%# 選択中のプレビュー %>
+      <div class="pz-preview-wrap" data-puzzle-target="previewWrap">
+        <%= image_tag @selected_file,
+              class: "pz-preview-img",
+              alt: "選択中のパズル",
+              "data-puzzle-target": "previewImg" %>
+      </div>
+
+      <div class="pz-score-board">
+        <div class="pz-score-item">
+          <span class="pz-score-label">クリア報酬</span>
+          <span class="pz-score-value">🪙 100コイン</span>
+        </div>
+        <div class="pz-score-item">
+          <span class="pz-score-label">今日の残り</span>
+          <% if @played_out %>
+            <span class="pz-score-value pz-score-value--used">✓ 0 / 3</span>
+          <% else %>
+            <span class="pz-score-value pz-score-value--ready">残り <%= @plays_remaining %> / 3</span>
+          <% end %>
+        </div>
+        <div class="pz-score-item">
+          <span class="pz-score-label">総クリア数</span>
+          <span class="pz-score-value"><%= @clears_count %> 回</span>
+        </div>
+      </div>
+
+      <% if @played_out %>
+        <p class="pz-played-msg">今日はもう遊んだね！<br>また明日来てね♡</p>
+        <%= link_to "ホームに戻る", dashboard_path, class: "pz-btn pz-btn--home" %>
+      <% else %>
+        <button class="pz-btn pz-btn--start" data-action="puzzle#start">
+          スタート！
+        </button>
+      <% end %>
+    </div>
+  </div>
+
+  <%# ━━━ ゲーム画面 ━━━ %>
+  <div class="pz-screen pz-screen--game" data-puzzle-target="gameScreen" hidden>
+    <div class="pz-hud">
+      <div class="pz-hud-moves">
+        手数 <span data-puzzle-target="moveCount">0</span>
+      </div>
+      <div class="pz-hud-timer" data-puzzle-target="timer">0:00</div>
+    </div>
+
+    <div class="pz-board" data-puzzle-target="board"></div>
+
+    <button class="pz-btn pz-btn--shuffle" data-action="puzzle#shuffle">
+      シャッフル
+    </button>
+  </div>
+
+  <%# ━━━ 結果画面 ━━━ %>
+  <div class="pz-screen pz-screen--result" data-puzzle-target="resultScreen" hidden>
+    <div class="pz-result-inner">
+      <p class="pz-result-msg">パズル完成！🎉</p>
+
+      <div class="pz-result-stats">
+        <div class="pz-result-stat">
+          <span class="pz-result-stat-label">手数</span>
+          <span class="pz-result-stat-val" data-puzzle-target="resultMoves"></span>
+        </div>
+        <div class="pz-result-stat">
+          <span class="pz-result-stat-label">タイム</span>
+          <span class="pz-result-stat-val" data-puzzle-target="resultTime"></span>
+        </div>
+        <div class="pz-result-stat">
+          <span class="pz-result-stat-label">総クリア</span>
+          <span class="pz-result-stat-val" data-puzzle-target="resultClears"></span>
+        </div>
+      </div>
+
+      <div class="pz-result-coins" data-puzzle-target="resultCoins"></div>
+      <div class="pz-result-unlock" data-puzzle-target="resultUnlock"></div>
+      <div class="pz-result-plays-left" data-puzzle-target="resultPlaysLeft"></div>
+
+      <div class="pz-result-btns">
+        <button class="pz-btn pz-btn--again" data-action="puzzle#playAgain" data-puzzle-target="playAgainBtn">
+          もう一回！
+        </button>
+        <%= link_to "ホームに戻る", dashboard_path, class: "pz-btn pz-btn--home" %>
+      </div>
+    </div>
+  </div>
+
+</div>

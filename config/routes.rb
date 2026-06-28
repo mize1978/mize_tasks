@@ -30,8 +30,12 @@ Rails.application.routes.draw do
   get  'games/tap',        to: 'games#tap_game',        as: :tap_game
   post 'games/tap/result', to: 'games#tap_game_result', as: :tap_game_result
 
-  get  'games/gacha',      to: 'games#gacha',           as: :gacha
-  post 'games/gacha/pull', to: 'games#gacha_pull',      as: :gacha_pull
+  get  'games/gacha',         to: 'games#gacha',          as: :gacha
+  post 'games/gacha/pull',    to: 'games#gacha_pull',     as: :gacha_pull
+
+  get   'games/puzzle',         to: 'games#puzzle',          as: :puzzle_game
+  post  'games/puzzle/result',  to: 'games#puzzle_result',   as: :puzzle_game_result
+  patch 'games/puzzle/select',  to: 'games#puzzle_select',   as: :puzzle_game_select
 
   get 'l', to: redirect('/')
 end

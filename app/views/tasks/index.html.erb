@@ -124,6 +124,16 @@
           <p class="week-game-sub">30秒チャレンジ</p>
           <span class="week-game-play">▶ プレイ</span>
         <% end %>
+
+        <%= link_to puzzle_game_path, class: "week-game-btn" do %>
+          <% if current_user.puzzle_plays_remaining > 0 %>
+            <span class="room-game-badge">残<%= current_user.puzzle_plays_remaining %></span>
+          <% end %>
+          <p class="week-game-title">🧩 リボンパズル</p>
+          <p class="week-game-sub">4×4 スライドパズル</p>
+          <p class="week-game-sub">クリアで 🪙 100コイン</p>
+          <span class="week-game-play">▶ プレイ</span>
+        <% end %>
       </div>
 
       <div class="tasks-panel">
@@ -182,19 +192,34 @@
 
     </div>
 
-    <%# モバイルのみ：リボンキャッチ %>
-    <%= link_to tap_game_path, class: "mobile-game-card" do %>
-      <% unless current_user.tap_game_played_today? %>
-        <span class="room-game-badge">NEW</span>
-      <% end %>
-      <div class="mobile-game-card-inner">
-        <div>
-          <p class="room-game-title">🎀 リボンキャッチ</p>
-          <p class="room-game-sub">30秒でリボンをたくさんキャッチ！ハイスコア <strong><%= current_user.tap_game_high_score %></strong></p>
+    <%# モバイルのみ：ミニゲーム %>
+    <div class="mobile-games-row">
+      <%= link_to tap_game_path, class: "mobile-game-card mobile-game-card--half" do %>
+        <% unless current_user.tap_game_played_today? %>
+          <span class="room-game-badge">NEW</span>
+        <% end %>
+        <div class="mobile-game-card-inner">
+          <div>
+            <p class="room-game-title">🎀 リボンキャッチ</p>
+            <p class="room-game-sub">ハイスコア <strong><%= current_user.tap_game_high_score %></strong></p>
+          </div>
+          <span class="room-game-btn mobile-game-btn">プレイ</span>
         </div>
-        <span class="room-game-btn mobile-game-btn">プレイする</span>
-      </div>
-    <% end %>
+      <% end %>
+
+      <%= link_to puzzle_game_path, class: "mobile-game-card mobile-game-card--half" do %>
+        <% if current_user.puzzle_plays_remaining > 0 %>
+          <span class="room-game-badge">残<%= current_user.puzzle_plays_remaining %></span>
+        <% end %>
+        <div class="mobile-game-card-inner">
+          <div>
+            <p class="room-game-title">🧩 リボンパズル</p>
+            <p class="room-game-sub">🪙 100コイン</p>
+          </div>
+          <span class="room-game-btn mobile-game-btn">プレイ</span>
+        </div>
+      <% end %>
+    </div>
 
     <%# ===== お部屋の成長ストリップ（ダミー表示） ===== %>
     <div class="room-growth-panel">
