@@ -42,6 +42,13 @@ def index
   @week_days = (6.days.ago.to_date..Date.current).map do |d|
     { date: d, done: @done_dates.include?(d), today: d == Date.current }
   end
+
+  @today_coins = current_user.tasks
+    .where(done: true)
+    .where(completed_at: Time.current.all_day)
+    .sum(:coin_reward)
+
+  @week_done_days = @week_days.count { |d| d[:done] }
 end
 
   # =====================

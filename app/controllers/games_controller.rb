@@ -1,6 +1,11 @@
 class GamesController < ApplicationController
   before_action :require_login
 
+  # ===================== ゲームロビー =====================
+
+  def index
+  end
+
   # ===================== タップゲーム =====================
 
   def tap_game
@@ -150,6 +155,33 @@ class GamesController < ApplicationController
     @high_score      = current_user.match_game_high_score
   end
 
+  def potion_game
+    @already_played = current_user.potion_game_played_today?
+    @high_stage     = current_user.potion_game_high_stage.to_i
+  end
+
+  def potion_game_result
+    stage = params[:stage].to_i.clamp(1, 10)
+    coins = potion_coins_for(stage)
+
+    already = current_user.potion_game_played_today?
+    awarded_coins = already ? 0 : coins
+
+    if !already
+      current_user.update!(
+        coins:                     current_user.coins + coins,
+        potion_game_last_played_at: Time.current,
+        potion_game_high_stage:    [current_user.potion_game_high_stage.to_i, stage].max
+      )
+    else
+      current_user.update!(
+        potion_game_high_stage: [current_user.potion_game_high_stage.to_i, stage].max
+      )
+    end
+
+    render json: { coins: awarded_coins, total_coins: current_user.coins, stage: stage, already_played: already }
+  end
+
   def match_game_result
     if current_user.match_game_played_today?
       render json: { error: "already_played" }, status: :unprocessable_entity
@@ -169,6 +201,12 @@ class GamesController < ApplicationController
   end
 
   private
+
+  def potion_coins_for(stage)
+    return 150 if stage >= 5
+    return 100 if stage >= 3
+    50
+  end
 
   def match_coins_for(score)
     return 100 if score >= 60

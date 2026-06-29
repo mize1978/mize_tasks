@@ -35,7 +35,9 @@
 
       <% if @already_played %>
         <p class="tg-played-msg">また明日来てね♡<br>毎日チャレンジで腕を磨こう！</p>
-        <%= link_to "ホームに戻る", dashboard_path, class: "tg-btn tg-btn--home" %>
+        <%= link_to dashboard_path, class: "btn-home-link" do %>
+          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+        <% end %>
       <% else %>
         <button class="tg-btn tg-btn--start" data-action="tap-game#start">
           スタート！
@@ -50,7 +52,15 @@
       <div class="tg-hud-score">
         🎀 <span class="tg-hud-score-num" data-tap-game-target="scoreDisplay">0</span>
       </div>
-      <div class="tg-hud-timer" data-tap-game-target="timer">30</div>
+      <div class="tg-hud-hearts">
+        <span class="tg-hud-heart" data-tap-game-target="heart">♡</span>
+        <span class="tg-hud-heart" data-tap-game-target="heart">♡</span>
+        <span class="tg-hud-heart" data-tap-game-target="heart">♡</span>
+      </div>
+      <div class="tg-hud-timer-wrap">
+        <span class="tg-hud-timer-ico">⏱</span>
+        <span class="tg-hud-timer" data-tap-game-target="timer">30</span>
+      </div>
     </div>
 
     <div class="tg-ribbon-container" data-tap-game-target="ribbonContainer">
@@ -82,9 +92,16 @@
         ハイスコア: <%= current_user.tap_game_high_score %> 点
       </div>
 
-      <%= link_to dashboard_path, class: "tg-btn tg-btn--home" do %>
-        ホームに戻る
-      <% end %>
+      <div class="tg-result-actions">
+        <% unless @already_played %>
+          <button class="tg-btn tg-btn--retry" data-action="tap-game#retry">
+            🔄 もう一回
+          </button>
+        <% end %>
+        <%= link_to dashboard_path, class: "btn-home-link" do %>
+          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+        <% end %>
+      </div>
     </div>
   </div>
 

@@ -90,12 +90,26 @@
 
       <% if @played_out %>
         <p class="pz-played-msg">今日はもう遊んだね！<br>また明日来てね♡</p>
-        <%= link_to "ホームに戻る", dashboard_path, class: "pz-btn pz-btn--home" %>
+        <%= link_to dashboard_path, class: "btn-home-link" do %>
+          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+        <% end %>
       <% else %>
         <button class="pz-btn pz-btn--start" data-action="puzzle#start">
           スタート！
         </button>
       <% end %>
+    </div>
+  </div>
+
+  <%# ━━━ プレビュー画面 ━━━ %>
+  <div class="pz-screen pz-screen--preview" data-puzzle-target="previewScreen" hidden>
+    <div class="pz-preview-content">
+      <p class="pz-preview-label">完成図</p>
+      <div class="pz-preview-img-wrap">
+        <img class="pz-preview-full-img" data-puzzle-target="previewFullImg" src="" alt="完成図">
+      </div>
+      <p class="pz-preview-sub">この絵を作ろう！</p>
+      <div class="pz-preview-countdown" data-puzzle-target="previewCountdown">3...</div>
     </div>
   </div>
 
@@ -105,14 +119,34 @@
       <div class="pz-hud-moves">
         手数 <span data-puzzle-target="moveCount">0</span>
       </div>
+      <button class="pz-btn-hint" data-action="puzzle#hint" title="ヒント">
+        💡
+      </button>
       <div class="pz-hud-timer" data-puzzle-target="timer">0:00</div>
     </div>
 
     <div class="pz-board" data-puzzle-target="board"></div>
+    <div class="pz-hint-overlay" data-puzzle-target="hintOverlay" hidden></div>
 
-    <button class="pz-btn pz-btn--shuffle" data-action="puzzle#shuffle">
-      シャッフル
-    </button>
+    <div class="pz-game-btns">
+      <button class="pz-btn pz-btn--shuffle" data-action="puzzle#shuffle">シャッフル</button>
+      <button class="pz-btn pz-btn--giveup" data-action="puzzle#confirmGiveUp">ギブアップ</button>
+    </div>
+
+    <%# 確認ダイアログ %>
+    <div class="pz-giveup-dialog" data-puzzle-target="giveUpDialog" hidden>
+      <div class="pz-giveup-inner">
+        <p class="pz-giveup-msg">ギブアップする？😢<br><span>タイムは記録されないよ</span></p>
+        <div class="pz-giveup-btns">
+          <button class="pz-img-btn" data-action="puzzle#giveUp">
+            <%= image_tag "btn_ok.png", class: "pz-img-btn-img", alt: "やめる" %>
+          </button>
+          <button class="pz-img-btn" data-action="puzzle#cancelGiveUp">
+            <%= image_tag "btn_cancel.png", class: "pz-img-btn-img", alt: "続ける！" %>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <%# ━━━ 結果画面 ━━━ %>
@@ -143,7 +177,9 @@
         <button class="pz-btn pz-btn--again" data-action="puzzle#playAgain" data-puzzle-target="playAgainBtn">
           もう一回！
         </button>
-        <%= link_to "ホームに戻る", dashboard_path, class: "pz-btn pz-btn--home" %>
+        <%= link_to dashboard_path, class: "btn-home-link" do %>
+          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+        <% end %>
       </div>
     </div>
   </div>

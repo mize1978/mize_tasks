@@ -4,7 +4,7 @@
 <% ach_active   = controller_name == 'pages'  && action_name == 'achievements' %>
 <% shop_active  = controller_name == 'furnitures' %>
 <% set_active   = controller_name == 'pages'  && action_name == 'settings' %>
-<% game_active  = controller_name == 'games'  && action_name == 'tap_game' %>
+<% game_active  = controller_name == 'games'  && !%w[gacha gacha_pull].include?(action_name) %>
 <% gacha_active = controller_name == 'games'  && action_name == 'gacha' %>
 
 <%# ===== デイリーBOX + 今日の獲得アイテム ===== %>
@@ -58,25 +58,34 @@
 
 </div>
 
-<%# ===== マイルームサムネイル ===== %>
-<div class="sidebar-deco-panel">
-  <div class="sidebar-deco-header">
-    <p class="sidebar-deco-title">🏠 マイルーム</p>
-    <%= link_to "背景を変える", shop_path, class: "sidebar-deco-shop-btn" %>
-  </div>
-
-  <%= link_to shop_path, class: "sidebar-deco-room" do %>
-    <%= image_tag current_user.room_bg_image, class: "sidebar-deco-room-bg", alt: "マイルーム" %>
-    <%= image_tag current_user.ribbon_stage_image, class: "sidebar-deco-room-chara", alt: "リボンちゃん" %>
-    <div class="sidebar-deco-room-hover">
-      <span>背景を変える ›</span>
-    </div>
-  <% end %>
-
-</div>
 
 <%# ===== ナビゲーション ===== %>
 <div class="side-menu">
+
+  <%# ── クイックアクセス ── %>
+  <div class="side-quick-row">
+    <%= link_to shop_path, class: "side-quick-btn side-quick-btn--room #{shop_active ? 'active' : ''}" do %>
+      <%= image_tag current_user.room_bg_image, class: "side-quick-room-bg" %>
+      <%= image_tag current_user.ribbon_stage_image, class: "side-quick-room-chara" %>
+      <span class="side-quick-room-label">🛏 マイルーム</span>
+    <% end %>
+    <%= link_to gacha_path, class: "side-quick-btn #{gacha_active ? 'active' : ''}" do %>
+      <span class="side-quick-ico">🎲</span>
+      <span>ガチャ</span>
+    <% end %>
+  </div>
+
+  <%# ── ミニゲーム ── %>
+  <div class="side-section-label">🎮 ミニゲーム</div>
+  <%= link_to games_path, class: "side-menu-item side-menu-item--game #{game_active ? 'active' : ''}" do %>
+    <span>ゲームで遊ぶ</span>
+    <% if !current_user.tap_game_played_today? || !current_user.match_game_played_today? || current_user.puzzle_plays_remaining > 0 %>
+      <span class="side-menu-badge">NEW</span>
+    <% end %>
+  <% end %>
+
+  <%# ── メニュー ── %>
+  <div class="side-section-label">📋 メニュー</div>
   <%= link_to dashboard_path, class: "side-menu-item #{home_active ? 'active' : ''}" do %>
     <%= image_tag "home.png", class: "menu-icon" %>
     <span>ホーム</span>
@@ -92,24 +101,6 @@
     <span>習慣</span>
   <% end %>
 
-  <%= link_to tap_game_path, class: "side-menu-item #{game_active ? 'active' : ''}" do %>
-    <span class="menu-icon-emoji">🎮</span>
-    <span>ゲーム</span>
-    <% unless current_user.tap_game_played_today? %>
-      <span class="side-menu-badge">NEW</span>
-    <% end %>
-  <% end %>
-
-  <%= link_to gacha_path, class: "side-menu-item #{gacha_active ? 'active' : ''}" do %>
-    <span class="menu-icon-emoji">✨</span>
-    <span>ガチャ</span>
-  <% end %>
-
-  <%= link_to shop_path, class: "side-menu-item #{shop_active ? 'active' : ''}" do %>
-    <span class="menu-icon-emoji">🛒</span>
-    <span>ショップ</span>
-  <% end %>
-
   <%= link_to letters_path, class: "side-menu-item" do %>
     <span class="menu-icon-emoji">📮</span>
     <span>お手紙</span>
@@ -123,4 +114,5 @@
     <span class="menu-icon-emoji">⚙️</span>
     <span>設定</span>
   <% end %>
+
 </div>

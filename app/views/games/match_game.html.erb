@@ -54,7 +54,9 @@
 
     <% if @already_played %>
       <p class="mg-played-msg">また明日来てね♡</p>
-      <%= link_to "🏠 ホームに戻る", dashboard_path, class: "mg-btn mg-btn--home" %>
+      <%= link_to dashboard_path, class: "btn-home-link" do %>
+        <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+      <% end %>
     <% end %>
 
     <div class="mg-ribbon-msg">
@@ -97,8 +99,8 @@
     <% unless @already_played %>
       <div class="mg-start-area">
         <div class="mg-start-deco">── ── ── ── ──</div>
-        <button class="mg-btn mg-btn--start" data-action="match-game#start" data-match-game-target="startBtn">
-          🎀 スタート
+        <button class="mg-btn--start-img-btn" data-action="match-game#start" data-match-game-target="startBtn">
+          <%= image_tag "btn_start.png", class: "btn-start-img", alt: "スタート" %>
         </button>
         <div class="mg-start-deco">── ── ── ── ──</div>
       </div>
@@ -145,8 +147,8 @@
 
     <div class="mg-result-coins" data-match-game-target="resultCoins"></div>
 
-    <%= link_to dashboard_path, class: "mg-btn mg-btn--home" do %>
-      🏠 ホームに戻る
+    <%= link_to dashboard_path, class: "btn-home-link" do %>
+      <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
     <% end %>
   </div>
 

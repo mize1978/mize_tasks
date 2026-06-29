@@ -91,12 +91,23 @@
           </div>
         </div>
 
-        <%# ⚙️ 設定 %>
-        <%= link_to settings_path, class: "header-icon header-icon--btn", title: "設定" do %>⚙️<% end %>
-
       </div>
-      <span class="header-username"><%= current_user.nickname %> さん</span>
-      <%= link_to "ログアウト", logout_path, class: "header-link", data: { turbo_method: :delete } %>
+
+      <%# 👤 プロフィールドロップダウン %>
+      <div class="header-profile-wrap" id="profileWrap">
+        <button class="header-profile-btn" id="profileBtn" type="button">
+          <span class="header-profile-name"><%= current_user.nickname %> さん</span>
+          <span class="header-profile-caret">▾</span>
+        </button>
+        <div class="header-profile-dropdown" id="profileDropdown" hidden>
+          <%= link_to settings_path, class: "header-profile-item" do %>
+            <span>⚙️</span><span>設定</span>
+          <% end %>
+          <%= link_to "ログアウト", logout_path,
+                class: "header-profile-item header-profile-item--logout",
+                data: { turbo_method: :delete } %>
+        </div>
+      </div>
     <% else %>
       <%= link_to "ログイン", login_path, class: "header-link" %>
       <%= link_to "ユーザー登録", signup_path, class: "header-link" %>
@@ -108,13 +119,30 @@
 (function() {
   var btn      = document.getElementById('notifBtn');
   var dropdown = document.getElementById('notifDropdown');
-  if (!btn || !dropdown) return;
-  btn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    dropdown.hidden = !dropdown.hidden;
+  if (btn && dropdown) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.hidden = !dropdown.hidden;
+      if (!dropdown.hidden) { var pd = document.getElementById('profileDropdown'); if (pd) pd.hidden = true; }
+    });
+    dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+  }
+
+  var profileBtn      = document.getElementById('profileBtn');
+  var profileDropdown = document.getElementById('profileDropdown');
+  if (profileBtn && profileDropdown) {
+    profileBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      profileDropdown.hidden = !profileDropdown.hidden;
+      if (!profileDropdown.hidden) { if (dropdown) dropdown.hidden = true; }
+    });
+    profileDropdown.addEventListener('click', function(e) { e.stopPropagation(); });
+  }
+
+  document.addEventListener('click', function() {
+    if (dropdown) dropdown.hidden = true;
+    if (profileDropdown) profileDropdown.hidden = true;
   });
-  dropdown.addEventListener('click', function(e) { e.stopPropagation(); });
-  document.addEventListener('click', function() { dropdown.hidden = true; });
 })();
 </script>
 
@@ -180,6 +208,11 @@
         class: "mobile-nav-item #{'mobile-nav-item--active' if current_page?(my_tasks_path)}" do %>
     <span class="mobile-nav-ico">📋</span>
     <span class="mobile-nav-label">タスク</span>
+  <% end %>
+  <%= link_to games_path,
+        class: "mobile-nav-item #{'mobile-nav-item--active' if current_page?(games_path)}" do %>
+    <span class="mobile-nav-ico">🎮</span>
+    <span class="mobile-nav-label">ゲーム</span>
   <% end %>
   <%= link_to shop_path,
         class: "mobile-nav-item #{'mobile-nav-item--active' if current_page?(shop_path)}" do %>

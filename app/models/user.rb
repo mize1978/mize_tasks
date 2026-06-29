@@ -94,6 +94,12 @@ def ribbon_stage_image(color = nil)
   "stage#{ribbon_stage}_#{c}.png"
 end
 
+def benny_image
+  c = (egg_color.presence || "pink").to_s
+  c = "purple" if c == "yellow"
+  "stage2_#{c}.png"
+end
+
 def ribbon_stage_gold_bg?
   false
 end
@@ -175,6 +181,11 @@ end
   def match_game_played_today?
     return false if Rails.env.development?
     match_game_last_played_at&.to_date == Date.current
+  end
+
+  def potion_game_played_today?
+    return false if Rails.env.development?
+    potion_game_last_played_at&.to_date == Date.current
   end
 
   PUZZLE_MAX_PLAYS = 3

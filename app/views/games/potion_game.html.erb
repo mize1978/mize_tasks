@@ -1,0 +1,178 @@
+<div class="pg-wrap"
+     data-controller="potion-game"
+     data-potion-game-result-url="<%= potion_game_result_path %>"
+     data-potion-game-already-played="<%= @already_played %>">
+
+  <%# ━━━ スタート画面 ━━━ %>
+  <div class="pg-screen pg-screen--start" data-potion-game-target="startScreen">
+    <div class="pg-start-inner">
+      <p class="pg-label">🧪 ミニゲーム</p>
+      <h1 class="pg-title">リボンポーション</h1>
+      <p class="pg-desc">小瓶を並べ替えて同じ色に揃えよう！<br>中央の星型ポーションを完成させてね✨</p>
+
+      <div class="pg-score-board">
+        <div class="pg-score-item">
+          <span class="pg-score-label">最高ステージ</span>
+          <span class="pg-score-value">Stage <strong><%= [@high_stage, 1].max %></strong></span>
+        </div>
+        <div class="pg-score-item">
+          <span class="pg-score-label">今日のコイン</span>
+          <% if @already_played %>
+            <span class="pg-score-value pg-score-value--used">✓ 獲得済み</span>
+          <% else %>
+            <span class="pg-score-value pg-score-value--ready">🪙 最大150</span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="pg-difficulty-table">
+        <div class="pg-diff-row pg-diff-row--easy">
+          <div class="pg-diff-left">
+            <span class="pg-diff-badge pg-diff-badge--easy">やさしい</span>
+            <span class="pg-diff-stages">Stage 1〜2</span>
+          </div>
+          <div class="pg-diff-right">
+            <span class="pg-diff-colors">3〜4色</span>
+            <span class="pg-diff-coin">🪙 50</span>
+          </div>
+        </div>
+        <div class="pg-diff-row pg-diff-row--normal">
+          <div class="pg-diff-left">
+            <span class="pg-diff-badge pg-diff-badge--normal">ふつう</span>
+            <span class="pg-diff-stages">Stage 3〜4</span>
+          </div>
+          <div class="pg-diff-right">
+            <span class="pg-diff-colors">4〜5色</span>
+            <span class="pg-diff-coin">🪙 100</span>
+          </div>
+        </div>
+        <div class="pg-diff-row pg-diff-row--hard">
+          <div class="pg-diff-left">
+            <span class="pg-diff-badge pg-diff-badge--hard">むずかしい</span>
+            <span class="pg-diff-stages">Stage 5</span>
+          </div>
+          <div class="pg-diff-right">
+            <span class="pg-diff-colors">5色・空き1本</span>
+            <span class="pg-diff-coin">🪙 150</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pg-how-to">
+        <div class="pg-how-step"><span class="pg-how-num">①</span><span>瓶をタップして選ぶ</span></div>
+        <div class="pg-how-step"><span class="pg-how-num">②</span><span>移動先をタップ</span></div>
+        <div class="pg-how-step"><span class="pg-how-num">③</span><span>魔法陣を完成させよう！</span></div>
+      </div>
+
+      <button class="pg-btn pg-btn--start" data-action="potion-game#start">✨ はじめる</button>
+
+      <%= link_to dashboard_path, class: "btn-home-link" do %>
+        <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# ━━━ ゲーム画面 ━━━ %>
+  <div class="pg-screen pg-screen--game" data-potion-game-target="gameScreen" hidden>
+    <div class="pg-game-inner">
+
+      <div class="pg-game-hud">
+        <div class="pg-stage-badge" data-potion-game-target="stageBadge">Stage 1</div>
+        <div class="pg-move-count">手数 <span data-potion-game-target="moveCount">0</span></div>
+      </div>
+
+      <div class="pg-shelf">
+        <%# 上段 %>
+        <div class="pg-board-row pg-board-row--top" data-potion-game-target="topRow"></div>
+
+        <%# 中段：左列 ＋ 星型瓶 ＋ 右列 %>
+        <div class="pg-board-row pg-board-row--middle">
+          <div class="pg-board-col" data-potion-game-target="leftCol"></div>
+
+          <%# ━━━ 魔法陣 ━━━ %>
+          <div class="pg-magic-vessel">
+            <div class="pg-magic-circle" data-potion-game-target="magicCircle" data-level="0">
+
+              <%# 回転リング %>
+              <div class="pg-magic-ring pg-magic-ring--outer"></div>
+              <div class="pg-magic-ring pg-magic-ring--mid"></div>
+              <div class="pg-magic-ring pg-magic-ring--inner"></div>
+
+              <%# 複雑な模様（SVG） %>
+              <svg class="pg-magic-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <%# 外側二重円 %>
+                <circle cx="100" cy="100" r="95" fill="none" stroke-width="0.7" class="pg-ms-ring"/>
+                <circle cx="100" cy="100" r="91" fill="none" stroke-width="0.4" class="pg-ms-ring"/>
+                <%# 目盛り（12個） %>
+                <% 12.times do |i| %>
+                  <% angle = i * 30 * Math::PI / 180 %>
+                  <line
+                    x1="<%= (100 + 88 * Math.sin(angle)).round(1) %>"
+                    y1="<%= (100 - 88 * Math.cos(angle)).round(1) %>"
+                    x2="<%= (100 + 95 * Math.sin(angle)).round(1) %>"
+                    y2="<%= (100 - 95 * Math.cos(angle)).round(1) %>"
+                    class="pg-ms-tick"/>
+                <% end %>
+                <%# 中間円 %>
+                <circle cx="100" cy="100" r="70" fill="none" stroke-width="0.7" class="pg-ms-ring"/>
+                <%# 内側円 %>
+                <circle cx="100" cy="100" r="42" fill="none" stroke-width="0.6" class="pg-ms-ring"/>
+                <%# 5角星（大・メイン） outer r=62, inner r=26 %>
+                <polygon
+                  points="100,38 111,72 147,72 119,93 129,127 100,107 71,127 81,93 53,72 89,72"
+                  fill="none" stroke-width="1.5" class="pg-ms-center-star"/>
+                <%# 5角星（小・内側） outer r=30, inner r=12 %>
+                <polygon
+                  points="100,70 105,86 122,86 109,95 114,111 100,102 86,111 91,95 78,86 95,86"
+                  fill="none" stroke-width="0.8" class="pg-ms-star"/>
+              </svg>
+
+              <%# 中央オーブ %>
+              <div class="pg-magic-core"></div>
+              <%# 錬成後にポーションが飛び出す %>
+              <div class="pg-star-potion" data-potion-game-target="starPotion"></div>
+            </div>
+
+            <div class="pg-magic-info">
+              <span class="pg-magic-pct" data-potion-game-target="magicPct"></span>
+              <span class="pg-magic-msg" data-potion-game-target="magicMsg"></span>
+            </div>
+          </div>
+
+          <div class="pg-board-col" data-potion-game-target="rightCol"></div>
+        </div>
+
+        <%# 下段 %>
+        <div class="pg-board-row pg-board-row--bottom" data-potion-game-target="bottomRow"></div>
+      </div>
+
+      <div class="pg-game-btns">
+        <button class="pg-btn pg-btn--undo"   data-action="potion-game#undo">↩ 戻す</button>
+        <button class="pg-btn pg-btn--reset"  data-action="potion-game#resetStage">🔄 最初から</button>
+        <button class="pg-btn pg-btn--giveup" data-action="potion-game#backToStart">🏠 やめる</button>
+      </div>
+
+    </div>
+  </div>
+
+  <%# ━━━ クリア画面 ━━━ %>
+  <div class="pg-screen pg-screen--clear" data-potion-game-target="clearScreen" hidden>
+    <div class="pg-clear-inner">
+      <div class="pg-clear-potion-wrap">
+        <div class="pg-clear-star-icon">⭐</div>
+      </div>
+      <p class="pg-clear-title">錬成完了！✨</p>
+      <p class="pg-clear-stage" data-potion-game-target="clearStageMsg"></p>
+      <div class="pg-clear-coins" data-potion-game-target="clearCoins"></div>
+      <div class="pg-clear-btns">
+        <button class="pg-btn pg-btn--next" data-action="potion-game#nextStage" data-potion-game-target="nextBtn">
+          次のステージ ▶
+        </button>
+        <%= link_to dashboard_path, class: "btn-home-link" do %>
+          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,174 @@
+<div class="dashboard-layout dashboard-layout--2col">
+  <div class="col-left">
+    <%= render 'shared/sidebar' %>
+  </div>
+
+  <div class="col-center">
+  <div class="games-lobby">
+    <div class="games-lobby-header">
+      <h1 class="games-lobby-title">🎮 ミニゲーム</h1>
+      <p class="games-lobby-sub">毎日遊んでコインをゲットしよう！</p>
+    </div>
+
+    <div class="games-lobby-grid">
+
+      <%# ─── リボンポーション ─── %>
+      <div class="game-card game-card--potion">
+        <div class="game-card-preview gc-potion-preview" style="background-image: url('<%= asset_path('potion_bg.png') %>')">
+          <div class="gc-magic-ring gc-magic-ring--outer"></div>
+          <div class="gc-magic-ring gc-magic-ring--mid"></div>
+          <div class="gc-magic-ring gc-magic-ring--inner"></div>
+          <svg class="gc-magic-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,19 55,36 73,36 59,46 64,63 50,53 36,63 41,46 27,36 45,36"
+                     fill="none" stroke="rgba(255,120,220,0.55)" stroke-width="0.8"/>
+          </svg>
+          <div class="gc-magic-core"></div>
+          <div class="gc-magic-vials">
+            <div class="gc-vial"><div class="gc-liq" style="background:linear-gradient(#ff9de0,#ff4db8);height:60%"></div></div>
+            <div class="gc-vial"><div class="gc-liq" style="background:linear-gradient(#90d8ff,#40a8f0);height:75%"></div></div>
+            <div class="gc-vial"><div class="gc-liq" style="background:linear-gradient(#d090ff,#9040e8);height:45%"></div></div>
+          </div>
+        </div>
+        <div class="game-card-badge-wrap">
+          <% if current_user.potion_game_played_today? %>
+            <span class="game-card-badge game-card-badge--done">✓ 済み</span>
+          <% else %>
+            <span class="game-card-badge game-card-badge--new">🆕 NEW</span>
+          <% end %>
+        </div>
+        <div class="game-card-icon">🧪</div>
+        <h2 class="game-card-title">リボンポーション</h2>
+        <p class="game-card-desc">同じ色の魔法ポーションを<br>小瓶に揃えよう！</p>
+        <div class="game-card-meta">
+          <span class="game-card-meta-item">🏆 最高: Stage <strong><%= [current_user.potion_game_high_stage.to_i, 1].max %></strong></span>
+          <span class="game-card-meta-item">5ステージ挑戦！</span>
+        </div>
+        <div class="game-card-reward">
+          <span>Stage5クリアで</span><span class="game-card-coin">🪙 150コイン</span>
+        </div>
+        <%= link_to potion_game_path, class: "game-card-btn #{current_user.potion_game_played_today? ? 'game-card-btn--done' : ''}" do %>
+          <%= current_user.potion_game_played_today? ? "また明日！" : "▶ プレイ" %>
+        <% end %>
+      </div>
+
+      <%# ─── リボンパズル ─── %>
+      <div class="game-card">
+        <div class="game-card-preview gc-puzzle-preview" style="background-image: url('<%= asset_path(current_user.selected_puzzle_image_file) %>');">
+          <img src="<%= asset_path('thumb_game_puzzle.jpg') %>" class="gc-puzzle-collage" alt="">
+        </div>
+        <div class="game-card-badge-wrap">
+          <% if current_user.puzzle_plays_remaining > 0 %>
+            <span class="game-card-badge game-card-badge--new">残 <%= current_user.puzzle_plays_remaining %> 回</span>
+          <% else %>
+            <span class="game-card-badge game-card-badge--done">✓ 本日プレイ済み</span>
+          <% end %>
+        </div>
+        <div class="game-card-icon">🧩</div>
+        <h2 class="game-card-title">リボンパズル</h2>
+        <p class="game-card-desc">4×4のスライドパズルを<br>クリアしてコインゲット！</p>
+        <div class="game-card-meta">
+          <span class="game-card-meta-item">🔄 1日3回</span>
+          <span class="game-card-meta-item">🏆 クリア数: <strong><%= current_user.puzzle_clears_count %></strong></span>
+        </div>
+        <div class="game-card-reward">
+          <span>クリアで</span><span class="game-card-coin">🪙 100コイン</span>
+        </div>
+        <%= link_to puzzle_game_path, class: "game-card-btn #{current_user.puzzle_plays_remaining == 0 ? 'game-card-btn--done' : ''}" do %>
+          <%= current_user.puzzle_plays_remaining == 0 ? "また明日！" : "▶ プレイ" %>
+        <% end %>
+      </div>
+
+      <%# ─── リボンマッチ ─── %>
+      <div class="game-card">
+        <div class="game-card-preview" style="background-image: url('<%= asset_path('thumb_game_match.jpg') %>');"></div>
+        <div class="game-card-badge-wrap">
+          <% unless current_user.match_game_played_today? %>
+            <span class="game-card-badge game-card-badge--new">NEW</span>
+          <% else %>
+            <span class="game-card-badge game-card-badge--done">✓ 本日プレイ済み</span>
+          <% end %>
+        </div>
+        <div class="game-card-icon">✨</div>
+        <h2 class="game-card-title">リボンマッチ</h2>
+        <p class="game-card-desc">タイルを並べて3つ以上<br>そろえて消そう！</p>
+        <div class="game-card-meta">
+          <span class="game-card-meta-item">⏱ 60秒</span>
+          <span class="game-card-meta-item">🏆 ハイスコア: <strong><%= current_user.match_game_high_score %></strong></span>
+        </div>
+        <div class="game-card-reward">
+          <span>60枚以上で</span><span class="game-card-coin">🪙 100コイン</span>
+        </div>
+        <%= link_to match_game_path, class: "game-card-btn #{current_user.match_game_played_today? ? 'game-card-btn--done' : ''}" do %>
+          <%= current_user.match_game_played_today? ? "また明日！" : "▶ プレイ" %>
+        <% end %>
+      </div>
+
+      <%# ─── リボンキャッチ ─── %>
+      <div class="game-card">
+        <div class="game-card-preview" style="background-image: url('<%= asset_path('thumb_game_catch.jpg') %>');"></div>
+        <div class="game-card-badge-wrap">
+          <% unless current_user.tap_game_played_today? %>
+            <span class="game-card-badge game-card-badge--new">NEW</span>
+          <% else %>
+            <span class="game-card-badge game-card-badge--done">✓ 本日プレイ済み</span>
+          <% end %>
+        </div>
+        <div class="game-card-icon">🎀</div>
+        <h2 class="game-card-title">リボンキャッチ</h2>
+        <p class="game-card-desc">画面をタップして<br>リボンをキャッチしよう！</p>
+        <div class="game-card-meta">
+          <span class="game-card-meta-item">⏱ 30秒</span>
+          <span class="game-card-meta-item">🏆 ハイスコア: <strong><%= current_user.tap_game_high_score %></strong></span>
+        </div>
+        <div class="game-card-reward">
+          <span>100点以上で</span><span class="game-card-coin">🪙 100コイン</span>
+        </div>
+        <%= link_to tap_game_path, class: "game-card-btn #{current_user.tap_game_played_today? ? 'game-card-btn--done' : ''}" do %>
+          <%= current_user.tap_game_played_today? ? "また明日！" : "▶ プレイ" %>
+        <% end %>
+      </div>
+
+      <%# ─── リボンクエスト（Coming Soon） ─── %>
+      <div class="game-card game-card--coming-soon">
+        <div class="game-card-preview gc-quest-preview" style="background-image: url('<%= asset_path('quest_bg.png') %>');">
+        </div>
+        <div class="game-card-badge-wrap">
+          <span class="game-card-badge game-card-badge--soon">🔒 近日公開</span>
+        </div>
+        <div class="game-card-icon">📜</div>
+        <h2 class="game-card-title">リボンクエスト</h2>
+        <p class="game-card-desc">リボンちゃんと一緒に<br>冒険の旅へ出よう！</p>
+        <div class="game-card-meta">
+          <span class="game-card-meta-item">✨ 準備中…</span>
+        </div>
+        <div class="game-card-reward">
+          <span>クリアで</span><span class="game-card-coin">🪙 ??? コイン</span>
+        </div>
+        <button class="game-card-btn game-card-btn--soon" disabled>🔒 もうすぐ！</button>
+      </div>
+
+      <%# ─── ガチャ ─── %>
+      <div class="game-card game-card--gacha">
+        <div class="game-card-preview" style="background-image: url('<%= asset_path('thumb_game_gacha.jpg') %>'); background-position: center center;"></div>
+        <div class="game-card-badge-wrap">
+          <span class="game-card-badge game-card-badge--new">✨ いつでも</span>
+        </div>
+        <div class="game-card-icon">🎲</div>
+        <h2 class="game-card-title">ガチャ</h2>
+        <p class="game-card-desc">コインを使ってレアな<br>アイテムをゲットしよう！</p>
+        <div class="game-card-meta">
+          <span class="game-card-meta-item">🪙 所持コイン: <strong><%= number_with_delimiter(current_user.coins) %></strong></span>
+          <span class="game-card-meta-item">1回 50 / 10連 450コイン</span>
+        </div>
+        <div class="game-card-reward">
+          <span>SSRで</span><span class="game-card-coin">👑 レア称号・背景</span>
+        </div>
+        <%= link_to gacha_path, class: "game-card-btn game-card-btn--gacha" do %>
+          🎲 ガチャをひく
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</div>

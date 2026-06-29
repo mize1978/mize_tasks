@@ -9,8 +9,9 @@ const DIFFICULTY = {
 export default class extends Controller {
   static targets = [
     "startScreen", "gameScreen", "resultScreen",
+    "previewScreen", "previewFullImg", "previewCountdown",
     "board", "moveCount", "timer",
-    "previewImg",
+    "previewImg", "hintOverlay", "giveUpDialog",
     "resultMoves", "resultTime", "resultCoins", "resultUnlock", "resultPlaysLeft", "resultClears",
     "playAgainBtn"
   ]
@@ -82,17 +83,71 @@ export default class extends Controller {
     this.seconds = 0
     this.moveCountTarget.textContent = "0"
     this.timerTarget.textContent = "0:00"
+    clearInterval(this.timerInterval)
 
     this.initBoard()
     this.shuffleBoard()
     this.renderBoard()
 
-    this.startScreenTarget.hidden = true
-    this.gameScreenTarget.hidden = false
+    // プレビュー画面でカウントダウン → ゲーム開始
+    if (this.hasPreviewFullImgTarget) this.previewFullImgTarget.src = this.imageUrl
+    this.startScreenTarget.hidden  = true
+    this.gameScreenTarget.hidden   = true
     this.resultScreenTarget.hidden = true
+    this.previewScreenTarget.hidden = false
+    this._previewCountdown(3)
+  }
 
+  _previewCountdown(n) {
+    if (!this.hasPreviewCountdownTarget) return
+    const el = this.previewCountdownTarget
+    if (n > 0) {
+      el.textContent = `${n}...`
+      el.classList.remove("pz-preview-countdown--go")
+      setTimeout(() => this._previewCountdown(n - 1), 1000)
+    } else {
+      el.textContent = "START!"
+      el.classList.add("pz-preview-countdown--go")
+      setTimeout(() => {
+        this.previewScreenTarget.hidden = true
+        this.gameScreenTarget.hidden    = false
+        this.timerInterval = setInterval(() => this.tickTimer(), 1000)
+      }, 600)
+    }
+  }
+
+  confirmGiveUp() {
     clearInterval(this.timerInterval)
+    this.giveUpDialogTarget.hidden = false
+  }
+
+  cancelGiveUp() {
+    this.giveUpDialogTarget.hidden = true
     this.timerInterval = setInterval(() => this.tickTimer(), 1000)
+  }
+
+  giveUp() {
+    clearInterval(this.timerInterval)
+    this.giveUpDialogTarget.hidden = true
+    this.gameScreenTarget.hidden   = true
+    this.startScreenTarget.hidden  = false
+  }
+
+  hint() {
+    if (!this.hasHintOverlayTarget) return
+    const overlay = this.hintOverlayTarget
+    overlay.style.backgroundImage = `url('${this.imageUrl}')`
+    overlay.hidden = false
+    overlay.classList.remove("pz-hint-overlay--out")
+    overlay.classList.add("pz-hint-overlay--in")
+    setTimeout(() => {
+      overlay.classList.remove("pz-hint-overlay--in")
+      overlay.classList.add("pz-hint-overlay--out")
+      setTimeout(() => {
+        overlay.hidden = true
+        overlay.classList.remove("pz-hint-overlay--out")
+      }, 350)
+    }, 700)
   }
 
   shuffle() {

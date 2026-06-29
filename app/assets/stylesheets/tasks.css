@@ -473,6 +473,7 @@ body:has(.lp-nav) {
 
 body:has(.mg-wrap) {
   padding-top: 68px;
+  background: #2b1247;
 }
 
 main,
@@ -690,6 +691,11 @@ button:active,
   margin: 0 auto;
   padding: 0 20px;
   align-items: start;
+}
+
+.dashboard-layout--2col {
+  grid-template-columns: 280px minmax(0, 1fr);
+  grid-template-areas: "left center";
 }
 
 .col-left {
@@ -1072,6 +1078,39 @@ body[data-time-period="night"] .my-room::after {
   50%       { transform: translateY(-12px); }
 }
 
+/* タスクチェック時ジャンプ */
+.room-chara--jump {
+  animation: roomCharaJump 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards !important;
+}
+@keyframes roomCharaJump {
+  0%   { transform: translateY(0)    scaleY(1);    }
+  20%  { transform: translateY(-20px) scaleY(1.08); }
+  45%  { transform: translateY(-28px) scaleY(1.12); }
+  65%  { transform: translateY(-10px) scaleY(0.96); }
+  82%  { transform: translateY(-18px) scaleY(1.05); }
+  100% { transform: translateY(0)    scaleY(1);    }
+}
+
+/* 紙吹雪 */
+.confetti-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  top: -14px;
+  animation: confettiFall linear forwards;
+  opacity: 0.92;
+}
+@keyframes confettiFall {
+  0%   { transform: translateY(0)    rotate(0deg);   opacity: 1;   }
+  80%  { opacity: 0.8; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 0;   }
+}
+
 /* 鼓動はラッパーdivでscale */
 .room-chara-shake {
   height: 100%;
@@ -1160,7 +1199,7 @@ body[data-time-period="night"] .my-room::after {
 ===================== */
 .center-bottom {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   gap: 24px;
   align-items: start;
 }
@@ -1185,6 +1224,48 @@ body[data-time-period="night"] .my-room::after {
   color: #ffb347;
   margin: 0;
 }
+.week-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 2px 4px;
+}
+.week-stat-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.week-stat-label {
+  font-size: 11px;
+  color: rgba(220,180,255,0.60);
+  white-space: nowrap;
+}
+.week-stat-value {
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(255,220,255,0.90);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.week-stat-value--exp { color: #ffd700; }
+.week-stat-bar-wrap {
+  width: 52px;
+  height: 5px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.10);
+  overflow: hidden;
+  display: inline-block;
+}
+.week-stat-bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #ff6ec7, #c060ff);
+  transition: width 0.6s ease;
+}
+
 .week-divider {
   border: none;
   border-top: 1px solid rgba(200, 140, 255, 0.18);
@@ -1291,6 +1372,385 @@ body[data-time-period="night"] .my-room::after {
   margin-top: 2px;
 }
 
+/* ─── ダッシュボード：ゲームへのリンク ─── */
+.week-games-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px 8px 10px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255,80,180,0.18), rgba(160,60,255,0.18));
+  border: 1px solid rgba(255,150,220,0.30);
+  color: rgba(255,220,255,0.90);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.12s;
+}
+.week-games-link:hover {
+  background: linear-gradient(135deg, rgba(255,80,180,0.28), rgba(160,60,255,0.28));
+  transform: translateX(2px);
+}
+.week-games-link-icon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 6px rgba(255,100,200,0.35));
+  transition: transform 0.15s;
+}
+.week-games-link:hover .week-games-link-icon {
+  transform: rotate(-6deg) scale(1.08);
+}
+.week-games-link span { flex: 1; }
+.week-games-link-arrow { font-size: 16px; opacity: 0.7; flex: 0 !important; }
+
+/* ─── ゲームロビー ─── */
+.games-lobby {
+  flex: 1;
+  padding: 24px 28px;
+  min-width: 0;
+}
+.games-lobby-header { margin-bottom: 28px; text-align: center; }
+.games-lobby-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0 0 4px;
+  text-shadow: 0 2px 12px rgba(255,100,200,0.5);
+}
+.games-lobby-sub {
+  font-size: 14px;
+  color: rgba(255,200,240,0.65);
+  margin: 0;
+  text-align: center;
+}
+.games-lobby-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .games-lobby-grid { grid-template-columns: 1fr; }
+}
+.game-card {
+  background: linear-gradient(160deg, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.06) 100%);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 20px;
+  padding: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 4px 24px rgba(0,0,0,0.20);
+  transition: transform 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+}
+.game-card:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 8px 32px rgba(0,0,0,0.28);
+}
+.game-card-preview {
+  width: 100%;
+  height: 130px;
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ── パズルカードプレビュー ── */
+.gc-puzzle-preview {
+  background-size: cover;
+  background-position: center top;
+  position: relative;
+  overflow: hidden;
+}
+
+/* コラージュを半透明で重ねる */
+.gc-puzzle-collage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.72;
+  z-index: 1;
+}
+
+/* 下から暗くしてテキストを読みやすく */
+.gc-puzzle-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(20,8,40,0.55) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── ポーションカード魔法陣プレビュー ── */
+.gc-potion-preview {
+  background-size: cover;
+  background-position: center center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 背景画像の上に紫オーバーレイ（魔法陣を見やすく） */
+.gc-potion-preview > * { position: relative; z-index: 1; }
+.gc-potion-preview::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 55%, rgba(140,40,220,0.50) 0%, transparent 70%),
+    rgba(20, 4, 50, 0.52);
+  z-index: 0;
+  pointer-events: none;
+}
+
+
+.gc-magic-ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: none;
+}
+.gc-magic-ring--outer {
+  width: 120px; height: 78px;
+  border: 1.5px solid rgba(255,100,220,0.70);
+  box-shadow: 0 0 10px rgba(255,80,220,0.45), inset 0 0 8px rgba(255,80,220,0.20);
+  animation: gcMagicRot 10s linear infinite;
+}
+.gc-magic-ring--mid {
+  width: 88px; height: 56px;
+  border: 1px dashed rgba(200,100,255,0.65);
+  box-shadow: 0 0 8px rgba(180,80,255,0.40);
+  animation: gcMagicRot 6s linear infinite reverse;
+}
+.gc-magic-ring--inner {
+  width: 50px; height: 50px;
+  border: 1.5px solid rgba(255,120,220,0.75);
+  box-shadow: 0 0 12px rgba(255,100,220,0.55), inset 0 0 6px rgba(255,100,220,0.25);
+  animation: gcMagicRot 3s linear infinite;
+}
+
+@keyframes gcMagicRot {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.gc-magic-svg {
+  position: absolute;
+  width: 84px; height: 84px;
+  pointer-events: none;
+  filter: drop-shadow(0 0 3px rgba(255,100,220,0.70));
+}
+
+.gc-magic-core {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff 0%, rgba(255,120,220,0.9) 40%, rgba(200,80,255,0.5) 100%);
+  box-shadow:
+    0 0 10px rgba(255,120,220,1),
+    0 0 24px rgba(200,80,255,0.75),
+    0 0 40px rgba(255,80,200,0.40);
+  animation: gcCorePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes gcCorePulse {
+  0%, 100% { transform: scale(1);   box-shadow: 0 0 10px rgba(255,120,220,1), 0 0 24px rgba(200,80,255,0.75); }
+  50%       { transform: scale(1.6); box-shadow: 0 0 18px rgba(255,140,220,1), 0 0 40px rgba(200,80,255,1), 0 0 60px rgba(255,80,200,0.5); }
+}
+
+.gc-magic-vials {
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  display: flex;
+  gap: 5px;
+  align-items: flex-end;
+}
+
+.gc-vial {
+  width: 13px;
+  height: 38px;
+  border-radius: 0 0 7px 7px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  box-shadow: 0 0 6px rgba(255,255,255,0.10);
+}
+
+.gc-liq {
+  width: 100%;
+  border-radius: 0 0 6px 6px;
+  opacity: 0.90;
+}
+.game-card-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(20,5,40,0.00) 0%,
+    rgba(20,5,40,0.25) 65%,
+    rgba(20,5,40,0.72) 100%);
+}
+.game-card .game-card-badge-wrap,
+.game-card .game-card-icon,
+.game-card .game-card-title,
+.game-card .game-card-desc,
+.game-card .game-card-meta,
+.game-card .game-card-reward,
+.game-card .game-card-btn {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+.game-card .game-card-badge-wrap { padding-top: 12px; }
+.game-card .game-card-btn { margin-top: auto; }
+.game-card-badge-wrap { min-height: 22px; }
+.game-card-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+.game-card-badge--new  { background: linear-gradient(135deg, #ff4db8, #c060ff); color: #fff; }
+.game-card-badge--done { background: rgba(255,255,255,0.10); color: rgba(255,220,255,0.45); }
+.game-card-icon { font-size: 40px; line-height: 1; }
+.game-card-title {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 1px 8px rgba(255,100,200,0.4);
+}
+.game-card-desc {
+  font-size: 13px;
+  color: rgba(255,210,240,0.75);
+  margin: 0;
+  line-height: 1.6;
+}
+.game-card-meta { display: flex; flex-direction: column; gap: 3px; }
+.game-card-meta-item { font-size: 12px; color: rgba(255,200,240,0.65); }
+.game-card-meta-item strong { color: #ffe066; }
+.game-card-reward {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(255,200,240,0.60);
+  padding: 6px 10px;
+  background: rgba(255,215,0,0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(255,215,0,0.15);
+}
+.game-card-coin { font-weight: 800; color: #ffd700; }
+.game-card-btn {
+  display: block;
+  text-align: center;
+  padding: 11px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  text-decoration: none;
+  background: linear-gradient(135deg, #ff4db8, #c060ff);
+  box-shadow: 0 3px 14px rgba(255,60,180,0.45);
+  margin-top: auto;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.game-card-btn:hover { transform: scale(1.03); box-shadow: 0 5px 20px rgba(255,60,180,0.60); }
+.game-card-btn--done {
+  background: rgba(255,255,255,0.10);
+  box-shadow: none;
+  color: rgba(255,200,240,0.45);
+  pointer-events: none;
+}
+.game-card--gacha {
+  background: linear-gradient(160deg, rgba(255,220,140,0.10) 0%, rgba(255,100,200,0.08) 100%);
+  border-color: rgba(255,210,100,0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 4px 24px rgba(0,0,0,0.20),
+    0 0 0 1px rgba(255,210,100,0.12);
+}
+.game-card--gacha:hover {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 8px 32px rgba(0,0,0,0.28),
+    0 0 18px rgba(255,200,80,0.18);
+}
+.game-card-btn--gacha {
+  position: relative;
+  background: linear-gradient(135deg, #ff6ec7 0%, #ffcc55 50%, #ff6ec7 100%);
+  background-size: 200% 100%;
+  animation: gacha-btn-shimmer 2.4s ease-in-out infinite;
+  box-shadow:
+    0 3px 14px rgba(255,160,80,0.45),
+    0 0 0 1px rgba(255,220,100,0.30),
+    inset 0 1px 0 rgba(255,255,255,0.40);
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(180,80,0,0.30);
+}
+.game-card-btn--gacha:hover {
+  box-shadow:
+    0 5px 22px rgba(255,160,80,0.65),
+    0 0 0 1px rgba(255,220,100,0.50),
+    inset 0 1px 0 rgba(255,255,255,0.40);
+  animation-duration: 1.2s;
+}
+@keyframes gacha-btn-shimmer {
+  0%   { background-position: 100% 0; }
+  50%  { background-position:   0% 0; }
+  100% { background-position: 100% 0; }
+}
+
+/* ── Coming Soon: リボンクエスト ── */
+.game-card--coming-soon {
+  opacity: 0.72;
+  filter: grayscale(0.15);
+  background: linear-gradient(160deg, rgba(120,80,200,0.10) 0%, rgba(80,140,255,0.07) 100%);
+  border-color: rgba(160,120,255,0.25);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.18),
+    0 4px 18px rgba(0,0,0,0.18);
+  pointer-events: none;
+}
+.gc-quest-preview {
+  background-size: cover;
+  background-position: center top;
+  height: 130px;
+  position: relative;
+  overflow: hidden;
+}
+.gc-quest-preview::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(20,10,40,0.45) 100%);
+}
+.game-card-badge--soon {
+  background: rgba(120,80,200,0.22);
+  color: #c8b0ff;
+  border: 1px solid rgba(160,120,255,0.35);
+}
+.game-card-btn--soon {
+  background: rgba(100,80,160,0.25);
+  color: rgba(180,160,220,0.7);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
 .calendar-panel {
   min-width: 0;
   overflow: hidden;
@@ -1342,8 +1802,8 @@ body[data-time-period="night"] .my-room::after {
 
 .tasks-panel .task-card {
   max-width: none;
-  margin: 3px 0;
-  padding: 9px 12px;
+  margin: 4px 0;
+  padding: 13px 14px;
   background: rgba(255, 255, 255, 0.04);
   border-color: rgba(255, 160, 200, 0.08);
 }
@@ -1391,16 +1851,136 @@ body[data-time-period="night"] .my-room::after {
   color: rgba(240, 200, 255, 0.35);
 }
 
+/* ── タスク0件: リボンちゃん + クイック追加 ── */
+.tasks-zero-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 10px 0 6px;
+}
+.tasks-zero-chara {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.tasks-zero-float {
+  animation: zero-chara-float 3.2s ease-in-out infinite;
+}
+@keyframes zero-chara-float {
+  0%, 100% { transform: translateY(0);   }
+  50%       { transform: translateY(-3px); }
+}
+.tasks-zero-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 12px rgba(255,120,200,0.45));
+  display: block;
+}
+.tasks-zero-img--blink {
+  animation: bennyBlink 0.22s ease-in-out forwards;
+}
+@keyframes bennyBlink {
+  0%, 100% { transform: scaleY(1); }
+  45%, 55% { transform: scaleY(0.08); }
+}
+.tasks-zero-bubble--fade {
+  opacity: 0;
+  transition: opacity 0.28s;
+}
+.tasks-zero-bubble {
+  transition: opacity 0.28s;
+}
+.tasks-zero-bubble {
+  position: relative;
+  background: linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07));
+  border: 1px solid rgba(255,180,230,0.35);
+  border-radius: 18px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,220,245,0.90);
+  white-space: nowrap;
+  width: fit-content;
+  max-width: 78%;
+  backdrop-filter: blur(8px);
+}
+.tasks-zero-bubble::before {
+  content: "";
+  position: absolute;
+  left: -7px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-right-color: rgba(255,180,230,0.35);
+}
+.tasks-zero-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  margin-top: 10px;
+}
+.tasks-zero-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,160,220,0.22);
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255,220,245,0.85);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.12s;
+  text-align: left;
+}
+.tasks-zero-chip:hover {
+  background: rgba(255,100,200,0.14);
+  border-color: rgba(255,120,210,0.45);
+  transform: translateX(3px);
+}
+.tasks-zero-chip-plus {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,100,200,0.18);
+  border: 1px solid rgba(255,140,220,0.35);
+  font-size: 15px;
+  font-weight: 900;
+  color: rgba(255,180,230,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
 .tasks-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid rgba(255, 160, 200, 0.12);
-  text-align: right;
 }
 
 .tasks-footer-count {
   font-size: 12px;
-  color: rgba(240, 200, 255, 0.5);
+  font-weight: 700;
+  color: rgba(240, 200, 255, 0.60);
+}
+
+.tasks-footer-reward {
+  font-size: 11px;
+  font-weight: 700;
+  color: #ffd700;
+  opacity: 0.80;
 }
 
 /* =====================
@@ -1600,6 +2180,99 @@ body[data-time-period="night"] .my-room::after {
   border: 1px solid rgba(255, 182, 213, 0.4);
   color: white;
   font-weight: bold;
+}
+
+/* ── クイックアクセス行（マイルーム / ガチャ） ── */
+.side-quick-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.side-quick-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 6px 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.10);
+  color: rgba(255,255,255,0.70);
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.15s, color 0.15s;
+}
+.side-quick-btn:hover { background: rgba(255,182,213,0.14); color: #fff; }
+.side-quick-btn.active { background: rgba(255,182,213,0.18); border-color: rgba(255,182,213,0.40); color: #fff; font-weight: 700; }
+.side-quick-ico { font-size: 20px; line-height: 1; }
+
+.side-quick-btn--room {
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  height: 84px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.2);
+}
+.side-quick-room-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  opacity: 0.70;
+}
+.side-quick-room-chara {
+  position: absolute;
+  bottom: 0;
+  right: 8px;
+  height: 58px;
+  width: auto;
+  object-fit: contain;
+  z-index: 2;
+}
+.side-quick-room-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  background: linear-gradient(to top, rgba(0,0,0,0.55), transparent);
+  border-radius: 0 0 11px 11px;
+  color: rgba(255,255,255,0.90);
+}
+
+/* ── セクションラベル ── */
+.side-section-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: rgba(255,180,220,0.55);
+  padding: 6px 8px 2px;
+  text-transform: uppercase;
+}
+
+/* ── ゲームリンク（ミニゲーム下） ── */
+.side-menu-item--game {
+  background: linear-gradient(135deg, rgba(255,60,180,0.14), rgba(160,60,255,0.14));
+  border-color: rgba(255,120,210,0.22);
+  justify-content: space-between;
+}
+.side-menu-item--game:hover {
+  background: linear-gradient(135deg, rgba(255,60,180,0.22), rgba(160,60,255,0.22));
+}
+.side-menu-item--game.active {
+  background: linear-gradient(135deg, rgba(255,60,180,0.25), rgba(160,60,255,0.25));
+  border-color: rgba(255,120,210,0.50);
 }
 
 /* サイドメニューバッジ（NEW / 未読数） */
@@ -1951,6 +2624,65 @@ body[data-time-period="night"] .my-room::after {
   border: 1px solid rgba(255, 160, 200, 0.2);
   cursor: pointer;
   transition: 0.15s;
+}
+
+/* ── プロフィールドロップダウン ── */
+.header-profile-wrap {
+  position: relative;
+}
+.header-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,160,200,0.22);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  color: rgba(255,220,255,0.90);
+}
+.header-profile-btn:hover {
+  background: rgba(255,100,200,0.15);
+}
+.header-profile-name {
+  font-size: 13px;
+  font-weight: 700;
+}
+.header-profile-caret {
+  font-size: 10px;
+  opacity: 0.60;
+}
+.header-profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 130px;
+  background: rgba(40,10,70,0.96);
+  border: 1px solid rgba(255,160,200,0.25);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.40);
+  backdrop-filter: blur(16px);
+  z-index: 200;
+}
+.header-profile-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: rgba(255,220,255,0.85);
+  text-decoration: none;
+  transition: background 0.12s;
+}
+.header-profile-item:hover {
+  background: rgba(255,100,200,0.14);
+}
+.header-profile-item--logout {
+  color: rgba(255,140,160,0.80);
+  border-top: 1px solid rgba(255,160,200,0.12);
 }
 
 .header-icon:hover {
@@ -2452,11 +3184,11 @@ body[data-time-period="night"] .my-room::after {
 }
 .gacha-mini-link:hover { color: rgba(200, 140, 255, 1); }
 
-/* センターボトムを3列に */
+/* センターボトム 今週の記録 | タスク */
 @media (min-width: 721px) {
   .center-bottom {
     display: grid;
-    grid-template-columns: 1fr 1.4fr 0.9fr;
+    grid-template-columns: 2fr 3fr;
     gap: 16px;
     align-items: stretch;
   }
@@ -8950,8 +9682,8 @@ body.flash-super::after {
 }
 .mobile-nav-item--active,
 .mobile-nav-item:hover { color: rgba(255, 160, 200, 0.9); }
-.mobile-nav-ico { font-size: 20px; line-height: 1; }
-.mobile-nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.02em; }
+.mobile-nav-ico { font-size: 18px; line-height: 1; }
+.mobile-nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.02em; }
 
 /* =====================================================
    ミニゲーム: リボンキャッチ
@@ -9114,32 +9846,98 @@ body.flash-super::after {
   font-size: 15px;
   padding: 12px 32px;
 }
+.tg-result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+.tg-btn--retry {
+  background: linear-gradient(135deg, #ff80c0, #c96fff);
+  color: #fff;
+  box-shadow: 0 6px 24px rgba(200, 80, 220, 0.45);
+  font-size: 17px;
+  padding: 14px 40px;
+}
 
 /* ━━━ ゲーム画面 ━━━ */
-.tg-screen--game { flex-direction: column; }
+.tg-screen--game {
+  flex-direction: column;
+  isolation: isolate;
+}
+.tg-screen--game::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  background-image: url('/assets/tap_game_bg.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+  z-index: -2;
+  pointer-events: none;
+}
+.tg-screen--game::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10,2,32,0.19);
+  z-index: -1;
+  pointer-events: none;
+}
 
 .tg-hud {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 56px;
-  display: flex;
+  height: 60px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  background: rgba(10, 2, 32, 0.7);
-  backdrop-filter: blur(12px);
+  padding: 0 24px;
+  background: rgba(10,2,32,0.55);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,160,210,0.18);
   z-index: 10;
 }
 .tg-hud-score {
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 900;
   color: #f5e6ff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .tg-hud-score-num {
   display: inline-block;
   min-width: 2ch;
   transition: transform 0.1s;
 }
+.tg-hud-hearts {
+  display: flex;
+  gap: 8px;
+  font-size: 22px;
+}
+.tg-hud-heart {
+  display: inline-block;
+  color: #ff6ea6;
+  text-shadow: 0 0 8px rgba(255,100,160,0.70);
+  transition: transform 0.15s;
+}
+.tg-hud-heart--pulse {
+  animation: heart-pulse 0.35s ease-out;
+}
+@keyframes heart-pulse {
+  0%   { transform: scale(1);   }
+  40%  { transform: scale(1.55); }
+  100% { transform: scale(1);   }
+}
+.tg-hud-timer-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+}
+.tg-hud-timer-ico { font-size: 18px; opacity: 0.75; }
 .tg-hud-timer {
   font-size: 28px;
   font-weight: 900;
@@ -9147,6 +9945,39 @@ body.flash-super::after {
   min-width: 2ch;
   text-align: right;
   transition: color 0.3s;
+}
+
+/* コンボメッセージ */
+.tg-combo-msg {
+  position: fixed;
+  left: 50%;
+  top: 38%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 24px rgba(255,120,200,0.90), 0 2px 8px rgba(0,0,0,0.60);
+  pointer-events: none;
+  z-index: 99999;
+  white-space: nowrap;
+  animation: combo-pop 0.9s ease-out forwards;
+}
+@keyframes combo-pop {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.5); }
+  20%  { opacity: 1; transform: translate(-50%,-60%) scale(1.15); }
+  60%  { opacity: 1; transform: translate(-50%,-65%) scale(1.0); }
+  100% { opacity: 0; transform: translate(-50%,-80%) scale(0.9); }
+}
+
+/* リボン ぷにっ消滅アニメ */
+@keyframes ribbon-pop {
+  0%   { transform: scale(1); opacity: 1; }
+  40%  { transform: scale(1.35) rotate(12deg); opacity: 0.9; }
+  100% { transform: scale(0)   rotate(-8deg); opacity: 0; }
+}
+.game-ribbon--popping {
+  animation: ribbon-pop 0.22s ease-out forwards !important;
+  pointer-events: none !important;
 }
 .game-timer--danger {
   color: #ff4466 !important;
@@ -9159,8 +9990,9 @@ body.flash-super::after {
 
 .tg-ribbon-container {
   position: absolute;
-  inset: 56px 0 0 0;
+  inset: 60px 0 0 0;
   overflow: hidden;
+  z-index: 5;
 }
 
 /* ── カウントダウン ── */
@@ -9195,13 +10027,74 @@ body.flash-super::after {
   line-height: 1;
   animation: ribbonFly var(--dur, 2s) linear forwards;
   transform-origin: center;
-  filter: drop-shadow(0 0 8px rgba(255, 140, 200, 0.6));
+  filter:
+    drop-shadow(0 0 6px rgba(255,255,255,0.85))
+    drop-shadow(0 0 14px rgba(255,140,200,0.70))
+    drop-shadow(0 3px 6px rgba(0,0,0,0.55));
   touch-action: none;
   will-change: transform;
 }
+/* 回転タイプ */
+.game-ribbon--spin {
+  animation: ribbonFlySpin var(--dur, 2s) linear forwards;
+}
+/* ジグザグタイプ */
+.game-ribbon--zigzag {
+  animation: ribbonFlyZigzag var(--dur, 2.5s) linear forwards;
+}
+/* 小さい高得点タイプ — 少し速い */
+.game-ribbon--small {
+  filter:
+    drop-shadow(0 0 4px rgba(255,255,255,1.0))
+    drop-shadow(0 0 10px rgba(255,220,80,0.80))
+    drop-shadow(0 2px 4px rgba(0,0,0,0.55));
+}
+/* 金リボン */
+.game-ribbon--gold {
+  filter:
+    sepia(1) saturate(4) hue-rotate(10deg) brightness(1.15)
+    drop-shadow(0 0 8px rgba(255,220,0,0.95))
+    drop-shadow(0 0 18px rgba(255,180,0,0.70))
+    drop-shadow(0 3px 6px rgba(0,0,0,0.55));
+}
+/* 虹リボン */
+.game-ribbon--rainbow {
+  animation-name: ribbonFly, rainbowHue !important;
+  animation-timing-function: linear, linear !important;
+  animation-iteration-count: 1, infinite !important;
+  filter:
+    drop-shadow(0 0 10px rgba(255,100,200,0.90))
+    drop-shadow(0 0 20px rgba(100,200,255,0.70))
+    drop-shadow(0 3px 6px rgba(0,0,0,0.50));
+}
+@keyframes rainbowHue {
+  from { filter: hue-rotate(0deg)   drop-shadow(0 0 12px rgba(255,255,255,0.8)); }
+  to   { filter: hue-rotate(360deg) drop-shadow(0 0 12px rgba(255,255,255,0.8)); }
+}
+/* ハート */
+.game-ribbon--heart {
+  filter:
+    drop-shadow(0 0 8px rgba(255,80,120,0.90))
+    drop-shadow(0 0 18px rgba(255,160,180,0.65))
+    drop-shadow(0 3px 6px rgba(0,0,0,0.50));
+  animation: ribbonFly var(--dur,2s) ease-in-out forwards;
+}
+
 @keyframes ribbonFly {
-  from { transform: translate(0, 0) rotate(0deg); opacity: 1; }
-  to   { transform: translate(var(--tx, 0), var(--ty, 0)) rotate(360deg); opacity: 0.6; }
+  from { transform: translate(0,0) rotate(0deg); opacity: 1; }
+  to   { transform: translate(var(--tx,0), var(--ty,0)) rotate(120deg); opacity: 0.6; }
+}
+@keyframes ribbonFlySpin {
+  from { transform: translate(0,0) rotate(0deg); opacity: 1; }
+  to   { transform: translate(var(--tx,0), var(--ty,0)) rotate(720deg); opacity: 0.6; }
+}
+@keyframes ribbonFlyZigzag {
+  0%   { transform: translate(0,0); opacity: 1; }
+  20%  { transform: translate(calc(var(--tx)*0.2 + var(--zx,40px)), calc(var(--ty)*0.2)); }
+  40%  { transform: translate(calc(var(--tx)*0.4 - var(--zx,40px)), calc(var(--ty)*0.4)); }
+  60%  { transform: translate(calc(var(--tx)*0.6 + var(--zx,40px)), calc(var(--ty)*0.6)); }
+  80%  { transform: translate(calc(var(--tx)*0.8 - var(--zx,40px)), calc(var(--ty)*0.8)); }
+  100% { transform: translate(var(--tx,0), var(--ty,0)); opacity: 0.6; }
 }
 
 /* ── スパークルエフェクト ── */
@@ -9240,12 +10133,44 @@ body.flash-super::after {
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 900;
   color: #ffe066;
   text-shadow: 0 2px 8px rgba(200, 120, 0, 0.5);
   transform: translate(-50%, -50%);
   animation: floatUp 0.65s ease-out forwards;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.game-float-heart {
+  color: #ff6ea6;
+  font-size: 16px;
+}
+.game-float-score--bonus {
+  color: #ffd700;
+  font-size: 24px;
+  text-shadow: 0 0 12px rgba(255,200,0,0.80);
+}
+.game-float-score--gold {
+  color: #ffe44d;
+  font-size: 28px;
+  font-weight: 900;
+  text-shadow: 0 0 16px rgba(255,200,0,1.0), 0 2px 4px rgba(0,0,0,0.5);
+}
+.game-float-score--rainbow {
+  font-size: 32px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #ff6ec7, #ffcc55, #6effb4, #6ec6ff, #c46eff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.6));
+}
+.game-float-score--heart {
+  color: #ff4d80;
+  font-size: 22px;
+  text-shadow: 0 0 12px rgba(255,100,150,0.80);
 }
 @keyframes floatUp {
   from { transform: translate(-50%, -50%) scale(1.3);  opacity: 1; }
@@ -10324,13 +11249,84 @@ body.flash-super::after {
   color: rgba(240, 200, 255, 0.8);
 }
 
+.pz-game-btns {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
 .pz-btn--shuffle {
   background: rgba(255, 143, 200, 0.12);
   border: 1px solid rgba(255, 143, 200, 0.25);
   color: #ffb3d4;
   padding: 9px 24px;
   font-size: 13px;
-  margin-top: 12px;
+}
+.pz-btn--giveup {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 200, 200, 0.55);
+  padding: 9px 20px;
+  font-size: 13px;
+}
+.pz-btn--giveup:hover {
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 100, 100, 0.3);
+  color: rgba(255, 160, 160, 0.85);
+}
+
+/* ギブアップ確認ダイアログ */
+.pz-giveup-dialog {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 80;
+  background: rgba(10, 2, 32, 0.72);
+  backdrop-filter: blur(6px);
+}
+.pz-giveup-dialog[hidden] { display: none !important; }
+.pz-giveup-inner {
+  background: rgba(30, 10, 60, 0.95);
+  border: 1px solid rgba(255, 143, 200, 0.3);
+  border-radius: 20px;
+  padding: 28px 32px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.pz-giveup-msg {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.6;
+}
+.pz-giveup-msg span {
+  font-size: 13px;
+  font-weight: 400;
+  color: rgba(240, 200, 255, 0.5);
+}
+.pz-giveup-btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.pz-btn--giveup-yes {
+  background: rgba(255, 80, 80, 0.18);
+  border: 1px solid rgba(255, 100, 100, 0.35);
+  color: rgba(255, 180, 180, 0.9);
+  padding: 11px 28px;
+  font-size: 14px;
+}
+.pz-btn--giveup-no {
+  background: linear-gradient(135deg, #ff8fc8, #c97cff);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(200, 80, 255, 0.35);
+  padding: 11px 28px;
+  font-size: 14px;
 }
 
 .pz-btn--again {
@@ -10339,11 +11335,89 @@ body.flash-super::after {
   box-shadow: 0 6px 20px rgba(200, 80, 255, 0.35);
 }
 
+/* ━━━ プレビュー画面 ━━━ */
+.pz-screen--preview {
+  background-image: url('/assets/puzzle_bg.png');
+  background-size: cover;
+  background-position: center;
+}
+.pz-screen--preview::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 2, 32, 0.60);
+  pointer-events: none;
+}
+.pz-preview-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  z-index: 1;
+}
+.pz-preview-label {
+  font-size: 12px;
+  color: rgba(240, 200, 255, 0.5);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.pz-preview-img-wrap {
+  width: min(260px, 72vw);
+  height: min(260px, 72vw);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 143, 200, 0.5);
+  box-shadow: 0 0 60px rgba(255, 143, 200, 0.35), 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+.pz-preview-full-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.pz-preview-sub {
+  font-size: 15px;
+  color: rgba(240, 200, 255, 0.65);
+  margin: 0;
+}
+.pz-preview-countdown {
+  font-size: 64px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 30px rgba(255, 143, 200, 0.9);
+  transition: transform 0.2s, color 0.2s;
+  line-height: 1;
+}
+.pz-preview-countdown--go {
+  color: #ff8fc8;
+  font-size: 48px;
+  text-shadow: 0 0 40px rgba(255, 143, 200, 1);
+}
+
 /* ━━━ ゲーム画面 ━━━ */
 .pz-screen--game {
   flex-direction: column;
   gap: 0;
   padding: 16px;
+  isolation: isolate;
+}
+.pz-screen--game::before {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  background-image: url('/assets/puzzle_bg.png');
+  background-size: cover;
+  background-position: center;
+  filter: blur(2px);
+  z-index: -2;
+}
+.pz-screen--game::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 2, 32, 0.62);
+  z-index: -1;
 }
 
 .pz-hud {
@@ -10371,6 +11445,33 @@ body.flash-super::after {
   color: #fff;
   font-variant-numeric: tabular-nums;
 }
+.pz-btn-hint {
+  background: rgba(255, 220, 80, 0.14);
+  border: 1px solid rgba(255, 220, 80, 0.30);
+  border-radius: 20px;
+  color: #ffd060;
+  font-size: 18px;
+  padding: 4px 14px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+  line-height: 1;
+}
+.pz-btn-hint:hover  { background: rgba(255, 220, 80, 0.25); transform: scale(1.08); }
+.pz-btn-hint:active { transform: scale(0.93); }
+.pz-hint-overlay {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 0;
+}
+.pz-hint-overlay[hidden] { display: none !important; }
+.pz-hint-overlay--in  { opacity: 0.80; }
+.pz-hint-overlay--out { opacity: 0; }
 
 /* ━━━ パズルボード ━━━ */
 .pz-board {
@@ -10732,33 +11833,28 @@ body.flash-super::after {
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  /* 星フィールド */
-  background-image:
-    radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px),
-    radial-gradient(circle, rgba(255,200,240,0.8) 1px, transparent 1px),
-    radial-gradient(circle, rgba(220,180,255,0.7) 1px, transparent 1px),
-    radial-gradient(circle, rgba(255,220,100,0.7) 1px, transparent 1px);
-  background-size: 160px 160px, 220px 220px, 130px 130px, 280px 280px;
-  background-position: 0 0, 70px 40px, 110px 90px, 200px 140px;
-  animation: mgStarfield 20s linear infinite;
+  background-image: url('/assets/match_game_bg.png');
+  background-size: cover;
+  background-position: left bottom;
+  opacity: 0.13;
 }
 
-@keyframes mgStarfield {
-  0%   { background-position: 0 0,      70px  40px,  110px  90px,  200px 140px; }
-  100% { background-position: 160px 160px, 290px 260px, 240px 220px, 480px 420px; }
+.mg-wrap::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse 60% 55% at 50% 50%,
+    rgba(110,50,160,0.18) 0%,
+    transparent 50%,
+    rgba(0,0,0,0.60) 100%);
 }
 
 .mg-wrap {
   min-height: calc(100vh - 68px);
   margin-top: 0;
-  /* 奥行きのある背景：ボケ + 基本グラデ */
-  background:
-    radial-gradient(ellipse at 20% 25%, rgba(255,80,180,0.22) 0%, transparent 40%),
-    radial-gradient(ellipse at 80% 15%, rgba(160,60,255,0.18) 0%, transparent 35%),
-    radial-gradient(ellipse at 55% 75%, rgba(255,100,200,0.15) 0%, transparent 45%),
-    radial-gradient(ellipse at 10% 80%, rgba(120,40,255,0.14) 0%, transparent 35%),
-    radial-gradient(ellipse at 90% 65%, rgba(255,60,140,0.12) 0%, transparent 40%),
-    linear-gradient(160deg, #140328 0%, #2e0050 30%, #60006a 60%, #aa2288 100%);
+  background: linear-gradient(#2b1247, #4a1a80 50%, #6b2a7a);
   display: grid;
   grid-template-columns: 280px 1fr 210px;
   gap: 12px;
@@ -10772,19 +11868,19 @@ body.flash-super::after {
 .mg-panel { color: #fff; position: relative; z-index: 1; }
 
 .mg-panel--info {
-  background: linear-gradient(160deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.07) 100%);
-  border: 1px solid rgba(255,255,255,0.28);
+  background: rgba(53,24,84,0.55);
+  border: 1px solid rgba(200,160,255,0.35);
   border-radius: 20px;
   padding: 18px 14px;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   gap: 8px;
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.35),
-    inset 0 0 0 1px rgba(255,255,255,0.08),
-    0 4px 24px rgba(0,0,0,0.18);
+    inset 0 1px 0 rgba(200,160,255,0.25),
+    inset 0 0 0 1px rgba(200,160,255,0.08),
+    0 4px 24px rgba(0,0,0,0.40);
 }
 
 .mg-panel--board {
@@ -10799,16 +11895,20 @@ body.flash-super::after {
 }
 
 .mg-panel--result {
-  background: rgba(255,255,255,0.09);
-  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(53,24,84,0.55);
+  border: 1px solid rgba(200,160,255,0.30);
   border-radius: 20px;
   padding: 20px 14px;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   text-align: center;
+  box-shadow:
+    inset 0 1px 0 rgba(200,160,255,0.20),
+    0 4px 24px rgba(0,0,0,0.35);
 }
 
 /* モバイルは縦積み */
@@ -11037,47 +12137,104 @@ body.flash-super::after {
   cursor: pointer;
   border: none;
   text-decoration: none;
-  transition: transform 0.15s, box-shadow 0.15s;
+  color: #fff;
+  background: linear-gradient(150deg, #5a2090 0%, #8840c8 100%);
+  box-shadow:
+    0 4px 20px rgba(88, 32, 144, 0.60),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.22s ease, box-shadow 0.22s ease, transform 0.15s ease;
+}
+
+/* 光沢ライン */
+.mg-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 45%;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.14), transparent);
+  pointer-events: none;
+}
+
+/* ホバー：紫→ピンク */
+.mg-btn:hover {
+  background: linear-gradient(150deg, #8840c8 0%, #e050c0 100%);
+  box-shadow:
+    0 6px 28px rgba(200, 60, 180, 0.60),
+    0 0  40px rgba(220, 80, 200, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.20);
+  transform: scale(1.05);
+}
+
+/* クリック：キラッ */
+.mg-btn:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 0 3px rgba(255, 180, 240, 0.50),
+    0 0 50px rgba(220, 80, 200, 0.70);
+}
+.mg-btn::after {
+  content: '✨';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  opacity: 0;
+  pointer-events: none;
+}
+.mg-btn:active::after {
+  animation: mgBtnKira 0.38s ease-out forwards;
+}
+@keyframes mgBtnKira {
+  0%   { opacity: 1; transform: scale(0.6); }
+  50%  { opacity: 0.9; transform: scale(1.4); }
+  100% { opacity: 0;   transform: scale(2.0); }
 }
 
 .mg-btn--start {
-  background: linear-gradient(135deg, #ff4db8, #e040ff);
-  color: #fff;
-  box-shadow:
-    0 4px 20px rgba(255,60,180,0.55),
-    0 0 40px rgba(220,60,255,0.3),
-    inset 0 1px 0 rgba(255,255,255,0.35);
-  position: relative;
-  overflow: hidden;
+  font-size: 20px;
+  padding: 16px 48px;
+  letter-spacing: 0.05em;
 }
 
-.mg-btn--start::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: conic-gradient(transparent 0deg, rgba(255,255,255,0.12) 60deg, transparent 120deg);
-  animation: mgBtnShine 2.5s linear infinite;
+.mg-btn--start-img-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
 }
-
-@keyframes mgBtnShine {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+.btn-start-img {
+  width: 280px;
+  height: auto;
+  display: block;
+  transition: transform 0.15s, filter 0.15s;
 }
-
-.mg-btn--start:hover { transform: scale(1.06); box-shadow: 0 8px 32px rgba(255,60,180,0.75), 0 0 60px rgba(220,60,255,0.45); }
+.mg-btn--start-img-btn:hover .btn-start-img { transform: scale(1.05); filter: brightness(1.12); }
+.mg-btn--start-img-btn:active .btn-start-img { transform: scale(0.96); filter: brightness(1.25); }
 
 .mg-btn--home {
-  background: rgba(255,255,255,0.2);
+  background: linear-gradient(150deg, #5a2090 0%, #8840c8 100%);
   color: #fff;
-  border: 1px solid rgba(255,255,255,0.4);
+  border: none;
   font-size: 15px;
-  padding: 12px 32px;
+  padding: 11px 24px;
+  width: 100%;
+  max-width: 260px;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 4px 16px rgba(88, 32, 144, 0.50);
 }
 
-.mg-btn--home:hover { background: rgba(255,255,255,0.3); }
+.mg-btn--home:hover {
+  background: linear-gradient(150deg, #8840c8 0%, #e050c0 100%);
+  box-shadow: 0 6px 24px rgba(200, 60, 180, 0.55);
+}
 
 /* ─── リボンちゃんのセリフ ─── */
 .mg-ribbon-msg {
@@ -11123,6 +12280,7 @@ body.flash-super::after {
   align-items: center;
   gap: 4px;
   padding-top: 2px;
+  margin-top: -24px;
   width: 100%;
 }
 
@@ -11160,18 +12318,22 @@ body.flash-super::after {
 }
 
 .mg-hud-score-pill {
-  background: linear-gradient(135deg, #ff3d9a, #cc44ff);
+  background: linear-gradient(150deg, #5a2090, #8840c8);
   border-radius: 999px;
   padding: 8px 22px;
   font-size: 20px;
   font-weight: 800;
-  color: #fff;
+  color: rgba(220, 190, 255, 0.90);
   box-shadow:
-    0 0 14px rgba(255,60,160,0.7),
-    0 0 30px rgba(200,60,255,0.4),
-    inset 0 1px 0 rgba(255,255,255,0.35);
+    0 0 16px rgba(88, 32, 144, 0.70),
+    inset 0 1px 0 rgba(255,255,255,0.18);
   letter-spacing: 1px;
   white-space: nowrap;
+}
+/* 数字だけゴールド */
+.mg-hud-score-pill span {
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255, 215, 0, 0.70);
 }
 
 .mg-hud-center-ornament {
@@ -11312,10 +12474,11 @@ body.flash-super::after {
   max-width: 510px;
   border-radius: 24px;
   box-shadow:
-    0 0 0 2px rgba(255,80,200,0.45),
-    0 0 14px rgba(255,80,200,0.30),
-    0 0 36px rgba(200,60,255,0.18),
-    0 0 70px rgba(255,60,160,0.10);
+    0 0 0 2px rgba(255,80,200,0.50),
+    0 0 18px rgba(255,80,200,0.40),
+    0 0 48px rgba(200,60,255,0.28),
+    0 0 80px rgba(255,60,160,0.18),
+    0 20px 60px rgba(0,0,0,0.55);
   transition: box-shadow 0.5s ease;
 }
 
@@ -11391,40 +12554,31 @@ body.flash-super::after {
   overflow: hidden;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  /* ガラスの縁：通常時は控えめ */
-  border: 2px solid rgba(255,255,255,0.70);
+  border: 2px solid rgba(255,255,255,0.25);
   box-shadow:
-    /* 浮き影 */
     0 6px 16px rgba(0,0,0,0.38),
     0 3px 6px  rgba(0,0,0,0.22),
-    /* ── ぷにぷに ──────────────── */
-    /* 上ドームハイライト：丸みの頂点 */
-    inset 0  5px 14px rgba(255,255,255,0.52),
-    /* 左上に広がる球面光 */
-    inset 3px 3px 10px rgba(255,255,255,0.20),
-    /* 下の落ち込み：奥行き */
-    inset 0 -5px 10px rgba(0,0,0,0.22),
-    /* 全体の内側ソフトグロー */
-    inset 0  0   20px rgba(255,255,255,0.08);
+    inset 0  5px 14px rgba(255,255,255,0.22),
+    inset 3px 3px 10px rgba(255,255,255,0.10),
+    inset 0 -5px 10px rgba(0,0,0,0.25),
+    inset 0  0   20px rgba(255,255,255,0.04);
 }
 
-/* ── 二重枠：内側ガラスリング ── */
+/* ── 内側リング ── */
 .mg-tile::before {
   content: '';
   position: absolute;
   inset: 4px;
   border-radius: 11px;
-  border: 2px solid rgba(255,255,255,0.40);
+  border: 1px solid rgba(255,255,255,0.18);
   pointer-events: none;
   z-index: 3;
   box-shadow:
-    /* 内枠の上ハイライト */
-    inset 0  2px 0 rgba(255,255,255,0.52),
-    /* 内枠の下シャドウ */
+    inset 0  2px 0 rgba(255,255,255,0.20),
     inset 0 -2px 0 rgba(0,0,0,0.12);
 }
 
-/* ── ガラスシーン：上半球の光沢 ── */
+/* ── 上部の光沢（控えめに） ── */
 .mg-tile::after {
   content: '';
   position: absolute;
@@ -11432,10 +12586,9 @@ body.flash-super::after {
   border-radius: inherit;
   background: linear-gradient(
     175deg,
-    rgba(255,255,255,0.40)  0%,
-    rgba(255,255,255,0.20)  22%,
-    rgba(255,255,255,0.05)  45%,
-    rgba(255,255,255,0.00)  62%
+    rgba(255,255,255,0.20)  0%,
+    rgba(255,255,255,0.08)  28%,
+    rgba(255,255,255,0.00)  50%
   );
   pointer-events: none;
   z-index: 4;
@@ -11658,7 +12811,8 @@ body.flash-super::after {
 
 .mg-live-score {
   width: 100%;
-  background: rgba(0,0,0,0.2);
+  background: linear-gradient(150deg, rgba(60, 15, 100, 0.70), rgba(100, 40, 160, 0.55));
+  border: 1px solid rgba(150, 80, 220, 0.30);
   border-radius: 14px;
   padding: 8px 12px;
   text-align: center;
@@ -11666,7 +12820,7 @@ body.flash-super::after {
 
 .mg-live-score-label {
   font-size: 11px;
-  opacity: 0.7;
+  color: rgba(210, 170, 255, 0.70);
   display: block;
 }
 
@@ -11689,7 +12843,7 @@ body.flash-super::after {
 
 .mg-live-score-unit {
   font-size: 16px;
-  opacity: 0.8;
+  color: rgba(200, 160, 255, 0.80);
 }
 
 .mg-combo-wrap {
@@ -11761,17 +12915,770 @@ body.flash-super::after {
 
 /* ─── ホームボタン（右パネル用） ─── */
 .mg-panel--result .mg-btn--home {
-  background: linear-gradient(135deg, #ff4da6, #cc33ff);
+  background: linear-gradient(150deg, #5a2090 0%, #8840c8 100%);
   border: none;
   color: #fff;
   font-size: 14px;
-  padding: 10px 24px;
-  box-shadow: 0 4px 16px rgba(255,60,180,0.4);
+  padding: 10px 16px;
+  box-shadow: 0 4px 16px rgba(88, 32, 144, 0.50);
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   text-align: center;
 }
 
 .mg-panel--result .mg-btn--home:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  background: linear-gradient(150deg, #8840c8 0%, #e050c0 100%);
+  box-shadow: 0 6px 24px rgba(200, 60, 180, 0.55);
+  transform: scale(1.03);
+}
+
+/* ━━━ 共通：ホームに戻るボタン画像 ━━━ */
+.btn-home-link {
+  display: inline-block;
+  text-decoration: none;
+}
+.btn-home-img {
+  width: 240px;
+  height: auto;
+  display: block;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.btn-home-link:hover .btn-home-img {
+  transform: scale(1.05);
+  filter: brightness(1.12);
+}
+.mg-panel--result .btn-home-img {
+  width: 160px;
+}
+.btn-home-link:active .btn-home-img {
+  transform: scale(0.96);
+  filter: brightness(1.2);
+}
+
+/* ━━━ 共通：画像ボタン（ギブアップダイアログ等） ━━━ */
+.pz-img-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  mix-blend-mode: lighten;
+}
+.pz-img-btn-img {
+  width: 200px;
+  height: auto;
+  display: block;
+  transition: transform 0.15s, filter 0.15s;
+}
+.pz-img-btn:hover .pz-img-btn-img { transform: scale(1.05); filter: brightness(1.12); }
+.pz-img-btn:active .pz-img-btn-img { transform: scale(0.96); filter: brightness(1.25); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   リボンポーション ゲーム
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+body:has(.pg-wrap) {
+  background: #1a0535;
+  padding-top: 68px;
+}
+
+.pg-wrap {
+  min-height: calc(100vh - 68px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px 16px 40px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.pg-wrap::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url('/assets/potion_bg.png');
+  background-size: cover;
+  background-position: center center;
+  opacity: 0.40;
+}
+
+.pg-wrap::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%,
+    rgba(30, 5, 60, 0.20) 0%,
+    rgba(20, 5, 50, 0.30) 50%,
+    rgba(0, 0, 0, 0.45) 100%);
+}
+
+.pg-wrap > * { position: relative; z-index: 1; }
+
+/* ─── 各画面 ─── */
+.pg-screen { width: 100%; max-width: 540px; }
+
+/* ─── スタート画面 ─── */
+.pg-start-inner {
+  background: rgba(60, 20, 100, 0.55);
+  border: 1px solid rgba(200, 150, 255, 0.30);
+  border-radius: 24px;
+  padding: 28px 24px;
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.pg-label {
+  font-size: 13px;
+  color: rgba(220, 180, 255, 0.7);
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.pg-title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(200, 100, 255, 0.7), 0 2px 8px rgba(0,0,0,0.4);
+  letter-spacing: 2px;
+}
+
+.pg-desc {
+  font-size: 14px;
+  color: rgba(240, 210, 255, 0.85);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pg-score-board {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.pg-score-item {
+  flex: 1;
+  background: rgba(40, 10, 70, 0.5);
+  border: 1px solid rgba(180, 120, 255, 0.20);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
+
+.pg-score-label { display: block; font-size: 11px; color: rgba(200, 160, 255, 0.7); margin-bottom: 4px; }
+.pg-score-value { font-size: 16px; font-weight: 700; color: #fff; }
+.pg-score-value strong { color: #ffd700; }
+.pg-score-value--used { color: rgba(200, 160, 255, 0.5); font-size: 13px; }
+.pg-score-value--ready { color: #ffd700; }
+
+.pg-difficulty-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pg-diff-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.pg-diff-row--easy   { background: rgba(60,200,120,0.10); border-color: rgba(60,200,120,0.30); }
+.pg-diff-row--normal { background: rgba(100,140,255,0.10); border-color: rgba(100,140,255,0.30); }
+.pg-diff-row--hard   { background: rgba(255,80,160,0.10);  border-color: rgba(255,80,160,0.30); }
+
+.pg-diff-left  { display: flex; align-items: center; gap: 8px; }
+.pg-diff-right { display: flex; align-items: center; gap: 10px; }
+
+.pg-diff-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.pg-diff-badge--easy   { background: rgba(60,200,120,0.85);  color: #fff; }
+.pg-diff-badge--normal { background: rgba(80,130,255,0.85);  color: #fff; }
+.pg-diff-badge--hard   { background: rgba(255,60,140,0.85);  color: #fff; }
+
+.pg-diff-stages {
+  font-size: 13px;
+  color: rgba(230,200,255,0.90);
+  font-weight: 600;
+}
+
+.pg-diff-colors {
+  font-size: 11px;
+  color: rgba(200,170,255,0.70);
+}
+
+.pg-diff-coin {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255,210,60,0.6);
+}
+
+.pg-how-to {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pg-how-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: rgba(230, 200, 255, 0.85);
+}
+
+.pg-how-num {
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #c060ff, #ff60c0);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+/* ─── ボタン ─── */
+.pg-btn {
+  display: inline-block;
+  padding: 13px 36px;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+  background: linear-gradient(150deg, #6a20c0, #c040c0);
+  box-shadow: 0 4px 20px rgba(100, 30, 180, 0.55), inset 0 1px 0 rgba(255,255,255,0.18);
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+.pg-btn:hover {
+  background: linear-gradient(150deg, #9040e0, #e050d0);
+  transform: scale(1.04);
+  box-shadow: 0 6px 28px rgba(180, 60, 220, 0.60);
+}
+.pg-btn:active { transform: scale(0.96); }
+
+.pg-btn--start { font-size: 18px; padding: 15px 48px; }
+
+.pg-btn--undo, .pg-btn--reset, .pg-btn--giveup {
+  font-size: 13px;
+  padding: 9px 18px;
+  background: linear-gradient(150deg, #3a1060, #6a2090);
+  box-shadow: 0 2px 12px rgba(60, 20, 120, 0.4);
+}
+
+/* ─── ゲーム画面 ─── */
+.pg-game-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.pg-game-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 480px;
+}
+
+.pg-stage-badge {
+  background: linear-gradient(135deg, #c060ff, #ff60b0);
+  border-radius: 999px;
+  padding: 6px 20px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  box-shadow: 0 0 14px rgba(200, 80, 255, 0.5);
+}
+
+.pg-move-count {
+  font-size: 14px;
+  color: rgba(220, 180, 255, 0.8);
+}
+
+/* ─── 棚 ─── */
+.pg-shelf {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 20px;
+  padding: 24px 20px 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    inset 0 0 0 1px rgba(255,255,255,0.06),
+    0 8px 40px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  width: 100%;
+  max-width: 480px;
+  box-sizing: border-box;
+}
+
+/* 棚の木目ライン */
+.pg-shelf::before {
+  content: '';
+  position: absolute;
+  bottom: 30%;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(180,120,255,0.2), transparent);
+  border-radius: 2px;
+}
+
+/* ─── ボードレイアウト ─── */
+.pg-board-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.pg-board-row--top    { margin-bottom: 8px; }
+.pg-board-row--middle { gap: 12px; align-items: center; }
+.pg-board-row--bottom { margin-top: 8px; }
+
+.pg-board-col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ─── 星型ポーション（中央の大きい瓶） ─── */
+/* ─────────────────────────────────────────
+   魔法陣 (Magic Circle)
+───────────────────────────────────────── */
+.pg-magic-vessel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.pg-magic-circle {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.8s ease;
+  filter: drop-shadow(0 0 8px rgba(255,100,220,0.35));
+}
+
+/* ── 回転リング ── */
+.pg-magic-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1.5px solid;
+  transition: border-color 0.9s, box-shadow 0.9s;
+  pointer-events: none;
+}
+
+.pg-magic-ring--outer {
+  width: 190px; height: 130px; /* 楕円 */
+  border-color: rgba(255,120,220,0.30);
+  animation: pgMagicRotate 14s linear infinite;
+}
+
+.pg-magic-ring--mid {
+  width: 140px; height: 95px; /* 楕円 */
+  border-style: dashed;
+  border-color: rgba(255,120,220,0.25);
+  animation: pgMagicRotate 8s linear infinite reverse;
+}
+
+.pg-magic-ring--inner {
+  width: 80px; height: 80px;
+  border-color: rgba(255,120,220,0.22);
+  animation: pgMagicRotate 4s linear infinite;
+}
+
+@keyframes pgMagicRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── SVG模様 ── */
+.pg-magic-svg {
+  position: absolute;
+  width: 200px; height: 200px;
+  pointer-events: none;
+  transition: opacity 0.9s;
+  overflow: visible;
+}
+
+/* リング */
+.pg-ms-ring {
+  stroke: rgba(255,120,220,0.28);
+  transition: stroke 0.9s, filter 0.9s;
+}
+
+/* 目盛り */
+.pg-ms-tick {
+  stroke: rgba(255,120,220,0.35);
+  stroke-width: 1.5;
+  transition: stroke 0.9s;
+}
+
+/* ペンタグラム線 */
+.pg-ms-star {
+  stroke: rgba(255,100,200,0.25);
+  stroke-width: 0.9;
+  transition: stroke 0.9s, opacity 0.9s;
+}
+
+/* 中心の星アウトライン */
+.pg-ms-center-star {
+  stroke: rgba(255,120,220,0.30);
+  transition: stroke 0.9s, filter 0.9s;
+}
+
+/* 中央オーブ */
+.pg-magic-core {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(255,100,220,0.18);
+  border: 1.5px solid rgba(255,120,220,0.40);
+  transition: background 0.9s, box-shadow 0.9s, border-color 0.9s;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── 進捗レベル (0〜5) ── */
+
+/* Level 0: 休眠 */
+.pg-magic-circle[data-level="0"] { filter: drop-shadow(0 0 6px rgba(255,100,220,0.20)); }
+
+/* Level 1: 25% ピンク点灯 */
+.pg-magic-circle[data-level="1"] { filter: drop-shadow(0 0 10px rgba(255,100,220,0.45)); }
+.pg-magic-circle[data-level="1"] .pg-magic-ring    { border-color: rgba(255,120,220,0.55); box-shadow: 0 0 8px rgba(255,100,220,0.35); }
+.pg-magic-circle[data-level="1"] .pg-ms-ring       { stroke: rgba(255,120,220,0.50); }
+.pg-magic-circle[data-level="1"] .pg-ms-tick       { stroke: rgba(255,120,220,0.60); }
+.pg-magic-circle[data-level="1"] .pg-ms-star       { stroke: rgba(255,100,200,0.45); }
+.pg-magic-circle[data-level="1"] .pg-ms-center-star{ stroke: rgba(255,120,220,0.55); }
+.pg-magic-circle[data-level="1"] .pg-magic-core    { box-shadow: 0 0 14px rgba(255,100,220,0.7); }
+
+/* Level 2: 50% ピンク→紫 */
+.pg-magic-circle[data-level="2"] { filter: drop-shadow(0 0 16px rgba(200,100,255,0.55)); }
+.pg-magic-circle[data-level="2"] .pg-magic-ring    { border-color: rgba(200,120,255,0.75); box-shadow: 0 0 14px rgba(200,100,255,0.50); }
+.pg-magic-circle[data-level="2"] .pg-ms-ring       { stroke: rgba(200,130,255,0.70); }
+.pg-magic-circle[data-level="2"] .pg-ms-tick       { stroke: rgba(200,130,255,0.80); }
+.pg-magic-circle[data-level="2"] .pg-ms-star       { stroke: rgba(200,100,255,0.60); }
+.pg-magic-circle[data-level="2"] .pg-ms-center-star{ stroke: rgba(220,150,255,0.75); filter: drop-shadow(0 0 4px rgba(200,100,255,0.6)); }
+.pg-magic-circle[data-level="2"] .pg-magic-core    { background: rgba(200,120,255,0.38); box-shadow: 0 0 22px rgba(200,100,255,0.80); }
+
+/* Level 3: 75% 紫→金 */
+.pg-magic-circle[data-level="3"] { filter: drop-shadow(0 0 22px rgba(220,150,80,0.55)); }
+.pg-magic-circle[data-level="3"] .pg-magic-ring    { border-color: rgba(255,200,80,0.80); box-shadow: 0 0 20px rgba(255,180,60,0.55); }
+.pg-magic-circle[data-level="3"] .pg-ms-ring       { stroke: rgba(255,200,80,0.75); }
+.pg-magic-circle[data-level="3"] .pg-ms-tick       { stroke: rgba(255,200,80,0.90); }
+.pg-magic-circle[data-level="3"] .pg-ms-star       { stroke: rgba(255,180,60,0.65); }
+.pg-magic-circle[data-level="3"] .pg-ms-center-star{ stroke: rgba(255,220,100,0.90); filter: drop-shadow(0 0 6px rgba(255,200,60,0.75)); }
+.pg-magic-circle[data-level="3"] .pg-magic-core    { background: rgba(255,200,80,0.50); border-color: rgba(255,200,60,0.7); box-shadow: 0 0 30px rgba(255,180,60,0.90), 0 0 60px rgba(255,150,200,0.40); animation: pgMagicCorePulse 0.7s ease-in-out infinite; }
+
+/* Level 4: 100% フルゴールド */
+.pg-magic-circle[data-level="4"] { filter: drop-shadow(0 0 28px rgba(255,210,60,0.80)) drop-shadow(0 0 50px rgba(255,150,200,0.40)); }
+.pg-magic-circle[data-level="4"] .pg-magic-ring    { border-color: rgba(255,230,100,1); box-shadow: 0 0 28px rgba(255,210,60,0.75), 0 0 50px rgba(255,180,60,0.40); }
+.pg-magic-circle[data-level="4"] .pg-ms-ring       { stroke: rgba(255,230,100,1); }
+.pg-magic-circle[data-level="4"] .pg-ms-tick       { stroke: rgba(255,230,100,1); }
+.pg-magic-circle[data-level="4"] .pg-ms-star       { stroke: rgba(255,210,60,0.90); }
+.pg-magic-circle[data-level="4"] .pg-ms-center-star{ stroke: rgba(255,240,120,1); filter: drop-shadow(0 0 10px rgba(255,220,60,1)) drop-shadow(0 0 20px rgba(255,200,60,0.7)); }
+.pg-magic-circle[data-level="4"] .pg-magic-core    { background: rgba(255,230,80,0.80); border-color: rgba(255,220,60,1); box-shadow: 0 0 40px rgba(255,210,60,1), 0 0 80px rgba(255,160,200,0.60); animation: pgMagicCorePulse 0.45s ease-in-out infinite; }
+
+/* Level 5: 錬成発動！ */
+.pg-magic-circle[data-level="5"] { animation: pgMagicExplode 0.7s ease-out forwards; }
+.pg-magic-circle[data-level="5"] .pg-magic-ring    { border-color: rgba(255,255,220,1); box-shadow: 0 0 50px rgba(255,255,180,1); }
+.pg-magic-circle[data-level="5"] .pg-ms-ring,
+.pg-magic-circle[data-level="5"] .pg-ms-tick,
+.pg-magic-circle[data-level="5"] .pg-ms-star,
+.pg-magic-circle[data-level="5"] .pg-ms-center-star { stroke: rgba(255,255,220,1); }
+.pg-magic-circle[data-level="5"] .pg-magic-core    { background: #fff; box-shadow: 0 0 70px #fff, 0 0 120px rgba(255,230,100,0.90); }
+
+@keyframes pgMagicExplode {
+  0%   { transform: scale(1);    filter: drop-shadow(0 0 25px rgba(255,210,60,0.9)); }
+  40%  { transform: scale(1.40); filter: drop-shadow(0 0 100px rgba(255,255,200,1)); }
+  100% { transform: scale(1.18); filter: drop-shadow(0 0 45px rgba(255,210,60,0.8)); }
+}
+
+@keyframes pgMagicCorePulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.6); }
+}
+
+/* ── 進捗ラベル ── */
+.pg-magic-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-height: 36px;
+}
+
+.pg-magic-pct {
+  font-size: 22px;
+  font-weight: 900;
+  color: rgba(255,160,230,0.90);
+  text-shadow: 0 0 10px rgba(255,100,220,0.7);
+  line-height: 1;
+  transition: color 0.7s, text-shadow 0.7s;
+}
+
+.pg-magic-circle[data-level="3"] ~ .pg-magic-info .pg-magic-pct,
+.pg-magic-circle[data-level="4"] ~ .pg-magic-info .pg-magic-pct,
+.pg-magic-circle[data-level="5"] ~ .pg-magic-info .pg-magic-pct {
+  color: #ffd700;
+  text-shadow: 0 0 12px rgba(255,210,60,0.9);
+}
+
+.pg-magic-msg {
+  font-size: 11px;
+  color: rgba(220, 180, 255, 0.85);
+  font-weight: 600;
+}
+
+/* ── 星型ポーション誕生アニメーション ── */
+.pg-star-potion {
+  width: 70px; height: 70px;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  background: linear-gradient(135deg, #ffd860, #ff9de0, #80d8ff, #ff60b0);
+  background-size: 200% 200%;
+  animation: pgPotionRainbow 2s linear infinite paused;
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.pg-star-potion--born {
+  animation: pgPotionBorn 1.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             pgPotionRainbow 1.5s linear 0.3s infinite;
+}
+
+@keyframes pgPotionBorn {
+  0%   { opacity: 0; transform: scale(0) translateY(0); }
+  20%  { opacity: 1; }
+  55%  { transform: scale(1.8) translateY(-70px); filter: drop-shadow(0 0 24px rgba(255,220,80,1)) drop-shadow(0 0 48px rgba(255,100,220,0.8)); }
+  75%  { transform: scale(1.3) translateY(-80px); }
+  100% { opacity: 1; transform: scale(1.5) translateY(-85px); filter: drop-shadow(0 0 14px rgba(255,200,80,0.9)) drop-shadow(0 0 28px rgba(255,100,220,0.6)); }
+}
+
+@keyframes pgPotionRainbow {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}
+
+/* ── シェイク ── */
+.pg-shake {
+  animation: pgShake 0.4s ease !important;
+}
+
+@keyframes pgShake {
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(6px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+/* ─── 小瓶 ─── */
+.pg-vial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  position: relative;
+}
+
+.pg-vial:hover { transform: translateY(-4px); }
+.pg-vial--selected { transform: translateY(-12px) scale(1.05); }
+.pg-vial--selected .pg-vial-body {
+  box-shadow:
+    0 0 0 2px #ff80ff,
+    0 0 16px rgba(255, 80, 255, 0.7),
+    0 0 32px rgba(200, 60, 255, 0.4);
+}
+
+/* ネック部分 */
+.pg-vial-neck {
+  width: 18px;
+  height: 14px;
+  background: linear-gradient(to bottom, rgba(180,140,255,0.4), rgba(120,80,200,0.6));
+  border-radius: 4px 4px 0 0;
+  border: 1px solid rgba(200, 160, 255, 0.4);
+  border-bottom: none;
+}
+
+/* 本体 */
+.pg-vial-body {
+  width: 52px;
+  height: 160px;
+  border-radius: 0 0 26px 26px;
+  border: 1.5px solid rgba(255, 255, 255, 0.30);
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    inset 3px 0 8px rgba(255,255,255,0.12),
+    inset -2px 0 4px rgba(0,0,0,0.15),
+    inset 0 -4px 8px rgba(0,0,0,0.20),
+    0 4px 20px rgba(0,0,0,0.30);
+  transition: box-shadow 0.2s;
+}
+
+/* 液体レイヤー */
+.pg-liquid {
+  flex: 1;
+  transition: background 0.3s;
+  position: relative;
+}
+
+.pg-liquid:not(.pg-liquid--empty)::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  right: 4px;
+  height: 3px;
+  background: rgba(255,255,255,0.25);
+  border-radius: 2px;
+}
+
+.pg-liquid--empty {
+  background: transparent;
+}
+
+/* 完成時 */
+.pg-vial--done .pg-vial-body {
+  border-color: rgba(255, 215, 0, 0.7);
+  box-shadow:
+    0 0 0 1px rgba(255, 215, 0, 0.5),
+    0 0 16px rgba(255, 215, 0, 0.35),
+    inset 2px 0 4px rgba(255,255,255,0.06);
+}
+
+.pg-vial-done-mark {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  color: #ffd700;
+  text-shadow: 0 0 8px rgba(255,215,0,0.7);
+  font-weight: 900;
+}
+
+/* ─── ゲームボタン群 ─── */
+.pg-game-btns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ─── クリア画面 ─── */
+.pg-clear-inner {
+  background: rgba(60, 20, 100, 0.7);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 24px;
+  padding: 40px 28px;
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+}
+
+.pg-clear-potion-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pg-clear-star-icon {
+  font-size: 72px;
+  animation: pgClearStarBorn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  filter: drop-shadow(0 0 16px rgba(255,215,0,0.9)) drop-shadow(0 0 32px rgba(255,150,200,0.6));
+}
+
+@keyframes pgClearStarBorn {
+  0%   { transform: scale(0) rotate(-30deg); opacity: 0; }
+  60%  { transform: scale(1.3) rotate(10deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.pg-clear-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(255, 180, 255, 0.8);
+  margin: 0;
+}
+
+.pg-clear-stage {
+  font-size: 18px;
+  color: #ffd700;
+  font-weight: 700;
+  margin: 0;
+}
+
+.pg-clear-coins { font-size: 16px; }
+.pg-clear-coin { color: #ffd700; font-weight: 700; }
+.pg-clear-coin--used { color: rgba(220, 180, 255, 0.6); font-size: 13px; }
+
+.pg-clear-btns {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.pg-btn--next {
+  font-size: 17px;
+  padding: 14px 40px;
+  background: linear-gradient(150deg, #c060ff, #ff6090);
+  box-shadow: 0 4px 20px rgba(200, 60, 180, 0.55);
+}
+
+/* ─── モバイル対応 ─── */
+@media (max-width: 600px) {
+  .pg-vial-body { width: 42px; height: 128px; }
+  .pg-vial-neck { width: 14px; height: 11px; }
+  .pg-vials-area { gap: 8px; }
+  .pg-title { font-size: 26px; }
 }

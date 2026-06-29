@@ -27,6 +27,7 @@ Rails.application.routes.draw do
   get 'letters',     to: 'letters#index', as: :letters
   get 'letters/:id', to: 'letters#show',  as: :letter
 
+  get  'games',            to: 'games#index',            as: :games
   get  'games/tap',        to: 'games#tap_game',        as: :tap_game
   post 'games/tap/result', to: 'games#tap_game_result', as: :tap_game_result
 
@@ -39,6 +40,9 @@ Rails.application.routes.draw do
 
   get  'games/match',        to: 'games#match_game',        as: :match_game
   post 'games/match/result', to: 'games#match_game_result', as: :match_game_result
+
+  get  'games/potion',        to: 'games#potion_game',        as: :potion_game
+  post 'games/potion/result', to: 'games#potion_game_result', as: :potion_game_result
 
   get 'l', to: redirect('/')
 end

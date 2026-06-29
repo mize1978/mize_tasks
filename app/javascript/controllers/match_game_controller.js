@@ -5,14 +5,14 @@ const TILE_COUNT = 8
 const TIME_LIMIT = 60
 
 const TILE_COLORS = [
-  "linear-gradient(135deg, #ffe4f0, #ffc8e0)", // ribbon  - pink
-  "linear-gradient(135deg, #fff8e0, #ffe8a0)", // crown   - yellow
-  "linear-gradient(135deg, #ddeeff, #c8d8f8)", // wand    - blue
-  "linear-gradient(135deg, #ede0ff, #d8c8ff)", // rainbow - lavender
-  "linear-gradient(135deg, #ffd8e8, #ffb8d0)", // tiara   - pink
-  "linear-gradient(135deg, #f8d8ff, #eec0f8)", // heart   - lavender pink
-  "linear-gradient(135deg, #e4eeff, #ccd8f8)", // wings   - pale blue
-  "linear-gradient(135deg, #ffdce8, #ffc0d4)", // slipper - light pink
+  "linear-gradient(135deg, #ff7eb8, #e8408a)", // ribbon  - vivid pink
+  "linear-gradient(135deg, #ffd050, #ffaa18)", // crown   - vivid gold
+  "linear-gradient(135deg, #80c4ff, #4888e8)", // wand    - vivid blue
+  "linear-gradient(135deg, #c888ff, #9850e8)", // rainbow - vivid purple
+  "linear-gradient(135deg, #ff90c0, #e84e88)", // tiara   - deep pink
+  "linear-gradient(135deg, #e870f8, #c030d8)", // heart   - vivid magenta
+  "linear-gradient(135deg, #88c8ff, #5090e8)", // wings   - vivid sky
+  "linear-gradient(135deg, #ffa0c0, #e86888)", // slipper - deep rose
 ]
 
 const RESULT_MESSAGES = {
