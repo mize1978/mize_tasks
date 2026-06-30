@@ -94,14 +94,27 @@ RewardMe は、**育成ゲームの仕組みで毎日の習慣を続けられる
   <img src="docs/screenshots/shop.jpg" alt="部屋ショップ" width="72%">
 </div>
 
-### デモ GIF
+### ガチャ演出
 
-| ガチャ演出 | 進化アニメーション | リボンキャッチ |
-|:---:|:---:|:---:|
-| ![gacha](docs/screenshots/demo_gacha.gif) | ![evolution](docs/screenshots/demo_evolution.gif) | ![catch](docs/screenshots/demo_catch.gif) |
-| コインで1回・10連 | たまご → プリンセス | 30秒タップゲーム |
+<p align="center">
+  <img src="docs/screenshots/gacha.gif" width="320">
+</p>
 
-> GIFファイルは `docs/screenshots/` に配置してください
+---
+
+### 進化アニメーション
+
+<p align="center">
+  <img src="docs/screenshots/demo_evolution.gif" width="320">
+</p>
+
+---
+
+### リボンキャッチ
+
+<p align="center">
+  <img src="docs/screenshots/demo_catch.gif" width="320">
+</p>
 
 ---
 
