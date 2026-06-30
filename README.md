@@ -100,7 +100,7 @@ RewardMe は、**育成ゲームの仕組みで毎日の習慣を続けられる
   <img src="docs/screenshots/gacha_v3.gif" width="30%">&nbsp;&nbsp;&nbsp;<img src="docs/screenshots/evolution_v3.gif" width="30%">&nbsp;&nbsp;&nbsp;<img src="docs/screenshots/potion_v2.gif" width="30%">
 </p>
 <p align="center">
-  <b>ガチャ演出</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>進化アニメーション</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>リボンポーション</b>
+  <b>ガチャ演出</b>（アイテム獲得）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>進化アニメーション</b>（タスク達成）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>リボンポーション</b>（ミニゲーム）
 </p>
 
 ---
