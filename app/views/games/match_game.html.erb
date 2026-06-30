@@ -54,9 +54,7 @@
 
     <% if @already_played %>
       <p class="mg-played-msg">また明日来てね♡</p>
-      <%= link_to dashboard_path, class: "btn-home-link" do %>
-        <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
-      <% end %>
+      <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
     <% end %>
 
     <div class="mg-ribbon-msg">
@@ -146,10 +144,7 @@
     </div>
 
     <div class="mg-result-coins" data-match-game-target="resultCoins"></div>
-
-    <%= link_to dashboard_path, class: "btn-home-link" do %>
-      <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
-    <% end %>
+    <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
   </div>
 
 </div>

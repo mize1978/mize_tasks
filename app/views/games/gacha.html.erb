@@ -58,8 +58,7 @@
     <% if current_user.gacha_title.present? %>
       <p class="gacha-current-title">👑 現在の称号: <strong><%= current_user.gacha_title %></strong></p>
     <% end %>
-
-    <%= link_to "🏠 ホームに戻る", dashboard_path, class: "gacha-back-link" %>
+    <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
   </div>
 
   <%# ━━━ カプセルアニメーション オーバーレイ ━━━ %>
@@ -86,8 +85,7 @@
         <span class="gacha-pull-btn-main">もう一回！</span>
         <span class="gacha-pull-btn-cost">ガチャに戻る</span>
       </button>
-      <%= link_to "🏠 ホームに戻る", dashboard_path, class: "gacha-back-link" %>
-    </div>
+      </div>
   </div>
 
 </div>

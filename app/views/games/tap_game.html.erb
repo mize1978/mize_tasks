@@ -35,9 +35,7 @@
 
       <% if @already_played %>
         <p class="tg-played-msg">また明日来てね♡<br>毎日チャレンジで腕を磨こう！</p>
-        <%= link_to dashboard_path, class: "btn-home-link" do %>
-          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
-        <% end %>
+        <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
       <% else %>
         <button class="tg-btn tg-btn--start" data-action="tap-game#start">
           スタート！
@@ -98,9 +96,7 @@
             🔄 もう一回
           </button>
         <% end %>
-        <%= link_to dashboard_path, class: "btn-home-link" do %>
-          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
-        <% end %>
+        <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
       </div>
     </div>
   </div>

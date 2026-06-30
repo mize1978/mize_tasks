@@ -13222,6 +13222,19 @@ body.flash-super::after {
   display: inline-block;
   text-decoration: none;
 }
+
+.game-back-link {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 200, 240, 0.6);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.game-back-link:hover {
+  color: rgba(255, 160, 220, 0.95);
+}
 .btn-home-img {
   width: 240px;
   height: auto;
@@ -13385,6 +13398,7 @@ body:has(.pg-wrap) {
 .pg-diff-row--easy   { background: rgba(60,200,120,0.10); border-color: rgba(60,200,120,0.30); }
 .pg-diff-row--normal { background: rgba(100,140,255,0.10); border-color: rgba(100,140,255,0.30); }
 .pg-diff-row--hard   { background: rgba(255,80,160,0.10);  border-color: rgba(255,80,160,0.30); }
+.pg-diff-row--oni    { background: rgba(160,40,255,0.12);  border-color: rgba(160,40,255,0.40); }
 
 .pg-diff-left  { display: flex; align-items: center; gap: 8px; }
 .pg-diff-right { display: flex; align-items: center; gap: 10px; }
@@ -13400,6 +13414,7 @@ body:has(.pg-wrap) {
 .pg-diff-badge--easy   { background: rgba(60,200,120,0.85);  color: #fff; }
 .pg-diff-badge--normal { background: rgba(80,130,255,0.85);  color: #fff; }
 .pg-diff-badge--hard   { background: rgba(255,60,140,0.85);  color: #fff; }
+.pg-diff-badge--oni    { background: linear-gradient(135deg, #a028ff, #ff2080); color: #fff; }
 
 .pg-diff-stages {
   font-size: 13px;

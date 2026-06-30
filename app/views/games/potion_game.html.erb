@@ -20,7 +20,7 @@
           <% if @already_played %>
             <span class="pg-score-value pg-score-value--used">✓ 獲得済み</span>
           <% else %>
-            <span class="pg-score-value pg-score-value--ready">🪙 最大150</span>
+            <span class="pg-score-value pg-score-value--ready">🪙 最大200</span>
           <% end %>
         </div>
       </div>
@@ -52,8 +52,18 @@
             <span class="pg-diff-stages">Stage 5</span>
           </div>
           <div class="pg-diff-right">
-            <span class="pg-diff-colors">5色・空き1本</span>
+            <span class="pg-diff-colors">6色・最大難度</span>
             <span class="pg-diff-coin">🪙 150</span>
+          </div>
+        </div>
+        <div class="pg-diff-row pg-diff-row--oni">
+          <div class="pg-diff-left">
+            <span class="pg-diff-badge pg-diff-badge--oni">鬼むず</span>
+            <span class="pg-diff-stages">Stage 6</span>
+          </div>
+          <div class="pg-diff-right">
+            <span class="pg-diff-colors">7色・オレンジ追加</span>
+            <span class="pg-diff-coin">🪙 200</span>
           </div>
         </div>
       </div>
@@ -65,10 +75,7 @@
       </div>
 
       <button class="pg-btn pg-btn--start" data-action="potion-game#start">✨ はじめる</button>
-
-      <%= link_to dashboard_path, class: "btn-home-link" do %>
-        <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
-      <% end %>
+      <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
     </div>
   </div>
 
@@ -168,9 +175,7 @@
         <button class="pg-btn pg-btn--next" data-action="potion-game#nextStage" data-potion-game-target="nextBtn">
           次のステージ ▶
         </button>
-        <%= link_to dashboard_path, class: "btn-home-link" do %>
-          <%= image_tag "btn_home.png", class: "btn-home-img", alt: "ホームに戻る" %>
-        <% end %>
+        <%= link_to "← ゲームに戻る", games_path, class: "game-back-link" %>
       </div>
     </div>
   </div>

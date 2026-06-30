@@ -203,6 +203,7 @@ class GamesController < ApplicationController
   private
 
   def potion_coins_for(stage)
+    return 200 if stage >= 6
     return 150 if stage >= 5
     return 100 if stage >= 3
     50

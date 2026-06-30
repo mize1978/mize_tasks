@@ -8,7 +8,8 @@ const COLOR_META = {
   purple: { gradient: "linear-gradient(to bottom, #d090ff, #9040e8)" },
   yellow: { gradient: "linear-gradient(to bottom, #ffe878, #ffb820)" },
   green:  { gradient: "linear-gradient(to bottom, #90ffcc, #30c880)" },
-  rose:   { gradient: "linear-gradient(to bottom, #ffb0c8, #e83070)"  },
+  rose:   { gradient: "linear-gradient(to bottom, #ffb0c8, #e83070)" },
+  orange: { gradient: "linear-gradient(to bottom, #ffd080, #ff8020)" },
 }
 
 const MAGIC_MSGS = [
@@ -20,12 +21,6 @@ const MAGIC_MSGS = [
 ]
 
 const STAGES = [
-  { vials: [
-    ["blue",   "pink",   "blue",   "pink"],
-    ["purple", "blue",   "purple", "pink"],
-    ["pink",   "purple", "blue",   "purple"],
-    [],
-  ]},
   { vials: [
     ["pink",   "blue",   "pink",   "yellow"],
     ["yellow", "purple", "yellow", "blue"],
@@ -54,6 +49,25 @@ const STAGES = [
     ["yellow", "purple", "rose",   "yellow"],
     ["blue",   "pink",   "blue",   "purple"],
     ["purple", "yellow", "pink",   "rose"],
+    [],
+  ]},
+  { vials: [
+    ["pink",   "blue",   "purple", "yellow"],
+    ["blue",   "green",  "rose",   "pink"],
+    ["purple", "pink",   "green",  "blue"],
+    ["yellow", "rose",   "pink",   "green"],
+    ["green",  "purple", "yellow", "rose"],
+    ["rose",   "yellow", "blue",   "purple"],
+    [],
+  ]},
+  { vials: [
+    ["pink",   "blue",   "purple", "yellow"],
+    ["blue",   "green",  "rose",   "orange"],
+    ["purple", "pink",   "orange", "green"],
+    ["yellow", "rose",   "pink",   "blue"],
+    ["green",  "orange", "purple", "rose"],
+    ["orange", "purple", "yellow", "green"],
+    ["rose",   "yellow", "blue",   "pink"],
     [],
   ]},
 ]
