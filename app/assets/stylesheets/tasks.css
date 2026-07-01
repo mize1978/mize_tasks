@@ -8567,7 +8567,7 @@ body.flash-super::after {
 
 .lp-chara-showcase-header {
   text-align: center;
-  margin: 0 auto 48px;
+  margin: 0 auto 22px;
   max-width: 960px;
 }
 
@@ -8592,6 +8592,7 @@ body.flash-super::after {
   font-size: 14px;
   line-height: 1.75;
   color: rgba(255, 255, 255, 0.5);
+  text-align: center;
   margin: 0;
 }
 
