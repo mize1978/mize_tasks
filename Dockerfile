@@ -10,6 +10,7 @@ RUN bundle install
 COPY . /app
 
 ENV RAILS_ENV=production
+RUN SECRET_KEY_BASE=dummy bundle exec rails assets:precompile
 EXPOSE 3000
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
