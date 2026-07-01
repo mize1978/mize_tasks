@@ -10,10 +10,11 @@ gem 'sassc-rails'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-# Use mysql as the database for Active Record
-gem "mysql2"
+# MySQL for local development
+gem "mysql2", group: %i[development test]
 
-gem "pg"
+# PostgreSQL for production (Render)
+gem "pg", group: :production
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
