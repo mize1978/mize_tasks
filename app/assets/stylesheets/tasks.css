@@ -6847,6 +6847,33 @@ body.flash-super::after {
   color: rgba(255, 255, 255, 0.3);
 }
 
+.lp-hero2-proof {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.lp-hero2-proof-stars {
+  color: #ffd166;
+  font-size: 15px;
+  letter-spacing: 3px;
+}
+
+.lp-hero2-proof-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 12px;
+}
+
+.lp-hero2-proof-items span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+}
+
 /* ─────────────────────────────────────
    スクリーン明度 +18%（③）
 ───────────────────────────────────── */
