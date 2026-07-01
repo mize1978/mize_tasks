@@ -11,4 +11,7 @@ COPY . /app
 
 ENV RAILS_ENV=production
 EXPOSE 3000
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
