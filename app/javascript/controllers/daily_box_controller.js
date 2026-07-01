@@ -78,10 +78,10 @@ export default class extends Controller {
   }
 
   showPrize(prize) {
-    const icons       = { coins: "🪙", exp: "⭐" }
+    const icons       = { coins: '<i class="coin-ico--lg"></i>', exp: "⭐" }
     const rarityNames = { normal: "NORMAL", good: "GOOD", rare: "RARE", epic: "EPIC", super: "LEGEND" }
 
-    this.prizeIcoTarget.textContent    = icons[prize.type] || "🎁"
+    this.prizeIcoTarget.innerHTML      = icons[prize.type] || "🎁"
     this.prizeLabelTarget.textContent  = prize.label
     this.prizeRarityTarget.textContent = rarityNames[prize.rarity] || prize.rarity
     this.prizeRarityTarget.dataset.rarity = prize.rarity
@@ -97,7 +97,7 @@ export default class extends Controller {
 
   updateTodayPrize(prize) {
     if (!this.hasTodayPrizePanelTarget) return
-    const icons = { coins: "🪙", exp: "⭐" }
+    const icons = { coins: '<i class="coin-ico--md"></i>', exp: "⭐" }
 
     if (this.hasTodayPrizeEmptyTarget) this.todayPrizeEmptyTarget.remove()
 

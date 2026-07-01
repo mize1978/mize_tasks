@@ -42,7 +42,7 @@
     <% if prize %>
       <div class="today-prize-content">
         <span class="today-prize-new">NEW</span>
-        <span class="today-prize-ico"><%= prize["type"] == "coins" ? "🪙" : "⭐" %></span>
+        <span class="today-prize-ico"><%= prize["type"] == "coins" ? '<i class="coin-ico--md"></i>'.html_safe : "⭐" %></span>
         <div class="today-prize-info">
           <span class="today-prize-label"><%= prize["label"] %></span>
           <span class="today-prize-rarity" data-rarity="<%= prize["rarity"] %>"><%= prize["rarity"]&.upcase %></span>
