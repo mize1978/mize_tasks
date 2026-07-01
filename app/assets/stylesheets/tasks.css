@@ -6815,13 +6815,18 @@ body.flash-super::after {
 
 .lp-hero2-frame { width: 100%; }
 
-/* 2カラムレイアウト内では右カラムとシェルを全幅に伸ばす */
+/* 2カラムレイアウト内では右カラムとシェルを調整 */
 .lp-hero2-2col .lp-hero2-right {
   padding: 0;
   align-items: stretch;
+  gap: 3px;
 }
 .lp-hero2-2col .lp-hero2-frame-shell {
-  width: 100%;
+  width: 118%;
+  /* 右端固定のまま左へ35px寄せる */
+  margin-left: calc(-18% - 35px);
+  /* コピーと高さを揃えるため下へずらす */
+  margin-top: 18px;
 }
 
 .lp-hero2-frame-hint {
