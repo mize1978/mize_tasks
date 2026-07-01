@@ -6815,6 +6815,15 @@ body.flash-super::after {
 
 .lp-hero2-frame { width: 100%; }
 
+/* 2カラムレイアウト内では右カラムとシェルを全幅に伸ばす */
+.lp-hero2-2col .lp-hero2-right {
+  padding: 0;
+  align-items: stretch;
+}
+.lp-hero2-2col .lp-hero2-frame-shell {
+  width: 100%;
+}
+
 .lp-hero2-frame-hint {
   font-size: 11px;
   color: rgba(255, 255, 255, 0.3);
